@@ -1,0 +1,6 @@
+{
+  "name": "AI Resume Analyzer",
+  "description": "A smart resume parser, scorer, and analyzer that matches skills to fields, scores the content, and recommends certification path courses with insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
