@@ -10,8 +10,76 @@
 @layer base {
   body {
     font-family: var(--font-sans);
-    @apply bg-slate-50 text-slate-900 selection:bg-indigo-500/20 antialiased;
+    @apply bg-slate-50 text-slate-900 selection:bg-indigo-500/20 antialiased transition-colors duration-200;
   }
+}
+
+/* Custom global dark mode style overrides */
+html.dark body,
+html.dark #app-container,
+html.dark #content-body {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Base override for cards of any kind */
+html.dark .bg-white {
+  background-color: #131c2e !important; /* Sleek navy-slate card color */
+  color: #f1f5f9 !important;
+}
+
+/* Text adjustments for dark mode readability */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-slate-600 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important; /* Lighter gray for secondary texts */
+}
+
+/* Border adjustments */
+html.dark .border-slate-200,
+html.dark .border-slate-100,
+html.dark .border-slate-300,
+html.dark .border-slate-150 {
+  border-color: #1e293b !important;
+}
+
+/* Form and input elements */
+html.dark input,
+html.dark textarea,
+html.dark select,
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #0b111e !important;
+  color: #f8fafc !important;
+  border-color: #1e293b !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #475569 !important;
+}
+
+/* Progress ring track override */
+html.dark .bg-slate-200 {
+  background-color: #1e293b !important;
+}
+
+/* Keep essential success/alert tags legible */
+html.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
 }
 
 /* Animations and custom transitions */

@@ -235,7 +235,7 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
                   <input
                     type="text"
                     required
-                    placeholder="Deepak Padhi"
+                    placeholder="John Doe"
                     value={applicantName}
                     onChange={(e) => setApplicantName(e.target.value)}
                     className="block w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-450"
@@ -569,49 +569,186 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
             </div>
           </div>
 
-          {/* Skill lists section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-              <h4 className="font-bold text-slate-850 text-sm flex items-center gap-2">
-                <CheckCircle className="w-4.5 h-4.5 text-emerald-500" />
-                <span>Existing Recognized Skills</span>
-              </h4>
-              {analysisResult.current_skills.length === 0 ? (
-                <p className="text-xs text-slate-450 italic">No explicit developer skills parsed from your selection.</p>
-              ) : (
+          {/* Skill lists & Keyword-to-Sector Clustering section */}
+          <div className="space-y-6">
+            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+                <div>
+                  <h4 className="font-extrabold text-slate-850 text-base flex items-center gap-2">
+                    <Layers className="w-5 h-5 text-indigo-500" />
+                    <span>Keyword & Sector Clustering Map</span>
+                  </h4>
+                  <p className="text-xs text-slate-500">We crawl parsed keyword markers and cluster them dynamically onto physical sectors based on semantic affinities.</p>
+                </div>
+                <span className="text-[10px] w-fit font-mono font-bold bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg">NLP CATEGORY ENGINE</span>
+              </div>
+
+              {/* Clustering logic results helper */}
+              {(() => {
+                const skillsList = analysisResult.current_skills.map(s => s.toLowerCase());
+                
+                const sectors = [
+                  {
+                    name: "Web Engineering",
+                    keywords: ["react", "vue", "angular", "html", "css", "javascript", "typescript", "node", "express", "tailwind", "bootstrap", "web", "nextjs", "django", "laravel", "php"],
+                    color: "bg-amber-500",
+                    textCol: "text-amber-800",
+                    bgCol: "bg-amber-50"
+                  },
+                  {
+                    name: "Data Science, Analytics & AI",
+                    keywords: ["python", "r", "pandas", "numpy", "scikit", "ml", "machine learning", "deep learning", "tensorflow", "pytorch", "sql", "data", "analytics", "tableau", "bi"],
+                    color: "bg-emerald-500",
+                    textCol: "text-emerald-800",
+                    bgCol: "bg-emerald-50"
+                  },
+                  {
+                    name: "Cloud & Systems DevOps",
+                    keywords: ["docker", "kubernetes", "aws", "gcp", "azure", "jenkins", "ci/cd", "linux", "git", "terraform", "cloud", "security", "yaml", "ansible"],
+                    color: "bg-blue-500",
+                    textCol: "text-blue-800",
+                    bgCol: "bg-blue-50"
+                  },
+                  {
+                    name: "Mobile App Innovation",
+                    keywords: ["kotlin", "swift", "ios", "android", "flutter", "react native", "java", "mobile", "xcode", "mobile development"],
+                    color: "bg-indigo-500",
+                    textCol: "text-indigo-800",
+                    bgCol: "bg-indigo-50"
+                  },
+                  {
+                    name: "Product Design & Strategy",
+                    keywords: ["figma", "sketch", "adobe", "ui", "ux", "wireframe", "prototype", "design", "user experience", "product", "agile", "scrum", "pmp"],
+                    color: "bg-rose-500",
+                    textCol: "text-rose-800",
+                    bgCol: "bg-rose-50"
+                  }
+                ];
+
+                const matches = sectors.map(sec => {
+                  const matchedKeywords = skillsList.filter(sk => 
+                    sec.keywords.some(kw => sk.includes(kw) || kw.includes(sk))
+                  );
+                  // Calculate match percentage
+                  const percent = skillsList.length > 0 
+                    ? Math.round((matchedKeywords.length / skillsList.length) * 100) 
+                    : 0;
+                  return {
+                    ...sec,
+                    matchedKeywords,
+                    percent: percent > 0 ? percent : (matchedKeywords.length > 0 ? 10 : 0) // minimum small score if matching exists
+                  };
+                });
+
+                // Sort matches by percentage
+                const sortedMatches = [...matches].sort((a,b) => b.percent - a.percent);
+                const supremeSector = sortedMatches[0]?.percent > 0 ? sortedMatches[0].name : "General Sector Category";
+
+                return (
+                  <div className="space-y-6">
+                    <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex flex-col md:flex-row gap-3 md:items-center justify-between">
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] uppercase font-bold text-indigo-700 tracking-wider">Primary Affinity Predictor</span>
+                        <h5 className="font-extrabold text-sm text-slate-800">
+                          Resume primary clustering points to: <span className="text-indigo-600">{supremeSector}</span>
+                        </h5>
+                      </div>
+                      <span className="px-3 py-1 bg-white border border-indigo-200 text-indigo-800 text-[11px] font-bold rounded-xl shadow-xs">
+                        {analysisResult.predicted_field} Match Track
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <h5 className="text-xs font-extrabold text-slate-700 uppercase tracking-widest block">Sector Proximities</h5>
+                        <div className="space-y-3">
+                          {matches.map((item, idx) => (
+                            <div key={idx} className="space-y-1">
+                              <div className="flex justify-between items-center text-xs">
+                                <span className="font-bold text-slate-700">{item.name}</span>
+                                <span className="font-mono text-slate-500 font-bold">{item.percent}%</span>
+                              </div>
+                              <div className="w-full bg-slate-100 rounded-full h-2">
+                                <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${Math.max(item.percent, 2)}%` }}></div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h5 className="text-xs font-extrabold text-slate-700 uppercase tracking-widest block">Keywords Extracted within Sectors</h5>
+                        <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1">
+                          {matches.filter(m => m.matchedKeywords.length > 0).length === 0 ? (
+                            <p className="text-xs text-slate-400 italic">No direct matching sector keywords identified. Try adding more tech labels.</p>
+                          ) : (
+                            matches.filter(m => m.matchedKeywords.length > 0).map((item, idx) => (
+                              <div key={idx} className={`p-3 rounded-xl border border-slate-100 ${item.bgCol} space-y-1.5`}>
+                                <div className="flex justify-between items-center">
+                                  <span className={`text-[10px] font-extrabold uppercase tracking-wide ${item.textCol}`}>{item.name}</span>
+                                  <span className="text-[9px] bg-white px-1.5 py-0.5 rounded-md font-mono text-slate-400 font-bold">{item.matchedKeywords.length} item(s)</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {item.matchedKeywords.map((kw, kIdx) => (
+                                    <span key={kIdx} className="px-2 py-0.5 bg-white border border-slate-200/80 text-[10px] text-slate-650 rounded-lg">
+                                      {kw}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Existing Recognized Skills */}
+              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+                <h4 className="font-extrabold text-slate-850 text-sm flex items-center gap-2">
+                  <CheckCircle className="w-4.5 h-4.5 text-emerald-500" />
+                  <span>Existing Recognized Skills</span>
+                </h4>
+                {analysisResult.current_skills.length === 0 ? (
+                  <p className="text-xs text-slate-450 italic">No explicit developer skills parsed from your selection.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {analysisResult.current_skills.map((skill, sIdx) => (
+                      <span key={sIdx} className="px-2.5 py-1 bg-slate-100 text-slate-650 hover:bg-slate-200/60 rounded-lg text-[10px] font-semibold transition-colors">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Recommended Skill Enhancements */}
+              <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+                <h4 className="font-extrabold text-slate-850 text-sm flex items-center gap-2">
+                  <Sparkles className="w-4.5 h-4.5 text-indigo-500" />
+                  <span>Recommended Skill Enhancements</span>
+                </h4>
+                <p className="text-[11px] text-slate-500 leading-normal mb-2">Integrating these requested tech tools on your profile is highly vital for the {analysisResult.predicted_field} track.</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {analysisResult.current_skills.map((skill, sIdx) => (
-                    <span key={sIdx} className="px-2.5 py-1 bg-slate-100 text-slate-650 hover:bg-slate-200/60 rounded-lg text-[10px] font-semibold transition-colors">
-                      {skill}
+                  {analysisResult.recommended_skills.map((skill, sIdx) => (
+                    <span key={sIdx} className="px-2.5 py-1 bg-indigo-50/70 text-indigo-700 hover:bg-indigo-100/60 rounded-lg text-[10px] font-bold transition-colors">
+                      + {skill}
                     </span>
                   ))}
                 </div>
-              )}
-            </div>
-
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
-              <h4 className="font-bold text-slate-850 text-sm flex items-center gap-2">
-                <Sparkles className="w-4.5 h-4.5 text-indigo-500" />
-                <span>Recommended Skill Enhancements</span>
-              </h4>
-              <p className="text-[11px] text-slate-500 leading-normal mb-2">Integrating these requested tech tools on your profile is highly vital for {analysisResult.predicted_field} track.</p>
-              <div className="flex flex-wrap gap-1.5">
-                {analysisResult.recommended_skills.map((skill, sIdx) => (
-                  <span key={sIdx} className="px-2.5 py-1 bg-indigo-50/70 text-indigo-700 hover:bg-indigo-100/60 rounded-lg text-[10px] font-bold transition-colors">
-                    + {skill}
-                  </span>
-                ))}
               </div>
             </div>
-
           </div>
 
           {/* Certification / Courses recommendation list */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h4 className="font-bold text-slate-850 text-base flex items-center gap-2">
+                <h4 className="font-extrabold text-slate-850 text-base flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-indigo-500" />
                   <span>Custom Certification Curriculum</span>
                 </h4>
@@ -641,9 +778,110 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
             </div>
           </div>
 
+          {/* New Section: Resume Writing Tips & Placement Checklist */}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+            <div className="space-y-1 border-b border-slate-100 pb-4">
+              <h4 className="font-extrabold text-slate-850 text-base flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-indigo-500" />
+                <span>Resume Performance Hacks & Placement Placement Checklist</span>
+              </h4>
+              <p className="text-xs text-slate-500">Actionable advice for colleges, recruiters and candidates to push resumes past recruiters and computerized scanners.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-4 bg-indigo-50/30 rounded-2xl border border-indigo-100/60 space-y-3">
+                <h5 className="font-bold text-xs text-indigo-900 uppercase tracking-wide">1. Strong Action Verbs</h5>
+                <p className="text-[11px] text-slate-650 leading-relaxed">
+                  Avoid starting project/role description bullets with passive words like "responsible for" or "carried out". Use powerful verbs instead: <b>Engineered, Optimized, Executed, Supervised, Standardized.</b>
+                </p>
+                <div className="flex gap-1 flex-wrap">
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Engineered</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Pioneered</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Revamped</span>
+                </div>
+              </div>
+
+              <div className="p-4 bg-emerald-50/30 rounded-2xl border border-emerald-100/60 space-y-3">
+                <h5 className="font-bold text-xs text-emerald-950 uppercase tracking-wide">2. Quantum Metric Metrics</h5>
+                <p className="text-[11px] text-slate-650 leading-relaxed">
+                  Recruiters look for numeric verification of achievements. Always provide quantifiable scores. E.g., change "designed system to speed up search" to "<b>optimized caching layers resulting in a 42% latency reduction</b>".
+                </p>
+                <div className="flex gap-1 flex-wrap">
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Reduced by X%</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Managed $Xk</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Led X engineers</span>
+                </div>
+              </div>
+
+              <div className="p-4 bg-rose-50/30 rounded-2xl border border-rose-100/60 space-y-3">
+                <h5 className="font-bold text-xs text-rose-950 uppercase tracking-wide">3. ATS Layout Cleanliness</h5>
+                <p className="text-[11px] text-slate-650 leading-relaxed">
+                  Scanners fail when analyzing multi-column boxes, heavy graphical banners, or headers. Stick to <b>single-column layouts</b> with standard font structures (Arial, Georgia, Inter, Calibri) and clean sections.
+                </p>
+                <div className="flex gap-1 flex-wrap">
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Single-Column</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">Standard PDF</span>
+                  <span className="text-[9px] bg-white px-2 py-0.5 border rounded border-slate-200 font-mono">No Image Blocks</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* New Section: Curated Video Resources for Careers & Interviews */}
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+            <div className="space-y-1">
+              <h4 className="font-extrabold text-slate-850 text-base flex items-center gap-2">
+                <Youtube className="w-5 h-5 text-rose-600" />
+                <span>Interview Prep & Resume tip videos</span>
+              </h4>
+              <p className="text-xs text-slate-500">Expert video masterclasses to perfect your interview posture and placement outcomes.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-rose-300 transition-all space-y-3 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-mono uppercase bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-bold">RECRUITER PERSPECTIVE</span>
+                  <h5 className="font-extrabold text-xs text-slate-800">Perfect Resume Layout (How To Pass the 6-Second Screen Test)</h5>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Learn about ATS filters, optimal font sizes, and exactly where Google and Meta hiring managers look first.
+                  </p>
+                </div>
+                <a
+                  href="https://www.youtube.com/watch?v=Tt08wAnQyMc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer block mt-2"
+                >
+                  <Youtube className="w-4 h-4 fill-white text-rose-600" />
+                  <span>Watch Perfect Resume Masterclass</span>
+                </a>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-rose-300 transition-all space-y-3 flex flex-col justify-between">
+                <div className="space-y-1">
+                  <span className="text-[9px] font-mono uppercase bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold">SOFTWARE PLACEMENT PREP</span>
+                  <h5 className="font-extrabold text-xs text-slate-800">Cracking the Technical Behavioral Interview (STAR Method)</h5>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    An in-depth guide on handling behavioral interview queries using the Situation, Task, Action, Result methodology.
+                  </p>
+                </div>
+                <a
+                  href="https://www.youtube.com/watch?v=Gg3bZ6D7bEQ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer block mt-2"
+                >
+                  <Youtube className="w-4 h-4 fill-white text-indigo-650" />
+                  <span>Watch Behavioral Prep Tutorial</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       )}
 
     </div>
   );
 }
+

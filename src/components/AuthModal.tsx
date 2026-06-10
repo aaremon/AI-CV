@@ -99,7 +99,7 @@ export default function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
                     <input
                       type="text"
                       required
-                      placeholder="Deepak Padhi"
+                      placeholder="John Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="block w-full pl-9 pr-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-450"

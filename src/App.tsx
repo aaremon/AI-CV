@@ -6,13 +6,38 @@ import AnalyzerTab from './components/AnalyzerTab';
 import FeedbackTab from './components/FeedbackTab';
 import AboutTab from './components/AboutTab';
 import AdminTab from './components/AdminTab';
-import PythonCodeTab from './components/PythonCodeTab';
 import { FeedbackDbRecord, UserDbRecord } from './types';
 
 export default function App() {
   // Navigation & session state
-  const [activeTab, setActiveTab] = useState<'analyzer' | 'feedback' | 'about' | 'admin' | 'python'>('analyzer');
+  const [activeTab, setActiveTab ] = useState<'analyzer' | 'feedback' | 'about' | 'admin'>('analyzer');
   const [currentTime, setCurrentTime] = useState<string>('2026-06-09 05:05:00');
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+
+  // Initialize and load dark mode state from persistence
+  useEffect(() => {
+    const stored = localStorage.getItem('resume_dark_mode');
+    const isDark = stored === 'true';
+    setDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const handleToggleDarkMode = () => {
+    setDarkMode(prev => {
+      const next = !prev;
+      localStorage.setItem('resume_dark_mode', String(next));
+      if (next) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return next;
+    });
+  };
   
   // Auth state
   const [loggedInUser, setLoggedInUser] = useState<any | null>(null);
@@ -109,7 +134,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-[#F8FAFC] overflow-hidden" id="app-container">
+    <div className="flex h-screen w-screen bg-[#F8FAFC] dark:bg-slate-950 overflow-hidden transition-colors duration-200" id="app-container">
       {/* Sidebar navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -129,20 +154,18 @@ export default function App() {
           loggedInUser={loggedInUser}
           onOpenAuth={() => setIsAuthOpen(true)}
           onLogout={handleLogout}
+          darkMode={darkMode}
+          onToggleDarkMode={handleToggleDarkMode}
         />
 
         {/* Content body with responsive scroll boundary */}
-        <div className="flex-1 overflow-y-auto p-8 bg-[#F8FAFC]" id="content-body">
+        <div className="flex-1 overflow-y-auto p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
           {activeTab === 'analyzer' && (
             <AnalyzerTab loggedInUser={loggedInUser} currentTime={currentTime} />
           )}
 
           {activeTab === 'feedback' && (
             <FeedbackTab allFeedback={allFeedback} onFeedbackSumitted={fetchFeedbackHistory} />
-          )}
-
-          {activeTab === 'python' && (
-            <PythonCodeTab />
           )}
 
           {activeTab === 'about' && (
@@ -163,6 +186,7 @@ export default function App() {
               loadingAdminRecords={loadingAdminRecords}
               onRefreshRecords={handleFetchAdminRecords}
               onDeleteRecord={handleDeleteAdminRecord}
+              allFeedback={allFeedback}
             />
           )}
         </div>

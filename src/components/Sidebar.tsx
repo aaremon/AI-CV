@@ -1,9 +1,9 @@
 import React from 'react';
-import { Sparkles, Send, Info, Lock, Code } from 'lucide-react';
+import { Sparkles, Send, Info, Lock } from 'lucide-react';
 
 interface SidebarProps {
-  activeTab: 'analyzer' | 'feedback' | 'about' | 'admin' | 'python';
-  setActiveTab: (tab: 'analyzer' | 'feedback' | 'about' | 'admin' | 'python') => void;
+  activeTab: 'analyzer' | 'feedback' | 'about' | 'admin';
+  setActiveTab: (tab: 'analyzer' | 'feedback' | 'about' | 'admin') => void;
   currentTime: string;
   feedbackLength: number;
   isAdminLoggedIn: boolean;
@@ -68,23 +68,6 @@ export default function Sidebar({
               {feedbackLength}
             </span>
           )}
-        </button>
-
-        <button
-          onClick={() => setActiveTab('python')}
-          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer ${
-            activeTab === 'python'
-              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/10'
-              : 'text-slate-400 hover:bg-slate-800/50 hover:text-white animate-pulse'
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <Code className="w-5 h-5 text-emerald-400" />
-            <span className="font-medium text-sm">Python (.py) Code</span>
-          </div>
-          <span className="bg-emerald-950/40 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full font-mono font-bold tracking-tight border border-emerald-500/20">
-            STREAMLIT
-          </span>
         </button>
 
         <button

@@ -102,7 +102,7 @@ export default function FeedbackTab({ allFeedback, onFeedbackSumitted }: Feedbac
             <input
               type="text"
               required
-              placeholder="e.g., Deepak Padhi"
+              placeholder="e.g., John Doe"
               value={feedName}
               onChange={(e) => setFeedName(e.target.value)}
               className="block w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all"

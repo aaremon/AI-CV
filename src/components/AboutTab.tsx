@@ -28,26 +28,6 @@ export default function AboutTab() {
           </div>
         </div>
       </div>
-
-      {/* Suggested certification links or credits */}
-      <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm space-y-6">
-        <h3 className="text-lg font-bold text-slate-800">🎯 Under the Hood - Streamlit Core Inspiration</h3>
-        <p className="text-slate-600 text-sm leading-relaxed">
-          Inspired by Deepak Padhi's primary Streamlit application, this web solution transforms static file evaluations into user-synced, persistent analyses with high-performance real-time analytics dashboards.
-        </p>
-
-        <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center font-bold text-orange-600 shrink-0 select-none text-xs">
-            SL
-          </div>
-          <div>
-            <h5 className="font-bold text-xs text-slate-800">Streamlit Python App</h5>
-            <p className="text-[11px] text-slate-500">
-              The original python source handles document byte generation, parsing, and user terminal logging with a simpler standalone footprint.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
