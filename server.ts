@@ -18,6 +18,8 @@ const pythonProcess = spawn("python3", ["server.py"], {
   env: process.env,
 });
 
+console.log(pythonProcess)
+
 pythonProcess.on("error", (err) => {
   console.error("[Node Proxy] CRITICAL: Failed to start Python process:", err);
 });
