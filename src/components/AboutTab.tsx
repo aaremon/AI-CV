@@ -10,7 +10,7 @@ export default function AboutTab() {
           The Parse Engine
         </h2>
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
-          CV Engine leverages Generative Large Language Models combined with strict JSON schema definitions to deliver deterministic, structured resume evaluations in real-time.
+          Mero Match leverages Generative Large Language Models combined with strict JSON schema definitions to deliver deterministic, structured resume evaluations in real-time.
         </p>
       </div>
 

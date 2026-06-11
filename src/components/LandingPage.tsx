@@ -17,11 +17,11 @@ export default function LandingPage({ onGetStarted, onOpenAuth, loggedInUser }: 
       {/* Landing Header */}
       <header className="w-full max-w-6xl mx-auto px-6 h-20 flex items-center justify-between relative z-10 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 font-extrabold text-xs shadow-sm">
-            CV
+          <div className="w-8 h-8 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center font-extrabold text-xs shadow-sm">
+            <Sparkles className="w-4 h-4 text-amber-400" />
           </div>
-          <span className="text-[13px] font-black tracking-widest text-slate-900 dark:text-white uppercase font-display">
-            CV Engine
+          <span className="text-[14px] font-black tracking-widest text-slate-900 dark:text-white uppercase font-display">
+            Mero Match
           </span>
         </div>
 
@@ -158,7 +158,7 @@ export default function LandingPage({ onGetStarted, onOpenAuth, loggedInUser }: 
 
       {/* Footer Branding info */}
       <footer className="w-full max-w-6xl mx-auto px-6 h-16 flex items-center justify-between border-t border-slate-200/40 dark:border-slate-800/30 text-[10px] text-slate-400 dark:text-slate-500 font-mono relative z-10">
-        <span>© 2026 CV Engine. Built with Gemini & Python.</span>
+        <span>© 2026 Mero Match. Built with Gemini & Python.</span>
         <span>Secure Sandbox Mode Enabled</span>
       </footer>
 

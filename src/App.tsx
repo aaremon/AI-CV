@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
+import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
 import AnalyzerTab from './components/AnalyzerTab';
 import FeedbackTab from './components/FeedbackTab';
@@ -163,9 +162,9 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen w-screen bg-[#F8FAFC] dark:bg-slate-950 overflow-hidden transition-colors duration-200" id="app-container">
-      {/* Sidebar navigation */}
-      <Sidebar
+    <div className="flex flex-col h-screen w-screen bg-[#F8FAFC] dark:bg-[#0c111e] overflow-hidden transition-colors duration-200" id="app-container">
+      {/* Top Navbar */}
+      <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         currentTime={currentTime}
@@ -173,52 +172,46 @@ export default function App() {
         isAdminLoggedIn={isAdminLoggedIn}
         loggedInUser={loggedInUser}
         onLogout={handleLogout}
+        darkMode={darkMode}
+        onToggleDarkMode={handleToggleDarkMode}
+        onOpenAuth={() => setIsAuthOpen(true)}
+        onGoHome={() => {
+          sessionStorage.removeItem('cv_engine_started');
+          setShowLanding(true);
+        }}
       />
 
-      {/* Main viewport */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden" id="main-frame">
-        {/* Header container */}
-        <Header
-          activeTab={activeTab}
-          loggedInUser={loggedInUser}
-          onOpenAuth={() => setIsAuthOpen(true)}
-          onLogout={handleLogout}
-          darkMode={darkMode}
-          onToggleDarkMode={handleToggleDarkMode}
-        />
+      {/* Main content body with responsive scroll boundary and optimized padding for mobile */}
+      <main className="flex-1 overflow-y-auto px-3 py-5 sm:p-6 md:p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
+        {activeTab === 'analyzer' && (
+          <AnalyzerTab loggedInUser={loggedInUser} currentTime={currentTime} />
+        )}
 
-        {/* Content body with responsive scroll boundary */}
-        <div className="flex-1 overflow-y-auto p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
-          {activeTab === 'analyzer' && (
-            <AnalyzerTab loggedInUser={loggedInUser} currentTime={currentTime} />
-          )}
+        {activeTab === 'feedback' && (
+          <FeedbackTab allFeedback={allFeedback} onFeedbackSumitted={fetchFeedbackHistory} />
+        )}
 
-          {activeTab === 'feedback' && (
-            <FeedbackTab allFeedback={allFeedback} onFeedbackSumitted={fetchFeedbackHistory} />
-          )}
+        {activeTab === 'about' && (
+          <AboutTab />
+        )}
 
-          {activeTab === 'about' && (
-            <AboutTab />
-          )}
-
-          {activeTab === 'admin' && (
-            <AdminTab
-              adminUsername={adminUsername}
-              setAdminUsername={setAdminUsername}
-              adminPassword={adminPassword}
-              setAdminPassword={setAdminPassword}
-              isAdminLoggedIn={isAdminLoggedIn}
-              setIsAdminLoggedIn={setIsAdminLoggedIn}
-              adminError={adminError}
-              setAdminError={setAdminError}
-              adminRecords={adminRecords}
-              loadingAdminRecords={loadingAdminRecords}
-              onRefreshRecords={handleFetchAdminRecords}
-              onDeleteRecord={handleDeleteAdminRecord}
-              allFeedback={allFeedback}
-            />
-          )}
-        </div>
+        {activeTab === 'admin' && (
+          <AdminTab
+            adminUsername={adminUsername}
+            setAdminUsername={setAdminUsername}
+            adminPassword={adminPassword}
+            setAdminPassword={setAdminPassword}
+            isAdminLoggedIn={isAdminLoggedIn}
+            setIsAdminLoggedIn={setIsAdminLoggedIn}
+            adminError={adminError}
+            setAdminError={setAdminError}
+            adminRecords={adminRecords}
+            loadingAdminRecords={loadingAdminRecords}
+            onRefreshRecords={handleFetchAdminRecords}
+            onDeleteRecord={handleDeleteAdminRecord}
+            allFeedback={allFeedback}
+          />
+        )}
       </main>
 
       {/* Auth Login/Signup Modal */}
