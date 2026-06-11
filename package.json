@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node launcher.js",
-    "build": "node launcher.js --prepare && vite build",
-    "start": "node launcher.js --prod",
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "start": "node dist/server.cjs",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },
@@ -18,6 +18,7 @@
     "express": "^4.21.2",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "pdf-parse": "^2.4.5",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "recharts": "^3.8.1",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
+    "@types/pdf-parse": "^1.1.5",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",
