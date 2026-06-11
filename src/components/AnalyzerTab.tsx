@@ -163,7 +163,17 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
         body: JSON.stringify(payload)
       });
 
-      const result = await response.json();
+      let result: any;
+      const textResponse = await response.text();
+      try {
+        result = JSON.parse(textResponse);
+      } catch (parseErr) {
+        throw new Error(response.ok
+          ? "Malformed response received from the analytics server."
+          : `Server Error ${response.status}: Please ensure the backend server is running and accessible.`
+        );
+      }
+
       if (!response.ok) {
         throw new Error(result.error || "Analyzing transaction failed.");
       }

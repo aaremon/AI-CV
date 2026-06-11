@@ -557,11 +557,10 @@ def api_analyze():
         if not file_base64 and not raw_text:
             return jsonify({"error": "Please upload a resume file or paste resume details."}), 400
             
-        # Dynamically import types
-        from google.genai import types
-        
         contents = []
         raw_text_to_analyze = raw_text or ""
+        decoded_bytes = None
+        mime = None
         
         if file_base64 and file_type:
             data_str = file_base64
@@ -582,12 +581,6 @@ def api_analyze():
                 return jsonify({"error": f"Failed to decode base64 file data: {str(e)}"}), 400
                 
             mime = "application/pdf" if "pdf" in file_type else "text/plain"
-            contents.append(types.Part.from_bytes(
-                data=decoded_bytes,
-                mime_type=mime,
-            ))
-        elif raw_text:
-            contents.append(raw_text)
             
         prompt_text = """
         You are an elite, rapid talent acquisition AI model and resume analyzer. Keep outputs compact and fast.
@@ -610,12 +603,25 @@ def api_analyze():
         In the feedback array of 10 items, provide extremely brief (under 10 words) 1-sentence diagnostic recommendations.
         Recommend exactly 3 high-quality learning course titles with realistic links.
         """
-        contents.append(prompt_text)
         
         parsed_result = None
         try:
+            # Dynamically import types inside try block so that if the package is missing, we fall back instantly
+            from google.genai import types
+            
+            gemini_contents = []
+            if decoded_bytes and mime:
+                gemini_contents.append(types.Part.from_bytes(
+                    data=decoded_bytes,
+                    mime_type=mime,
+                ))
+            elif raw_text:
+                gemini_contents.append(raw_text)
+                
+            gemini_contents.append(prompt_text)
+            
             response = call_gemini_with_retry(
-                contents=contents,
+                contents=gemini_contents,
                 system_instruction="You are a rapid Recruiter. Keep every single response and feedback details extremely brief and under 10 words."
             )
             text_response = response.text

@@ -6,10 +6,14 @@ import AnalyzerTab from './components/AnalyzerTab';
 import FeedbackTab from './components/FeedbackTab';
 import AboutTab from './components/AboutTab';
 import AdminTab from './components/AdminTab';
+import LandingPage from './components/LandingPage';
 import { FeedbackDbRecord, UserDbRecord } from './types';
 
 export default function App() {
   // Navigation & session state
+  const [showLanding, setShowLanding] = useState<boolean>(() => {
+    return sessionStorage.getItem('cv_engine_started') !== 'true';
+  });
   const [activeTab, setActiveTab ] = useState<'analyzer' | 'feedback' | 'about' | 'admin'>('analyzer');
   const [currentTime, setCurrentTime] = useState<string>('2026-06-09 05:05:00');
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -125,6 +129,8 @@ export default function App() {
   const handleLogout = () => {
     setLoggedInUser(null);
     localStorage.removeItem('resume_auth_user');
+    sessionStorage.removeItem('cv_engine_started');
+    setShowLanding(true);
   };
 
   const handleAuthSuccess = (userObj: any) => {
@@ -132,6 +138,29 @@ export default function App() {
     localStorage.setItem('resume_auth_user', JSON.stringify(userObj));
     setIsAuthOpen(false);
   };
+
+  const handleGetStarted = () => {
+    sessionStorage.setItem('cv_engine_started', 'true');
+    setShowLanding(false);
+  };
+
+  if (showLanding) {
+    return (
+      <>
+        <LandingPage
+          onGetStarted={handleGetStarted}
+          onOpenAuth={() => setIsAuthOpen(true)}
+          loggedInUser={loggedInUser}
+        />
+        {isAuthOpen && (
+          <AuthModal
+            onClose={() => setIsAuthOpen(false)}
+            onAuthSuccess={handleAuthSuccess}
+          />
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="flex h-screen w-screen bg-[#F8FAFC] dark:bg-slate-950 overflow-hidden transition-colors duration-200" id="app-container">
