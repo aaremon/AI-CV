@@ -4,6 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Google AI Studio App</title>
+    <script>
+      // Suppress benign WebSocket/HMR connection errors in the sandbox environment
+      (function() {
+        const checkString = (str) => {
+          if (!str) return false;
+          const s = String(str).toLowerCase();
+          return s.includes('websocket') || s.includes('web socket') || s.includes('connection failed') || s.includes('socket');
+        };
+
+        const isWebsocketError = (err) => {
+          if (!err) return false;
+          if (typeof err === 'string') return checkString(err);
+          if (err.message) return checkString(err.message);
+          if (err.stack) return checkString(err.stack);
+          if (err.reason) return isWebsocketError(err.reason);
+          return false;
+        };
+
+        window.addEventListener('unhandledrejection', function(event) {
+          if (isWebsocketError(event.reason)) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.warn('Suppressed benign HMR WebSocket unhandled rejection:', event.reason);
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          if (isWebsocketError(event.error) || isWebsocketError(event.message)) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.warn('Suppressed benign HMR WebSocket error:', event.message || event.error);
+          }
+        }, true);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

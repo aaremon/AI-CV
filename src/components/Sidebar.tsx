@@ -21,16 +21,16 @@ export default function Sidebar({
   onLogout
 }: SidebarProps) {
   return (
-    <aside className="w-64 bg-[#1E293B] flex flex-col shrink-0 border-r border-[#334155]" id="app-sidebar">
+    <aside className="w-64 bg-white dark:bg-[#0c111e] flex flex-col shrink-0 border-r border-slate-200/85 dark:border-[#1e293b]/90 transition-colors" id="app-sidebar">
       {/* Branding Header */}
       <div className="p-6">
-        <div className="flex items-center gap-3 text-white">
-          <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-extrabold text-xl shadow-lg shadow-indigo-600/30">
-            R
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center font-black text-white dark:text-slate-900 shadow-md">
+            C
           </div>
           <div>
-            <span className="font-bold text-lg tracking-tight block">RESUMÉ</span>
-            <span className="text-[10px] text-indigo-400 font-mono tracking-widest uppercase block -mt-1 font-semibold">AI ANALYZER</span>
+            <span className="font-extrabold text-[#0c111e] dark:text-white text-base tracking-tight block uppercase leading-none">CV ENGINE</span>
+            <span className="text-[9px] text-[#4f46e5] dark:text-[#a5b4fc] font-mono tracking-widest uppercase block mt-1.5 font-bold">ATS OPTIMIZER</span>
           </div>
         </div>
       </div>
@@ -39,32 +39,32 @@ export default function Sidebar({
       <nav className="flex-1 px-3 py-4 space-y-1">
         <button
           onClick={() => setActiveTab('analyzer')}
-          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer ${
+          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer ${
             activeTab === 'analyzer'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10'
-              : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+              ? 'bg-[#0f172a] dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/60 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <div className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5" />
-            <span className="font-medium text-sm">Resume Analyzer</span>
+            <Sparkles className="w-4.5 h-4.5 shrink-0" />
+            <span className="font-semibold text-sm">Resume Analyzer</span>
           </div>
         </button>
 
         <button
           onClick={() => setActiveTab('feedback')}
-          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer ${
+          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer ${
             activeTab === 'feedback'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10'
-              : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+              ? 'bg-[#0f172a] dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/60 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <div className="flex items-center gap-3">
-            <Send className="w-5 h-5" />
-            <span className="font-medium text-sm">User Feedback</span>
+            <Send className="w-4.5 h-4.5 shrink-0" />
+            <span className="font-semibold text-sm">User Feedback</span>
           </div>
           {feedbackLength > 0 && (
-            <span className="bg-[#334155] text-indigo-300 text-[11px] px-2 py-0.5 rounded-full font-bold">
+            <span className="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-[10px] px-2 py-0.5 rounded-full font-bold">
               {feedbackLength}
             </span>
           )}
@@ -72,51 +72,51 @@ export default function Sidebar({
 
         <button
           onClick={() => setActiveTab('about')}
-          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer ${
+          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer ${
             activeTab === 'about'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10'
-              : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+              ? 'bg-[#0f172a] dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100/60 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <div className="flex items-center gap-3">
-            <Info className="w-5 h-5" />
-            <span className="font-medium text-sm">About the Tool</span>
+            <Info className="w-4.5 h-4.5 shrink-0" />
+            <span className="font-semibold text-sm">About the Tool</span>
           </div>
         </button>
 
         <button
           onClick={() => setActiveTab('admin')}
-          className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-150 cursor-pointer ${
+          className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-150 cursor-pointer ${
             activeTab === 'admin'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10'
-              : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+              ? 'bg-[#0f172a] dark:bg-white text-white dark:text-slate-950 font-bold shadow-xs'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-105/60 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <div className="flex items-center gap-3">
-            <Lock className="w-5 h-5" />
-            <span className="font-medium text-sm">Admin Terminal</span>
+            <Lock className="w-4.5 h-4.5 shrink-0" />
+            <span className="font-semibold text-sm">Admin Terminal</span>
           </div>
           {isAdminLoggedIn && (
-            <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+            <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block animate-ping"></span>
           )}
         </button>
       </nav>
 
       {/* User Session Profile block */}
       {loggedInUser && (
-        <div className="p-4 mx-3 mb-2 bg-[#1e293b] border border-slate-700/60 rounded-2xl">
+        <div className="p-4 mx-3 mb-2 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-[#1e293b] rounded-2xl">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-500 text-white flex items-center justify-center font-bold text-xs shrink-0 select-none">
+            <div className="w-8 h-8 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-xs shrink-0 select-none">
               {loggedInUser.name.substring(0, 2).toUpperCase()}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-semibold text-white truncate">{loggedInUser.name}</p>
+              <p className="text-xs font-semibold text-slate-800 dark:text-white truncate">{loggedInUser.name}</p>
               <p className="text-[10px] text-slate-400 truncate">{loggedInUser.email}</p>
             </div>
           </div>
           <button
             onClick={onLogout}
-            className="w-full mt-3 py-1.5 bg-slate-800/80 hover:bg-rose-500/10 hover:text-rose-400 text-slate-400 text-[11px] font-semibold rounded-lg transition-colors cursor-pointer"
+            className="w-full mt-3 py-1.5 bg-slate-200/50 hover:bg-rose-500/10 hover:text-rose-600 dark:bg-slate-850 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 text-slate-600 dark:text-slate-400 text-[10px] font-bold rounded-xl transition-all cursor-pointer"
           >
             Sign Out
           </button>
@@ -125,12 +125,12 @@ export default function Sidebar({
 
       {/* Mini stats card on Sidebar footer */}
       <div className="p-4 mt-auto">
-        <div className="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/50">
-          <p className="text-[10px] text-indigo-400 uppercase tracking-widest font-bold mb-1">CURRENT TIME</p>
-          <p className="text-xs text-white font-mono break-all font-semibold select-none">{currentTime} UTC</p>
+        <div className="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-4 border border-slate-200 dark:border-[#1e293b]">
+          <p className="text-[9px] text-[#4f46e5] dark:text-[#a5b4fc] uppercase tracking-widest font-bold mb-1">SYSTEM TIME</p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-mono break-all font-semibold select-none">{currentTime}</p>
           <div className="mt-3 flex items-center gap-2">
-            <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
-            <span className="text-[10px] text-slate-400 font-mono">System Active</span>
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse"></span>
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">System Active</span>
           </div>
         </div>
       </div>
