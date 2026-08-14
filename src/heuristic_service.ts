@@ -28,7 +28,7 @@ export interface ParsedResumeResult {
   phone: string;
   degree: string;
   no_of_pages: number;
-  cand_level: string;
+  cand_level: 'Fresher' | 'Intermediate' | 'Experienced';
   predicted_field: string;
   current_skills: string[];
   recommended_skills: string[];
@@ -36,6 +36,18 @@ export interface ParsedResumeResult {
   score_factors: ScoreFactors;
   feedback: FeedbackItem[];
   recommended_courses: CourseItem[];
+  ats_compatibility_score?: number;
+  missing_skills?: string[];
+  experience_relevance?: string;
+  education_relevance?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  industry_specific_recommendations?: string[];
+  suggested_certifications?: string[];
+  suggested_projects?: string[];
+  suggested_keywords?: string[];
+  interview_readiness?: string;
+  career_growth_suggestions?: string[];
 }
 
 export function localHeuristicAnalysis(
@@ -46,6 +58,34 @@ export function localHeuristicAnalysis(
   actMob: string
 ): ParsedResumeResult {
   const text = (rawText || "").toLowerCase();
+
+  // Try to find raw email address inside CV
+  let finalEmail = actMail;
+  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  const emailMatches = rawText ? rawText.match(emailRegex) : null;
+  if (emailMatches && emailMatches.length > 0) {
+    finalEmail = emailMatches[0].trim();
+  }
+
+  // Try to find raw contact phone inside CV
+  let finalPhone = actMob;
+  const phoneRegex = /(\+?\d{1,4}[-.\s]??)?\(?\d{3}\)?[-.\s]??\d{3}[-.\s]??\d{4}/g;
+  const phoneMatches = rawText ? rawText.match(phoneRegex) : null;
+  if (phoneMatches && phoneMatches.length > 0) {
+    finalPhone = phoneMatches[0].trim();
+  }
+
+  // Try to extract a clean name from the top lines of CV text if possible
+  let finalName = actName;
+  if (rawText && rawText.length > 20) {
+    const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length > 0) {
+      const candidateName = lines[0];
+      if (candidateName.length > 3 && candidateName.length < 45 && !/email|phone|resume|curriculum|portfolio|github|web|http|const|import|education|skills/i.test(candidateName)) {
+        finalName = candidateName;
+      }
+    }
+  }
 
   // Highlight key section checks
   const hasObj = /objective|summary|profile|about me|professional summary/.test(text);
@@ -247,17 +287,63 @@ export function localHeuristicAnalysis(
     degreeGuess = "Bachelor of Science";
   }
 
+  const atsScore = Math.min(Math.max(score + (hasSkl ? 6 : -4) + (hasExp ? 8 : 2), 48), 96);
+  const candLevelTyped: 'Fresher' | 'Intermediate' | 'Experienced' =
+    candLevel === 'Experienced' ? 'Experienced' : candLevel === 'Intermediate' ? 'Intermediate' : 'Fresher';
+
   return {
-    name: actName,
-    email: actMail,
-    phone: actMob,
+    name: finalName,
+    email: finalEmail,
+    phone: finalPhone,
     degree: degreeGuess,
     no_of_pages: text.length < 3000 ? 1 : 2,
-    cand_level: candLevel,
+    cand_level: candLevelTyped,
     predicted_field: bestField,
     current_skills: detectedSkills.slice(0, 12),
     recommended_skills: recommendedSkills,
     resume_score: score,
+    ats_compatibility_score: atsScore,
+    missing_skills: recommendedSkills.slice(0, 5),
+    experience_relevance: hasExp
+      ? "Demonstrated industry experience aligns directly with standard technical benchmarks. Adding quantifiable impact metrics will further strengthen ATS ranking."
+      : "Early-stage trajectory. Emphasize capstone projects, open-source contributions, and internship roles to boost ATS screening rate.",
+    education_relevance: hasEdu
+      ? "Academic qualifications provide a solid foundation for this technical track."
+      : "Ensure relevant college coursework, certifications, and technical accreditations are prominent.",
+    strengths: [
+      hasSkl ? "Core technical proficiencies and skills matrix clearly identified" : "Aptitude and foundational potential",
+      hasExp ? "Documented professional work history and trajectory" : "Demonstrated project development focus",
+      hasEdu ? "Structured academic qualification background" : "Self-driven technical learning path",
+      "Document format is parsable by standard ATS engines"
+    ],
+    weaknesses: [
+      !hasAch ? "Missing quantifiable impact metrics (e.g. latency reduction, % efficiency gains, user growth)" : "",
+      !hasCert ? "No industry-standard technical certifications listed" : "",
+      !hasInt && !hasExp ? "Limited commercial or internship experience documented" : ""
+    ].filter(Boolean),
+    industry_specific_recommendations: [
+      `Prioritize mastering modern in-demand frameworks and tools in ${bestField}`,
+      "Incorporate unit testing, automated CI/CD pipelines, and cloud deployment in project showcases",
+      "Format work experience using the Google XYZ accomplishment formula (Accomplished [X] as measured by [Y], by doing [Z])"
+    ],
+    suggested_certifications: [
+      `Certified ${bestField} Professional`,
+      "AWS Certified Cloud Practitioner",
+      "Professional Developer Associate"
+    ],
+    suggested_projects: [
+      `Full-stack ${bestField} Application with real-time analytics and authentication`,
+      "Scalable API microservice with automated testing and Docker containerization"
+    ],
+    suggested_keywords: Array.from(new Set([...detectedSkills, "Agile", "Git", "REST APIs", "CI/CD", "System Design", "Cloud"])).slice(0, 8),
+    interview_readiness: score >= 70
+      ? "High — Strong profile readiness for technical screening rounds. Focus on system architecture deep dives and behavioral STAR responses."
+      : "Moderate — Bolster your project portfolio, practice algorithmic problem solving, and refine section summaries.",
+    career_growth_suggestions: [
+      `Target high-growth ${bestField} roles while building specialized domain depth`,
+      "Contribute to production-grade repositories and open source to increase recruiter visibility",
+      "Establish a continuous learning path with hands-on architecture certifications"
+    ],
     score_factors: {
       has_objective: hasObj,
       has_education: hasEdu,

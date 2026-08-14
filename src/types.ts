@@ -36,6 +36,18 @@ export interface AnalysisData {
   score_factors: ScoreFactors;
   feedback: FeedbackDetail[];
   recommended_courses: CourseRecommendation[];
+  ats_compatibility_score?: number;
+  missing_skills?: string[];
+  experience_relevance?: string;
+  education_relevance?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  industry_specific_recommendations?: string[];
+  suggested_certifications?: string[];
+  suggested_projects?: string[];
+  suggested_keywords?: string[];
+  interview_readiness?: string;
+  career_growth_suggestions?: string[];
 }
 
 export interface ApiAnalyzeResponse {

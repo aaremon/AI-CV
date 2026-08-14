@@ -1,0 +1,1331 @@
+{
+  "auth_users": [
+    {
+      "id": 1,
+      "email": "thapakaji@gmail.com",
+      "name": "Platform Administrator",
+      "phone": "+1-800-555-ADMIN",
+      "passwordHash": "plain:password",
+      "role": "admin",
+      "status": "active",
+      "mfa_enabled": false,
+      "created_at": "2026-08-14T05:02:32.843Z",
+      "last_login": "2026-08-14T06:01:02.744Z"
+    },
+    {
+      "id": 2,
+      "role": "user",
+      "status": "active",
+      "mfa_enabled": false,
+      "email": "rambk@gmail.com",
+      "name": "Ram Bikram Kunwar",
+      "phone": "123456789",
+      "passwordHash": "plain:password",
+      "created_at": "2026-08-14T06:03:39.221Z",
+      "last_login": "2026-08-14T06:05:23.811Z"
+    },
+    {
+      "id": 3,
+      "role": "user",
+      "status": "active",
+      "mfa_enabled": false,
+      "email": "jane.dev@example.com",
+      "name": "Jane Developer",
+      "phone": "+1-555-0188",
+      "passwordHash": "plain:password123",
+      "created_at": "2026-08-14T06:27:06.760Z",
+      "last_login": "2026-08-14T06:27:06.792Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "owner_email": "aaryamanthapa123@gmail.com",
+      "name": "Aaryaman Thapa",
+      "email": "Aaryamanthapa123@gmail.com",
+      "resume_score": "65",
+      "timestamp": "2026-08-14T06:16:55.524Z",
+      "reco_field": "Web Development",
+      "cand_level": "Experienced",
+      "skills": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "Cloud Architecture",
+        "CI/CD",
+        "Git",
+        "Docker",
+        "REST APIs",
+        "Full Stack Software Engineer"
+      ],
+      "recommended_skills": [
+        "Next.js",
+        "GraphQL",
+        "AWS Lambda",
+        "Kubernetes",
+        "Microservices",
+        "Tailwind CSS",
+        "Redux",
+        "Jest",
+        "Performance Optimization",
+        "Security Best Practices"
+      ],
+      "courses": [
+        {
+          "title": "Full-Stack Web Development with React and Node.js",
+          "link": "https://www.coursera.org/specializations/full-stack-react-node"
+        },
+        {
+          "title": "GraphQL with React: The Complete Developer's Guide",
+          "link": "https://www.udemy.com/course/graphql-with-react-the-complete-developers-guide/"
+        },
+        {
+          "title": "AWS Certified Developer - Associate",
+          "link": "https://aws.amazon.com/certification/certified-developer-associate/"
+        },
+        {
+          "title": "Advanced CSS and Sass: Flexbox, Grid, Animations and More!",
+          "link": "https://www.udemy.com/course/advanced-css-and-sass/"
+        }
+      ],
+      "pdf_name": "Aaryaman_Thapa_Resume.txt",
+      "pdf_url": null,
+      "data_json": {
+        "scoring": {
+          "overallScore": 65,
+          "atsScore": 90
+        },
+        "name": "Aaryaman Thapa",
+        "email": "Aaryamanthapa123@gmail.com",
+        "phone": "+1-555-0199",
+        "degree": "Bachelor of Science in Computer Science",
+        "no_of_pages": 1,
+        "cand_level": "Experienced",
+        "predicted_field": "Web Development",
+        "current_skills": [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "Express",
+          "PostgreSQL",
+          "Cloud Architecture",
+          "CI/CD",
+          "Git",
+          "Docker",
+          "REST APIs",
+          "Full Stack Software Engineer"
+        ],
+        "recommended_skills": [
+          "Next.js",
+          "GraphQL",
+          "AWS Lambda",
+          "Kubernetes",
+          "Microservices",
+          "Tailwind CSS",
+          "Redux",
+          "Jest",
+          "Performance Optimization",
+          "Security Best Practices"
+        ],
+        "resume_score": 65,
+        "score_factors": {
+          "has_objective": false,
+          "has_education": true,
+          "has_experience": true,
+          "has_internship": false,
+          "has_skills": true,
+          "has_hobbies": false,
+          "has_interests": false,
+          "has_achievements": false,
+          "has_certifications": false,
+          "has_projects": true
+        },
+        "feedback": [
+          {
+            "factor": "Objective/Summary",
+            "status": "missing",
+            "detail": "Add a concise professional summary or objective statement at the top of your resume. This should highlight your expertise as a Full Stack Software Engineer, your key skills, and your career aspirations, tailored for Web Development roles."
+          },
+          {
+            "factor": "Education",
+            "status": "added",
+            "detail": "Your Bachelor of Science in Computer Science is a strong foundation. Ensure you include the institution name, location, and graduation date."
+          },
+          {
+            "factor": "Experience",
+            "status": "added",
+            "detail": "You have relevant experience as a Senior Developer. Expand on your role at TechCorp by detailing your responsibilities, the technologies you used, and, most importantly, quantifiable achievements (e.g., 'Improved application performance by 20%', 'Led a team of 3 developers')."
+          },
+          {
+            "factor": "Internship",
+            "status": "missing",
+            "detail": "If you have any relevant internships, consider adding them, especially if they involved web development tasks. For an experienced candidate, this section is less critical if professional experience is robust."
+          },
+          {
+            "factor": "Skills",
+            "status": "added",
+            "detail": "You have a strong list of current skills highly relevant to Web Development. Consider categorizing them (e.g., Frontend, Backend, Databases, DevOps) for better readability and ATS parsing."
+          },
+          {
+            "factor": "Hobbies/Interests",
+            "status": "missing",
+            "detail": "This section is optional but can add personality. If included, keep it brief and professional, focusing on interests that might subtly hint at soft skills (e.g., problem-solving, teamwork)."
+          },
+          {
+            "factor": "Achievements",
+            "status": "missing",
+            "detail": "Crucial for an experienced professional. Integrate specific achievements and contributions within your experience and project descriptions. Use action verbs and quantify results whenever possible."
+          },
+          {
+            "factor": "Certifications",
+            "status": "missing",
+            "detail": "Consider obtaining and listing relevant certifications, especially in cloud platforms (AWS, Azure, GCP) or specific frameworks, to further validate your expertise."
+          },
+          {
+            "factor": "Projects",
+            "status": "added",
+            "detail": "You've listed 'AI CV Optimizer'. Provide more details about this project: its purpose, your role, the technologies used, challenges faced, and the impact or outcome. Include a link to the live project or GitHub repository if available."
+          }
+        ],
+        "recommended_courses": [
+          {
+            "title": "Full-Stack Web Development with React and Node.js",
+            "link": "https://www.coursera.org/specializations/full-stack-react-node"
+          },
+          {
+            "title": "GraphQL with React: The Complete Developer's Guide",
+            "link": "https://www.udemy.com/course/graphql-with-react-the-complete-developers-guide/"
+          },
+          {
+            "title": "AWS Certified Developer - Associate",
+            "link": "https://aws.amazon.com/certification/certified-developer-associate/"
+          },
+          {
+            "title": "Advanced CSS and Sass: Flexbox, Grid, Animations and More!",
+            "link": "https://www.udemy.com/course/advanced-css-and-sass/"
+          }
+        ],
+        "ats_compatibility_score": 90,
+        "missing_skills": [
+          "Next.js",
+          "GraphQL",
+          "AWS Lambda",
+          "Kubernetes",
+          "Microservices",
+          "Tailwind CSS",
+          "Redux",
+          "Jest",
+          "React Testing Library",
+          "Web Performance Optimization",
+          "Web Security Best Practices"
+        ],
+        "experience_relevance": "Highly relevant. As a Senior Developer with full-stack expertise in React, Node.js, and PostgreSQL, Aaryaman possesses core skills directly applicable to Web Development. The mention of Cloud Architecture, CI/CD, Docker, and REST APIs further enhances relevance for modern web development practices.",
+        "education_relevance": "Highly relevant. A Bachelor of Science in Computer Science provides a strong theoretical and practical foundation essential for a career in Web Development, covering algorithms, data structures, and software engineering principles.",
+        "strengths": [
+          "Strong foundation in full-stack technologies (React, Node.js, Express, PostgreSQL).",
+          "Experience as a Senior Developer indicates leadership potential and problem-solving skills.",
+          "Familiarity with modern development practices like CI/CD, Docker, and Git.",
+          "Understanding of Cloud Architecture and RESTful API design.",
+          "Proficiency in TypeScript, enhancing code quality and maintainability."
+        ],
+        "weaknesses": [
+          "Lack of detailed descriptions and quantifiable achievements for experience and projects.",
+          "Resume is very brief, lacking the depth expected for an experienced professional.",
+          "Absence of a professional summary/objective statement.",
+          "No specific certifications or advanced specializations listed.",
+          "Limited mention of advanced frontend (e.g., state management patterns, testing frameworks) or backend (e.g., GraphQL, specific cloud services) concepts."
+        ],
+        "industry_specific_recommendations": [
+          "Quantify achievements in your experience section: For example, 'Optimized database queries, reducing load times by 15%'.",
+          "Elaborate on your 'AI CV Optimizer' project: Describe the problem it solves, your specific contributions, and the tech stack in detail.",
+          "Showcase your full-stack capabilities by highlighting contributions to both frontend and backend aspects of projects.",
+          "Consider adding a link to your GitHub profile or a personal portfolio website to demonstrate code quality and project work.",
+          "Tailor your resume for each application, emphasizing skills and experiences most relevant to the job description."
+        ],
+        "suggested_certifications": [
+          "AWS Certified Developer - Associate",
+          "Microsoft Certified: Azure Developer Associate",
+          "Google Cloud Professional Cloud Developer",
+          "Certified Kubernetes Application Developer (CKAD)"
+        ],
+        "suggested_projects": [
+          "Build a real-time chat application using WebSockets (Socket.IO) with a modern frontend framework (React/Next.js) and Node.js backend.",
+          "Develop an e-commerce platform with user authentication, product catalog, shopping cart, and payment gateway integration.",
+          "Create a serverless API using AWS Lambda/Azure Functions and integrate it with a React frontend.",
+          "Contribute to an open-source web development project to showcase collaboration and problem-solving skills."
+        ],
+        "suggested_keywords": [
+          "Full Stack Developer",
+          "Frontend Developer",
+          "Backend Developer",
+          "React.js",
+          "Node.js",
+          "Express.js",
+          "PostgreSQL",
+          "TypeScript",
+          "RESTful APIs",
+          "Microservices",
+          "Cloud Computing",
+          "AWS",
+          "Azure",
+          "GCP",
+          "Docker",
+          "Kubernetes",
+          "CI/CD",
+          "Git",
+          "Agile",
+          "Scrum",
+          "Web Performance",
+          "Security",
+          "Unit Testing",
+          "Integration Testing",
+          "Next.js",
+          "GraphQL",
+          "Redux",
+          "Tailwind CSS"
+        ],
+        "interview_readiness": "Aaryaman has a strong technical foundation for Web Development, particularly in full-stack technologies. However, the brevity of the resume suggests a need to prepare detailed examples of past projects, challenges overcome, and quantifiable achievements. Be ready to discuss architectural decisions, problem-solving approaches, and contributions as a Senior Developer. Focus on behavioral questions that highlight leadership, teamwork, and communication skills.",
+        "career_growth_suggestions": [
+          "Specialize in a niche area: Consider becoming an expert in a specific cloud platform (e.g., AWS Solutions Architect), a particular frontend framework (e.g., React/Next.js expert), or a backend specialization (e.g., Microservices architect).",
+          "Pursue leadership roles: Leverage your Senior Developer experience to move into Lead Developer, Tech Lead, or Engineering Manager positions, focusing on mentoring and project management.",
+          "Deepen DevOps and MLOps knowledge: Given your 'AI CV Optimizer' project, exploring MLOps could open doors to AI/ML engineering roles with a web interface component.",
+          "Contribute to open source: Actively participate in open-source projects to build a public portfolio and collaborate with a wider community.",
+          "Continuous learning: Stay updated with emerging technologies, frameworks, and best practices in the rapidly evolving web development landscape."
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "owner_email": null,
+      "name": "John Doe",
+      "email": "johndoe@gmail.com",
+      "resume_score": "60",
+      "timestamp": "2026-08-14T06:17:13.244Z",
+      "reco_field": "Data Science",
+      "cand_level": "Fresher",
+      "skills": [
+        "React",
+        "JavaScript",
+        "HTML5",
+        "CSS3",
+        "Git",
+        "Node.js"
+      ],
+      "recommended_skills": [
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS",
+        "Redux Toolkit",
+        "PostgreSQL",
+        "Docker",
+        "GraphQL",
+        "AWS S3"
+      ],
+      "courses": [
+        {
+          "title": "Udemy: The Complete JavaScript Course 2026",
+          "link": "https://www.udemy.com/course/the-complete-javascript-course/"
+        },
+        {
+          "title": "Frontend Masters: Full-Stack Web Development Path",
+          "link": "https://frontendmasters.com/"
+        },
+        {
+          "title": "Scrimba: The Frontend Developer Career Path",
+          "link": "https://scrimba.com/learn/frontend"
+        }
+      ],
+      "pdf_name": "John_Doe_Resume.pdf",
+      "pdf_url": null,
+      "data_json": {
+        "scoring": {
+          "overallScore": 60,
+          "atsScore": 58
+        },
+        "name": "John Doe",
+        "email": "johndoe@gmail.com",
+        "phone": "+1-234-567-8901",
+        "degree": "Bachelor's Degree",
+        "no_of_pages": 1,
+        "cand_level": "Fresher",
+        "predicted_field": "Data Science",
+        "current_skills": [
+          "React",
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "Git",
+          "Node.js"
+        ],
+        "recommended_skills": [
+          "TypeScript",
+          "Next.js",
+          "Tailwind CSS",
+          "Redux Toolkit",
+          "PostgreSQL",
+          "Docker",
+          "GraphQL",
+          "AWS S3"
+        ],
+        "resume_score": 60,
+        "ats_compatibility_score": 58,
+        "missing_skills": [
+          "TypeScript",
+          "Next.js",
+          "Tailwind CSS",
+          "Redux Toolkit",
+          "PostgreSQL"
+        ],
+        "experience_relevance": "Early-stage trajectory. Emphasize capstone projects, open-source contributions, and internship roles to boost ATS screening rate.",
+        "education_relevance": "Ensure relevant college coursework, certifications, and technical accreditations are prominent.",
+        "strengths": [
+          "Aptitude and foundational potential",
+          "Demonstrated project development focus",
+          "Self-driven technical learning path",
+          "Document format is parsable by standard ATS engines"
+        ],
+        "weaknesses": [
+          "Missing quantifiable impact metrics (e.g. latency reduction, % efficiency gains, user growth)",
+          "No industry-standard technical certifications listed",
+          "Limited commercial or internship experience documented"
+        ],
+        "industry_specific_recommendations": [
+          "Prioritize mastering modern in-demand frameworks and tools in Web Development",
+          "Incorporate unit testing, automated CI/CD pipelines, and cloud deployment in project showcases",
+          "Format work experience using the Google XYZ accomplishment formula (Accomplished [X] as measured by [Y], by doing [Z])"
+        ],
+        "suggested_certifications": [
+          "Certified Web Development Professional",
+          "AWS Certified Cloud Practitioner",
+          "Professional Developer Associate"
+        ],
+        "suggested_projects": [
+          "Full-stack Web Development Application with real-time analytics and authentication",
+          "Scalable API microservice with automated testing and Docker containerization"
+        ],
+        "suggested_keywords": [
+          "React",
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "Git",
+          "Node.js",
+          "Agile",
+          "REST APIs"
+        ],
+        "interview_readiness": "Moderate — Bolster your project portfolio, practice algorithmic problem solving, and refine section summaries.",
+        "career_growth_suggestions": [
+          "Target high-growth Web Development roles while building specialized domain depth",
+          "Contribute to production-grade repositories and open source to increase recruiter visibility",
+          "Establish a continuous learning path with hands-on architecture certifications"
+        ],
+        "score_factors": {
+          "has_objective": false,
+          "has_education": false,
+          "has_experience": false,
+          "has_internship": false,
+          "has_skills": false,
+          "has_hobbies": false,
+          "has_interests": false,
+          "has_achievements": false,
+          "has_certifications": false,
+          "has_projects": false
+        },
+        "feedback": [
+          {
+            "factor": "Objective or Summary",
+            "status": "missing",
+            "detail": "Add a brief professional objective summary to resume."
+          },
+          {
+            "factor": "Education Details",
+            "status": "missing",
+            "detail": "List your college or school degree cleanly."
+          },
+          {
+            "factor": "Experience or Work Experience",
+            "status": "missing",
+            "detail": "Consider writing down jobs or project leadership positions."
+          },
+          {
+            "factor": "Internships",
+            "status": "missing",
+            "detail": "Highlight relevant trainee positions or internships if newer to industry."
+          },
+          {
+            "factor": "Skills section",
+            "status": "missing",
+            "detail": "Build a clean technical skills grid."
+          },
+          {
+            "factor": "Hobbies",
+            "status": "missing",
+            "detail": "Add a simple hobbies line for personality details."
+          },
+          {
+            "factor": "Interests",
+            "status": "missing",
+            "detail": "Add field interest indicators."
+          },
+          {
+            "factor": "Achievements",
+            "status": "missing",
+            "detail": "Add high-impact awards or metric achievements."
+          },
+          {
+            "factor": "Certifications section",
+            "status": "missing",
+            "detail": "Add technical certs to boost confidence."
+          },
+          {
+            "factor": "Projects",
+            "status": "missing",
+            "detail": "Create dedicated projects sections to show mastery."
+          }
+        ],
+        "recommended_courses": [
+          {
+            "title": "Udemy: The Complete JavaScript Course 2026",
+            "link": "https://www.udemy.com/course/the-complete-javascript-course/"
+          },
+          {
+            "title": "Frontend Masters: Full-Stack Web Development Path",
+            "link": "https://frontendmasters.com/"
+          },
+          {
+            "title": "Scrimba: The Frontend Developer Career Path",
+            "link": "https://scrimba.com/learn/frontend"
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "owner_email": "rambk@gmail.com",
+      "name": "Ram Bikram Kunwar",
+      "email": "rakshitdahal9@gmail.com",
+      "resume_score": "85",
+      "timestamp": "2026-08-14T06:18:38.512Z",
+      "reco_field": "Digital Marketing",
+      "cand_level": "Intermediate",
+      "skills": [
+        "Figma",
+        "Adobe Photoshop",
+        "Canva",
+        "Adobe Premiere Pro",
+        "Adobe Illustrator",
+        "Social Media Management",
+        "Campaign Planning",
+        "Content Strategy",
+        "SEO",
+        "Google Analytics",
+        "Networking Fundamentals",
+        "Computer Hardware & Troubleshooting",
+        "Java",
+        "Python (Data Structures & Algorithms)",
+        "Problem Solving & Analytical Thinking",
+        "Team Collaboration & Leadership",
+        "Communication & Public Speaking",
+        "Event & Project Management",
+        "Administrative Support"
+      ],
+      "recommended_skills": [
+        "Paid Advertising (Google Ads, Meta Ads)",
+        "Email Marketing",
+        "Content Marketing Strategy",
+        "CRM Software (e.g., HubSpot, Salesforce Marketing Cloud)",
+        "A/B Testing",
+        "Conversion Rate Optimization (CRO)",
+        "Marketing Analytics (advanced Google Analytics, Tableau)",
+        "Copywriting",
+        "Video Marketing",
+        "Influencer Marketing",
+        "Market Research"
+      ],
+      "courses": [
+        {
+          "title": "Google Digital Garage: Fundamentals of Digital Marketing",
+          "link": "https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing"
+        },
+        {
+          "title": "Coursera: Digital Marketing Specialization (University of Illinois)",
+          "link": "https://www.coursera.org/specializations/digital-marketing"
+        },
+        {
+          "title": "Udemy: The Complete Digital Marketing Course - 12 Courses in 1",
+          "link": "https://www.udemy.com/course/the-complete-digital-marketing-course-2018/"
+        },
+        {
+          "title": "HubSpot Academy: Inbound Marketing Certification",
+          "link": "https://academy.hubspot.com/courses/inbound-marketing"
+        }
+      ],
+      "pdf_name": "Rakshit Dahal.pdf",
+      "pdf_url": null,
+      "data_json": {
+        "scoring": {
+          "overallScore": 85,
+          "atsScore": 88
+        },
+        "name": "Ram Bikram Kunwar",
+        "email": "rakshitdahal9@gmail.com",
+        "phone": "+977-9840884752",
+        "degree": "Bachelors in Business Information System (Ongoing)",
+        "no_of_pages": 2,
+        "cand_level": "Intermediate",
+        "predicted_field": "Other",
+        "current_skills": [
+          "Figma",
+          "Adobe Photoshop",
+          "Canva",
+          "Adobe Premiere Pro",
+          "Adobe Illustrator",
+          "Social Media Management",
+          "Campaign Planning",
+          "Content Strategy",
+          "SEO",
+          "Google Analytics",
+          "Networking Fundamentals",
+          "Computer Hardware & Troubleshooting",
+          "Java",
+          "Python (Data Structures & Algorithms)",
+          "Problem Solving & Analytical Thinking",
+          "Team Collaboration & Leadership",
+          "Communication & Public Speaking",
+          "Event & Project Management",
+          "Administrative Support"
+        ],
+        "recommended_skills": [
+          "Paid Advertising (Google Ads, Meta Ads)",
+          "Email Marketing",
+          "Content Marketing Strategy",
+          "CRM Software (e.g., HubSpot, Salesforce Marketing Cloud)",
+          "A/B Testing",
+          "Conversion Rate Optimization (CRO)",
+          "Marketing Analytics (advanced Google Analytics, Tableau)",
+          "Copywriting",
+          "Video Marketing",
+          "Influencer Marketing",
+          "Market Research"
+        ],
+        "resume_score": 85,
+        "score_factors": {
+          "has_objective": true,
+          "has_education": true,
+          "has_experience": true,
+          "has_internship": true,
+          "has_skills": true,
+          "has_hobbies": true,
+          "has_interests": true,
+          "has_achievements": true,
+          "has_certifications": true,
+          "has_projects": true
+        },
+        "feedback": [
+          {
+            "factor": "Objective/Profile",
+            "status": "added",
+            "detail": "Your profile summary is well-articulated, clearly highlighting your multidisciplinary skills and proactive mindset. It effectively sets the stage for your diverse experience."
+          },
+          {
+            "factor": "Education",
+            "status": "added",
+            "detail": "Your educational background is clearly listed. Consider adding a brief highlight of relevant coursework or projects from your Business Information Systems degree that align with digital marketing."
+          },
+          {
+            "factor": "Experience",
+            "status": "added",
+            "detail": "The experience section is a major strength, featuring quantifiable achievements (e.g., '70,000 total combined organic views', '300.6% increase in profile visits') and demonstrating significant impact. Ensure all bullet points start with strong action verbs."
+          },
+          {
+            "factor": "Internship",
+            "status": "added",
+            "detail": "Multiple internships showcase a breadth of experience and a proactive approach to gaining practical skills. The roles are relevant to creative and digital fields."
+          },
+          {
+            "factor": "Skills",
+            "status": "added",
+            "detail": "The skills section is well-categorized and comprehensive, covering design, social media, and soft skills. This makes it easy for ATS and recruiters to identify your capabilities."
+          },
+          {
+            "factor": "Hobbies/Interests",
+            "status": "added",
+            "detail": "The 'Additional Activities' section effectively serves as a showcase for your interests and personal brand (Actor, Content Creator), adding a unique dimension to your profile."
+          },
+          {
+            "factor": "Achievements",
+            "status": "added",
+            "detail": "The 'Achievements & Leadership' section is strong, highlighting leadership roles, awards, and mentorship experience, which are valuable soft skills for any role."
+          },
+          {
+            "factor": "Certifications",
+            "status": "added",
+            "detail": "The 'Training & Certifications' section demonstrates a commitment to continuous learning. To further enhance your profile for Digital Marketing, consider adding industry-specific certifications."
+          },
+          {
+            "factor": "Projects",
+            "status": "added",
+            "detail": "Projects like 'Graphics Designer 2023' and website launches under 'Shubha Vani' are present. Consider creating a dedicated 'Portfolio' section with links to your creative and marketing work to visually showcase your capabilities."
+          },
+          {
+            "factor": "Overall Presentation",
+            "status": "missing",
+            "detail": "While the content is strong, adding a dedicated portfolio link (e.g., Behance, personal website) would significantly enhance your application for creative and marketing roles, allowing recruiters to see your work firsthand."
+          }
+        ],
+        "recommended_courses": [
+          {
+            "title": "Google Digital Garage: Fundamentals of Digital Marketing",
+            "link": "https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing"
+          },
+          {
+            "title": "Coursera: Digital Marketing Specialization (University of Illinois)",
+            "link": "https://www.coursera.org/specializations/digital-marketing"
+          },
+          {
+            "title": "Udemy: The Complete Digital Marketing Course - 12 Courses in 1",
+            "link": "https://www.udemy.com/course/the-complete-digital-marketing-course-2018/"
+          },
+          {
+            "title": "HubSpot Academy: Inbound Marketing Certification",
+            "link": "https://academy.hubspot.com/courses/inbound-marketing"
+          }
+        ],
+        "ats_compatibility_score": 88,
+        "missing_skills": [
+          "Paid Advertising (Google Ads, Meta Ads)",
+          "Email Marketing",
+          "CRM Software (e.g., HubSpot, Salesforce Marketing Cloud)",
+          "A/B Testing",
+          "Conversion Rate Optimization (CRO)",
+          "Marketing Analytics (advanced Google Analytics, Tableau)",
+          "Copywriting",
+          "Video Marketing",
+          "Influencer Marketing",
+          "Market Research"
+        ],
+        "experience_relevance": "The candidate's experience is highly relevant to Digital Marketing, particularly in social media management, content creation, graphic design for marketing, and web project management. The quantifiable results in organic reach and profile visits demonstrate a strong understanding of digital engagement. Experience in analyzing audience engagement data for SEO teams further strengthens this relevance.",
+        "education_relevance": "A Bachelors in Business Information Systems provides a solid foundation for Digital Marketing. It equips the candidate with analytical thinking, understanding of business processes, and technical acumen, which are crucial for data-driven marketing strategies, marketing technology implementation, and understanding digital ecosystems.",
+        "strengths": [
+          "Strong hands-on experience in social media management, content creation, and graphic design.",
+          "Demonstrated ability to achieve quantifiable results in organic reach and engagement.",
+          "Experience in web design and project management for website launches.",
+          "Analytical skills applied to audience engagement data and SEO suggestions.",
+          "Proven leadership and teamwork abilities through achievements and soft skills.",
+          "Proactive, adaptable mindset with diverse experience across various organizational types.",
+          "Proficiency in key design and marketing tools (Figma, Adobe Suite, Canva, Google Analytics, SEO).",
+          "Strong communication and public speaking skills."
+        ],
+        "weaknesses": [
+          "Limited explicit experience or skills listed in paid advertising (e.g., Google Ads, Meta Ads).",
+          "Lack of specific, industry-recognized digital marketing certifications.",
+          "Absence of a dedicated portfolio link to showcase creative and marketing work.",
+          "Technical skills (Java, Python) are less directly relevant to a pure Digital Marketing role and could be de-emphasized or reframed if not used for marketing analytics.",
+          "Some roles lean more towards graphic design/UI/UX rather than holistic digital marketing strategy."
+        ],
+        "industry_specific_recommendations": [
+          "Actively seek opportunities to gain experience in paid media campaigns (Google Ads, Meta Ads) to round out your digital marketing skill set.",
+          "Focus on showcasing the business impact of your design and social media efforts, linking them to lead generation, sales, or brand awareness.",
+          "Develop a strong understanding of marketing automation and CRM platforms, as these are integral to modern digital marketing.",
+          "Network within the digital marketing community through LinkedIn, industry events, and online forums.",
+          "Continuously learn about emerging trends in AI for marketing, privacy regulations, and new digital platforms."
+        ],
+        "suggested_certifications": [
+          "Google Ads Certifications (Search, Display, Video, Shopping)",
+          "Meta Blueprint Certifications (e.g., Media Buying Professional)",
+          "HubSpot Content Marketing Certification",
+          "SEMrush SEO Toolkit Certification",
+          "Google Analytics Certification (GA4)"
+        ],
+        "suggested_projects": [
+          "Develop a comprehensive digital marketing strategy for a hypothetical small business, including social media, SEO, email, and paid ad components.",
+          "Create a content calendar and sample content (blog posts, social media visuals, video scripts) for a specific niche, demonstrating content strategy and execution.",
+          "Run a small-scale paid ad campaign (e.g., on Meta or Google) for a personal project, local business, or non-profit, documenting the setup, optimization, and results.",
+          "Build a personal brand website/blog and implement on-page and off-page SEO best practices, tracking performance with Google Analytics.",
+          "Conduct a competitive digital marketing analysis for a chosen brand and propose data-backed improvements to their online presence."
+        ],
+        "suggested_keywords": [
+          "Digital Marketing",
+          "Social Media Marketing",
+          "Content Marketing",
+          "SEO",
+          "SEM",
+          "Google Analytics",
+          "Campaign Management",
+          "Brand Positioning",
+          "UI/UX Design",
+          "Graphic Design",
+          "Figma",
+          "Adobe Photoshop",
+          "Canva",
+          "Meta Ads",
+          "Google Ads",
+          "Email Marketing",
+          "Conversion Rate Optimization",
+          "Marketing Strategy",
+          "Digital Campaigns",
+          "Web Analytics",
+          "Market Research",
+          "Copywriting",
+          "Video Marketing",
+          "Marketing Automation"
+        ],
+        "interview_readiness": "The candidate demonstrates good interview readiness due to strong communication, leadership, and problem-solving skills. They can articulate achievements with quantifiable results. To excel, they should prepare to discuss strategic thinking behind campaigns, how design skills contribute to marketing objectives, and how they would approach paid advertising and advanced analytics. Highlighting their adaptability and quick learning ability will also be beneficial.",
+        "career_growth_suggestions": [
+          "Specialize in a niche area of digital marketing such as Paid Media, SEO, Content Strategy, or Marketing Analytics to become an expert.",
+          "Pursue advanced certifications in marketing automation platforms (e.g., HubSpot, Salesforce Marketing Cloud) and CRM systems.",
+          "Seek opportunities to take on leadership roles in digital marketing projects, managing teams, budgets, and overall strategy.",
+          "Continuously update skills with emerging trends in AI for marketing, data privacy regulations, and new social media/advertising platforms.",
+          "Consider pursuing a Master's degree in Marketing, Business Analytics, or a related field to transition into strategic leadership or management positions."
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "owner_email": "jane.dev@example.com",
+      "name": "Jane Developer",
+      "email": "jane.dev@example.com",
+      "resume_score": "20",
+      "timestamp": "2026-08-14T06:27:44.946Z",
+      "reco_field": "Web Development",
+      "cand_level": "Intermediate",
+      "skills": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "SQL",
+        "Docker"
+      ],
+      "recommended_skills": [
+        "Next.js",
+        "GraphQL",
+        "AWS",
+        "CI/CD",
+        "Jest",
+        "PostgreSQL",
+        "RESTful APIs",
+        "Git",
+        "Microservices",
+        "Frontend Frameworks (e.g., Vue.js)",
+        "Backend Frameworks (e.g., NestJS)",
+        "Cloud Deployment"
+      ],
+      "courses": [
+        {
+          "title": "The Complete React Developer Course (w/ Hooks and Redux)",
+          "link": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/"
+        },
+        {
+          "title": "Node.js, Express, MongoDB & More: The Complete Bootcamp 2024",
+          "link": "https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/"
+        },
+        {
+          "title": "Full Stack Web Development with React Specialization",
+          "link": "https://www.coursera.org/specializations/full-stack-react"
+        },
+        {
+          "title": "Architecting with Google Kubernetes Engine: Foundations",
+          "link": "https://www.coursera.org/learn/architecting-gke-foundations"
+        },
+        {
+          "title": "AWS Certified Developer - Associate 2024",
+          "link": "https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/"
+        }
+      ],
+      "pdf_name": "Jane_Resume.txt",
+      "pdf_url": null,
+      "data_json": {
+        "scoring": {
+          "overallScore": 20,
+          "atsScore": 30
+        },
+        "name": "Jane Developer",
+        "email": "jane.dev@example.com",
+        "phone": "+1-555-0188",
+        "degree": "Not specified",
+        "no_of_pages": 1,
+        "cand_level": "Intermediate",
+        "predicted_field": "Web Development",
+        "current_skills": [
+          "React",
+          "Node.js",
+          "TypeScript",
+          "SQL",
+          "Docker"
+        ],
+        "recommended_skills": [
+          "Next.js",
+          "GraphQL",
+          "AWS",
+          "CI/CD",
+          "Jest",
+          "PostgreSQL",
+          "RESTful APIs",
+          "Git",
+          "Microservices",
+          "Frontend Frameworks (e.g., Vue.js)",
+          "Backend Frameworks (e.g., NestJS)",
+          "Cloud Deployment"
+        ],
+        "resume_score": 20,
+        "score_factors": {
+          "has_objective": false,
+          "has_education": false,
+          "has_experience": false,
+          "has_internship": false,
+          "has_skills": true,
+          "has_hobbies": false,
+          "has_interests": false,
+          "has_achievements": false,
+          "has_certifications": false,
+          "has_projects": false
+        },
+        "feedback": [
+          {
+            "factor": "Objective/Summary",
+            "status": "missing",
+            "detail": "Adding a concise professional summary or objective statement at the beginning of your resume would immediately inform recruiters about your career goals and key qualifications. This helps in quickly understanding your profile."
+          },
+          {
+            "factor": "Education",
+            "status": "missing",
+            "detail": "Please include your educational background, including degrees, majors, institutions, and graduation dates. This is a fundamental section for most job applications."
+          },
+          {
+            "factor": "Experience",
+            "status": "missing",
+            "detail": "While you identify as a 'Full Stack Engineer', there are no details about your work experience. Please elaborate on your roles, responsibilities, and achievements in previous positions. Use bullet points and quantify your impact where possible (e.g., 'Improved page load time by 20%')."
+          },
+          {
+            "factor": "Internship",
+            "status": "missing",
+            "detail": "If you have any internship experience, please include it. Internships provide valuable practical exposure and demonstrate your ability to apply theoretical knowledge in a professional setting."
+          },
+          {
+            "factor": "Skills",
+            "status": "added",
+            "detail": "You have listed relevant core skills (React, Node.js, TypeScript, SQL, Docker). This is a good start. Consider categorizing them (e.g., Frontend, Backend, Databases, DevOps) for better readability and adding proficiency levels if applicable."
+          },
+          {
+            "factor": "Hobbies/Interests",
+            "status": "missing",
+            "detail": "While optional, including relevant hobbies or interests can sometimes provide a glimpse into your personality and soft skills. However, prioritize technical content first."
+          },
+          {
+            "factor": "Achievements",
+            "status": "missing",
+            "detail": "Highlight any significant achievements, awards, or recognitions. These demonstrate excellence and initiative beyond standard job duties."
+          },
+          {
+            "factor": "Certifications",
+            "status": "missing",
+            "detail": "Consider adding any relevant professional certifications you may have obtained. These can validate your skills and commitment to continuous learning."
+          },
+          {
+            "factor": "Projects",
+            "status": "missing",
+            "detail": "A strong project section is crucial for Web Development roles, especially for demonstrating practical application of your skills. Include 2-3 detailed projects with descriptions, technologies used, your role, and links to live demos or GitHub repositories."
+          }
+        ],
+        "recommended_courses": [
+          {
+            "title": "The Complete React Developer Course (w/ Hooks and Redux)",
+            "link": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/"
+          },
+          {
+            "title": "Node.js, Express, MongoDB & More: The Complete Bootcamp 2024",
+            "link": "https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/"
+          },
+          {
+            "title": "Full Stack Web Development with React Specialization",
+            "link": "https://www.coursera.org/specializations/full-stack-react"
+          },
+          {
+            "title": "Architecting with Google Kubernetes Engine: Foundations",
+            "link": "https://www.coursera.org/learn/architecting-gke-foundations"
+          },
+          {
+            "title": "AWS Certified Developer - Associate 2024",
+            "link": "https://www.udemy.com/course/aws-certified-developer-associate-dva-c01/"
+          }
+        ],
+        "ats_compatibility_score": 30,
+        "missing_skills": [
+          "Next.js",
+          "GraphQL",
+          "AWS",
+          "CI/CD",
+          "Jest",
+          "PostgreSQL",
+          "RESTful APIs",
+          "Git",
+          "Microservices",
+          "Frontend Frameworks (e.g., Vue.js)",
+          "Backend Frameworks (e.g., NestJS)",
+          "Cloud Deployment"
+        ],
+        "experience_relevance": "The self-proclaimed title 'Full Stack Engineer' is highly relevant to Web Development. However, the resume completely lacks any details about actual work experience, responsibilities, or achievements, making it impossible to assess the depth or breadth of her experience. This is a critical gap.",
+        "education_relevance": "Education is not mentioned in the resume, so its relevance cannot be assessed. Including academic background is essential for a complete profile.",
+        "strengths": [
+          "Identifies as a Full Stack Engineer, indicating a broad understanding of web development.",
+          "Possesses core modern web development technologies (React, Node.js, TypeScript).",
+          "Familiarity with database concepts (SQL) and containerization (Docker), which are valuable for deployment and scalability."
+        ],
+        "weaknesses": [
+          "Extremely brief resume, lacking essential sections like Education, detailed Experience, and Projects.",
+          "No quantifiable achievements or project descriptions to demonstrate impact or capabilities.",
+          "Absence of a professional summary/objective, which is crucial for quick recruiter assessment.",
+          "No information on soft skills, problem-solving abilities, or teamwork experience.",
+          "Lack of explicit mention of version control (Git), which is fundamental in modern development workflows."
+        ],
+        "industry_specific_recommendations": [
+          "Develop a strong portfolio showcasing 3-5 full-stack projects with live demos and GitHub links.",
+          "Gain practical experience with cloud platforms (e.g., AWS, Azure, GCP) for deploying and managing web applications.",
+          "Focus on building robust, scalable, and secure applications, demonstrating an understanding of best practices.",
+          "Actively participate in online developer communities or contribute to open-source projects to showcase collaboration and coding skills.",
+          "Familiarize yourself with modern testing frameworks (e.g., Jest, React Testing Library) to ensure code quality."
+        ],
+        "suggested_certifications": [
+          "AWS Certified Developer - Associate",
+          "Microsoft Certified: Azure Developer Associate",
+          "Certified Kubernetes Application Developer (CKAD)",
+          "Professional Scrum Developer (PSD)"
+        ],
+        "suggested_projects": [
+          "E-commerce platform with user authentication, product catalog, shopping cart, and payment integration (e.g., Stripe).",
+          "Real-time chat application using WebSockets (e.g., Socket.IO) with user presence and message history.",
+          "Task management system with a RESTful API, user roles, and a modern frontend framework (e.g., Next.js).",
+          "Personal blog or portfolio website with a custom CMS backend, markdown support, and SEO optimization.",
+          "Social media clone with features like posts, comments, likes, and user profiles."
+        ],
+        "suggested_keywords": [
+          "Full Stack Developer",
+          "Frontend Developer",
+          "Backend Developer",
+          "Web Application Development",
+          "API Development",
+          "Database Management",
+          "Cloud Computing",
+          "Agile",
+          "Scrum",
+          "Responsive Design",
+          "Performance Optimization",
+          "Security Best Practices",
+          "Version Control (Git)",
+          "CI/CD",
+          "Microservices",
+          "Serverless"
+        ],
+        "interview_readiness": "Low. While the candidate lists relevant technologies, the complete lack of context, projects, and detailed experience means there is very little concrete information to discuss in an interview beyond basic definitions of the listed skills. To be considered ready, Jane would need to significantly expand her resume with detailed experience, quantifiable achievements, and a strong project portfolio.",
+        "career_growth_suggestions": [
+          "**Short-term (0-1 year)**: Focus on building a robust portfolio with 3-5 full-stack projects that demonstrate proficiency in your listed skills and recommended new ones. Gain practical experience with cloud deployment (e.g., deploying a React/Node app to AWS EC2, Vercel, or Netlify). Deepen knowledge in one specific area (e.g., advanced React hooks, Node.js performance optimization, or database design).",
+          "**Mid-term (1-3 years)**: Seek roles as a Junior/Mid-level Full Stack Developer. Focus on contributing to larger codebases, participating actively in code reviews, and understanding software architecture principles. Explore advanced topics like microservices, serverless architectures, and GraphQL. Aim to get certified in a cloud platform (e.g., AWS Developer Associate).",
+          "**Long-term (3-5+ years)**: Target Senior Full Stack Developer or Lead Developer roles. Specialize in areas like system design, performance engineering, security, or specific domain expertise. Mentor junior developers, contribute to technical strategy, and potentially explore niche areas like Web3, AI integration, or developer advocacy. Continuously learn new frameworks and paradigms."
+        ]
+      }
+    }
+  ],
+  "feedback": [
+    {
+      "id": 1,
+      "feed_name": "Jane",
+      "feed_email": "jane.dev@example.com",
+      "feed_score": "5",
+      "comments": "Great ATS feedback!",
+      "timestamp": "2026-08-14T06:27:06.802Z"
+    }
+  ],
+  "user_versions": [],
+  "user_documents": [],
+  "user_sessions": [
+    {
+      "id": 1,
+      "created_at": "2026-08-14T06:01:02.745Z",
+      "last_active": "2026-08-14T06:01:02.745Z",
+      "revoked": false,
+      "email": "thapakaji@gmail.com",
+      "device_summary": "Chrome on Windows / Web Client"
+    },
+    {
+      "id": 2,
+      "created_at": "2026-08-14T06:05:23.812Z",
+      "last_active": "2026-08-14T06:05:23.812Z",
+      "revoked": false,
+      "email": "rambk@gmail.com",
+      "device_summary": "Chrome on Windows / Web Client"
+    },
+    {
+      "id": 3,
+      "created_at": "2026-08-14T06:27:06.794Z",
+      "last_active": "2026-08-14T06:27:06.794Z",
+      "revoked": false,
+      "email": "jane.dev@example.com",
+      "device_summary": "Chrome on Web Client"
+    }
+  ],
+  "security_events": [
+    {
+      "id": 1,
+      "created_at": "2026-08-14T06:00:11.129Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_FAILED",
+      "severity": "HIGH",
+      "description": "Failed admin login attempt with username: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 2,
+      "created_at": "2026-08-14T06:00:33.972Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_FAILED",
+      "severity": "HIGH",
+      "description": "Failed admin login attempt with username: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 3,
+      "created_at": "2026-08-14T06:00:46.471Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_FAILED",
+      "severity": "HIGH",
+      "description": "Failed admin login attempt with username: admin@cvoptimizer.com ",
+      "email": "admin@cvoptimizer.com "
+    },
+    {
+      "id": 4,
+      "created_at": "2026-08-14T06:00:57.305Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Admin successfully authenticated: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 5,
+      "created_at": "2026-08-14T06:01:00.463Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Admin successfully authenticated: admin",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 6,
+      "created_at": "2026-08-14T06:01:02.745Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Successful user authentication for thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 7,
+      "created_at": "2026-08-14T06:01:48.811Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Admin successfully authenticated: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 8,
+      "created_at": "2026-08-14T06:03:39.221Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_REGISTERED",
+      "severity": "LOW",
+      "description": "New user registration for rambk@gmail.com",
+      "email": "rambk@gmail.com"
+    },
+    {
+      "id": 9,
+      "created_at": "2026-08-14T06:05:23.813Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Successful user authentication for rambk@gmail.com",
+      "email": "rambk@gmail.com"
+    },
+    {
+      "id": 10,
+      "created_at": "2026-08-14T06:09:48.433Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Admin successfully authenticated: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 11,
+      "created_at": "2026-08-14T06:19:29.149Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "ADMIN_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Admin successfully authenticated: thapakaji@gmail.com",
+      "email": "thapakaji@gmail.com"
+    },
+    {
+      "id": 12,
+      "created_at": "2026-08-14T06:27:06.764Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_REGISTERED",
+      "severity": "LOW",
+      "description": "New user registration for jane.dev@example.com",
+      "email": "jane.dev@example.com"
+    },
+    {
+      "id": 13,
+      "created_at": "2026-08-14T06:27:06.796Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_LOGIN_SUCCESS",
+      "severity": "LOW",
+      "description": "Successful user authentication for jane.dev@example.com",
+      "email": "jane.dev@example.com"
+    }
+  ],
+  "admin_audit_logs": [
+    {
+      "id": 1,
+      "timestamp": "2026-08-14T06:00:57.305Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ADMIN_LOGIN",
+      "target_resource": "Admin Panel",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-08-14T06:01:00.463Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ADMIN_LOGIN",
+      "target_resource": "Admin Panel",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 3,
+      "timestamp": "2026-08-14T06:01:48.811Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ADMIN_LOGIN",
+      "target_resource": "Admin Panel",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 4,
+      "timestamp": "2026-08-14T06:09:48.434Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ADMIN_LOGIN",
+      "target_resource": "Admin Panel",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 5,
+      "timestamp": "2026-08-14T06:16:55.526Z",
+      "admin_email": "Aaryamanthapa123@gmail.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: Aaryaman_Thapa_Resume.txt (#1)",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-08-14T06:17:13.247Z",
+      "admin_email": "system@cvoptimizer.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: John_Doe_Resume.pdf (#2)",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-08-14T06:18:38.517Z",
+      "admin_email": "rambk@gmail.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: Rakshit Dahal.pdf (#3)",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-08-14T06:19:29.150Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ADMIN_LOGIN",
+      "target_resource": "Admin Panel",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 9,
+      "timestamp": "2026-08-14T06:19:45.276Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ROLE_CHANGE_TO_ADMIN",
+      "target_resource": "User: rambk@gmail.com",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 10,
+      "timestamp": "2026-08-14T06:19:49.655Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ROLE_CHANGE_TO_USER",
+      "target_resource": "User: thapakaji@gmail.com",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 11,
+      "timestamp": "2026-08-14T06:19:53.674Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "ROLE_CHANGE_TO_USER",
+      "target_resource": "User: rambk@gmail.com",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 12,
+      "timestamp": "2026-08-14T06:27:44.952Z",
+      "admin_email": "jane.dev@example.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: Jane_Resume.txt (#4)",
+      "result": "SUCCESS"
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "read": false,
+      "type": "info",
+      "created_at": "2026-08-14T06:03:39.222Z",
+      "owner_email": "rambk@gmail.com",
+      "title": "Welcome to CV Optimizer! 👋",
+      "message": "Your account is created. Start by uploading or creating your first CV."
+    },
+    {
+      "id": 2,
+      "read": false,
+      "type": "info",
+      "created_at": "2026-08-14T06:27:06.767Z",
+      "owner_email": "jane.dev@example.com",
+      "title": "Welcome to CV Optimizer! 👋",
+      "message": "Your account is created. Start by uploading or creating your first CV."
+    }
+  ]
+}

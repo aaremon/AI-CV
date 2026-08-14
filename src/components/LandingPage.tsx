@@ -1,5 +1,18 @@
 import React from 'react';
-import { Sparkles, ArrowRight, Cpu, Target, Shield, CheckCircle, GraduationCap, Award, Play } from 'lucide-react';
+import { 
+  Sparkles, 
+  ArrowRight, 
+  Play,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Github,
+  ChevronRight,
+  Phone,
+  Mail,
+  MapPin
+} from 'lucide-react';
+import logo from '../assets/images/mero_match_exact_logo_1782115392578.jpg';
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -17,8 +30,13 @@ export default function LandingPage({ onGetStarted, onOpenAuth, loggedInUser }: 
       {/* Landing Header */}
       <header className="w-full max-w-6xl mx-auto px-6 h-20 flex items-center justify-between relative z-10 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center font-extrabold text-xs shadow-sm">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white border border-slate-200/60 dark:border-slate-800 shadow-sm">
+            <img
+              src={logo}
+              alt="Mero Match Logo"
+              className="w-full h-full object-contain bg-white"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <span className="text-[14px] font-black tracking-widest text-slate-900 dark:text-white uppercase font-display">
             Mero Match
@@ -99,67 +117,126 @@ export default function LandingPage({ onGetStarted, onOpenAuth, loggedInUser }: 
           </button>
         </div>
 
-        {/* Executive Key Metrics Row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl bg-white dark:bg-[#141c2f] divide-y lg:divide-y-0 lg:divide-x divide-slate-100 dark:divide-slate-800/80 overflow-hidden shadow-xs transition-colors mt-20 max-w-5xl mx-auto w-full">
-          <div className="p-6 text-center">
-            <div className="text-3xl font-black font-display text-slate-900 dark:text-white">85+</div>
-            <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider mt-1.5 uppercase select-none font-mono">Hiring Benchmark</div>
-          </div>
-          <div className="p-6 text-center">
-            <div className="text-3xl font-black font-display text-slate-900 dark:text-white">&lt; 3.0s</div>
-            <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider mt-1.5 uppercase select-none font-mono">Average Latency</div>
-          </div>
-          <div className="p-6 text-center">
-            <div className="text-3xl font-black font-display text-indigo-600 dark:text-indigo-400">A+</div>
-            <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider mt-1.5 uppercase select-none font-mono">Format Verifier</div>
-          </div>
-          <div className="p-6 text-center">
-            <div className="text-3xl font-black font-display text-emerald-500">100%</div>
-            <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider mt-1.5 uppercase select-none font-mono">Data Privacy</div>
-          </div>
-        </div>
 
-        {/* 3-Column Bento Grid Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-5xl mx-auto w-full">
-          
-          <div className="bg-white dark:bg-[#141c2f] rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-4">
-            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-800 dark:text-white font-bold select-none">
-              <Cpu className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <h3 className="text-base font-bold font-display text-slate-900 dark:text-white tracking-tight">Structured Score Weighting</h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-              Resumes are parsed across 10 vital parameters like Experience, Contact Details, Projects, Education, and Certifications to calculate an aggregate ATS Score.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-[#141c2f] rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-4">
-            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-800 dark:text-white font-bold select-none">
-              <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <h3 className="text-base font-bold font-display text-slate-900 dark:text-white tracking-tight">Predictive Pathway Routing</h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-              Heuristics and language vocabularies dynamically classify candidates into matching technical fields including Frontend, Backend, Data Science, or Mobile.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-[#141c2f] rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 shadow-xs space-y-4">
-            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-900 rounded-2xl flex items-center justify-center text-slate-800 dark:text-white font-bold select-none">
-              <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <h3 className="text-base font-bold font-display text-slate-900 dark:text-white tracking-tight">Zero-Data Retention Policy</h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-              We process text payloads strictly in-memory during execution. No resume copies or files are saved permanently without explicit guest login bindings.
-            </p>
-          </div>
-
-        </div>
 
       </main>
 
-      {/* Footer Branding info */}
-      <footer className="w-full max-w-6xl mx-auto px-6 h-16 flex items-center justify-between border-t border-slate-200/40 dark:border-slate-800/30 text-[10px] text-slate-400 dark:text-slate-500 font-mono relative z-10">
-        <span>© 2026 Mero Match. Built with Gemini & Python.</span>
-        <span>Secure Sandbox Mode Enabled</span>
+      {/* Footer Redesign with premium feel */}
+      <footer className="w-full border-t border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/30 relative z-10 py-12 px-6 mt-16">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+          
+          {/* Col 1: Brand Info */}
+          <div className="md:col-span-4 space-y-4">
+            <div className="flex items-center gap-3">
+              <img src={logo} alt="Mero Match Logo" className="w-7 h-7 rounded-lg object-cover" />
+              <span className="font-display font-black tracking-tight text-slate-900 dark:text-white text-base">MERO MATCH</span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm font-sans">
+              An intelligent, schema-validated resume parsing and match optimizer engine delivering premium quality career checks in seconds.
+            </p>
+            {/* Social media icons with subtle hover states */}
+            <div className="flex items-center gap-2.5 pt-1">
+              <a href="#" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-950 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-950 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all">
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-950 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all">
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-950 flex items-center justify-center text-slate-500 dark:text-slate-400 transition-all">
+                <Github className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Col 2: Direct Company Navigation Links */}
+          <div className="md:col-span-4 space-y-4">
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-display">
+              About Mero Match
+            </h4>
+            <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400 font-sans">
+              <li>
+                <button onClick={onGetStarted} className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1.5 group text-left cursor-pointer">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                  Analyze Your Resume
+                </button>
+              </li>
+              <li>
+                <span className="flex items-center gap-1.5 text-slate-450 dark:text-slate-400">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  System Blueprint Specs
+                </span>
+              </li>
+              <li>
+                <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700" />
+                  Career Coaching Hacks
+                </span>
+              </li>
+              <li>
+                <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-700" />
+                  Secure Schema Sandbox
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 3: Beautiful Contact Information */}
+          <div className="md:col-span-4 space-y-4">
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-display">
+              Contact & Support
+            </h4>
+            <div className="space-y-3 text-xs text-slate-500 dark:text-slate-400 font-sans">
+              
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                  <Phone className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="block text-[10px] text-slate-400 uppercase tracking-widest leading-none">Support Hotline</span>
+                  <a href="tel:+2347047150598" className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold mt-0.5 block">+234 704 715 0598</a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="block text-[10px] text-slate-400 uppercase tracking-widest leading-none">Email Address</span>
+                  <a href="mailto:support@meromatch.com" className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold mt-0.5 block">support@meromatch.com</a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center text-slate-500 dark:text-slate-400 shrink-0">
+                  <MapPin className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <span className="block text-[10px] text-slate-400 uppercase tracking-widest leading-none">Location</span>
+                  <span className="font-semibold mt-0.5 block">Kathmandu, Nepal (Remote)</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom bar with copyright */}
+        <div className="max-w-6xl mx-auto border-t border-slate-200/50 dark:border-slate-800/50 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+          <span>© 2026 Mero Match. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <span className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</span>
+            <span>•</span>
+            <span className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Terms & Conditions</span>
+            <span>•</span>
+            <span className="text-emerald-500 font-bold">Secure Sandbox Active</span>
+          </div>
+        </div>
       </footer>
 
     </div>

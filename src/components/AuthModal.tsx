@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, Mail, Phone, Lock, X, AlertTriangle, Sparkles } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface AuthModalProps {
   onClose: () => void;
@@ -21,27 +22,84 @@ export default function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
     setError(null);
     setLoading(true);
 
-    const url = isLogin ? '/api/auth/login' : '/api/auth/signup';
-    const body = isLogin 
-      ? { email, password }
-      : { email, password, name, phone };
-
     try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
+      if (isSupabaseConfigured() && supabase) {
+        if (isLogin) {
+          const { data, error: authError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+          });
+          if (authError) throw authError;
+          if (data?.user) {
+            const userObj = {
+              id: data.user.id,
+              email: data.user.email,
+              name: data.user.user_metadata?.name || data.user.email?.split('@')[0] || "User",
+              phone: data.user.user_metadata?.phone || "",
+              created_at: data.user.created_at,
+              isSupabase: true
+            };
+            onAuthSuccess(userObj);
+          }
+        } else {
+          const { data, error: authError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                name: name.trim(),
+                phone: phone.trim()
+              }
+            }
+          });
+          if (authError) throw authError;
+          if (data?.user) {
+            // Try to create profile in profiles table
+            try {
+              await supabase.from('profiles').upsert({
+                id: data.user.id,
+                email: data.user.email,
+                name: name.trim(),
+                phone: phone.trim()
+              });
+            } catch (pErr) {
+              console.warn("Profile table bypass/unavailable:", pErr);
+            }
 
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.error || "Authentication failure.");
-      }
+            const userObj = {
+              id: data.user.id,
+              email: data.user.email,
+              name: name.trim(),
+              phone: phone.trim(),
+              created_at: data.user.created_at,
+              isSupabase: true
+            };
+            onAuthSuccess(userObj);
+          }
+        }
+      } else {
+        // Local database fallback
+        const url = isLogin ? '/api/auth/login' : '/api/auth/signup';
+        const body = isLogin 
+          ? { email, password }
+          : { email, password, name, phone };
 
-      if (result.success && result.user) {
-        onAuthSuccess(result.user);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        const result = await res.json();
+        if (!res.ok) {
+          throw new Error(result.error || "Authentication failure.");
+        }
+
+        if (result.success && result.user) {
+          onAuthSuccess(result.user);
+        }
       }
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during account login.");

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, Star, CheckCircle, Award } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface FeedbackRecord {
   id: number;
@@ -35,32 +36,45 @@ export default function FeedbackTab({ allFeedback, onFeedbackSumitted }: Feedbac
     setError(null);
 
     try {
-      const response = await fetch('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: feedName,
-          email: feedEmail,
-          rating: feedRating,
-          comments: feedComment
-        })
-      });
-
-      if (response.ok) {
-        setFeedbackSuccess(true);
-        setFeedName('');
-        setFeedEmail('');
-        setFeedRating(5);
-        setFeedComment('');
-        onFeedbackSumitted();
-        
-        // auto dismiss success state
-        setTimeout(() => setFeedbackSuccess(false), 5000);
+      if (isSupabaseConfigured() && supabase) {
+        const { error: dbError } = await supabase
+          .from('feedback')
+          .insert([{
+            feed_name: feedName,
+            feed_email: feedEmail,
+            feed_score: String(feedRating),
+            comments: feedComment,
+            timestamp: new Date().toISOString()
+          }]);
+        if (dbError) throw dbError;
       } else {
-        throw new Error("Unable to save feedback review.");
+        const response = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: feedName,
+            email: feedEmail,
+            rating: feedRating,
+            comments: feedComment
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to save feedback review.");
+        }
       }
+
+      setFeedbackSuccess(true);
+      setFeedName('');
+      setFeedEmail('');
+      setFeedRating(5);
+      setFeedComment('');
+      onFeedbackSumitted();
+      
+      // auto dismiss success state
+      setTimeout(() => setFeedbackSuccess(false), 5000);
     } catch (err: any) {
       setError(err.message || "Something went wrong. Let's try again.");
     } finally {
@@ -192,8 +206,8 @@ export default function FeedbackTab({ allFeedback, onFeedbackSumitted }: Feedbac
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-1">
-            {allFeedback.map((feed) => (
-              <div key={feed.id} className="bg-white dark:bg-[#141c2f] p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800/60 shadow-xs space-y-3 transition-colors">
+            {allFeedback.map((feed, idx) => (
+              <div key={feed.id ? `feed-item-${feed.id}` : `feed-item-${idx}`} className="bg-white dark:bg-[#141c2f] p-5 rounded-2xl border border-slate-200/70 dark:border-slate-800/60 shadow-xs space-y-3 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
                     <h5 className="font-bold text-xs text-slate-900 dark:text-white">{feed.feed_name}</h5>

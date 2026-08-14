@@ -90,6 +90,50 @@ export const RESUME_RESPONSE_SCHEMA = {
         },
         required: ["title", "link"]
       }
+    },
+    ats_compatibility_score: { type: Type.INTEGER, description: "ATS compatibility score out of 100" },
+    missing_skills: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "List of missing skills for the selected field"
+    },
+    experience_relevance: { type: Type.STRING, description: "Experience relevance analysis for the selected field" },
+    education_relevance: { type: Type.STRING, description: "Education relevance for the selected field" },
+    strengths: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "List of candidate's strengths"
+    },
+    weaknesses: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "List of candidate's weaknesses/gaps"
+    },
+    industry_specific_recommendations: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "List of industry-specific recommendations for the selected field"
+    },
+    suggested_certifications: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Suggested professional certifications"
+    },
+    suggested_projects: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Suggested projects for portfolio improvement"
+    },
+    suggested_keywords: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Suggested keywords for ATS optimization"
+    },
+    interview_readiness: { type: Type.STRING, description: "Interview readiness assessment details" },
+    career_growth_suggestions: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Career growth and development roadmaps"
     }
   },
   required: [
@@ -105,7 +149,19 @@ export const RESUME_RESPONSE_SCHEMA = {
     "resume_score",
     "score_factors",
     "feedback",
-    "recommended_courses"
+    "recommended_courses",
+    "ats_compatibility_score",
+    "missing_skills",
+    "experience_relevance",
+    "education_relevance",
+    "strengths",
+    "weaknesses",
+    "industry_specific_recommendations",
+    "suggested_certifications",
+    "suggested_projects",
+    "suggested_keywords",
+    "interview_readiness",
+    "career_growth_suggestions"
   ]
 };
 
@@ -113,57 +169,57 @@ export async function callGeminiWithRetry(
   contents: any[],
   systemInstruction: string,
   maxRetries = 2,
-  baseDelayMs = 1000
+  baseDelayMs = 800
 ): Promise<any> {
   const client = getGeminiClient();
-  let attempt = 0;
-  const currentModel = "gemini-3.5-flash";
+  const models = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+  let lastError: any = null;
 
-  while (true) {
-    try {
-      // Set thinking level to LOW and temperature to 0.0 to optimize speed
-      const response = await client.models.generateContent({
-        model: currentModel,
-        contents: contents,
-        config: {
-          systemInstruction: systemInstruction,
-          responseMimeType: "application/json",
-          responseSchema: RESUME_RESPONSE_SCHEMA,
-          temperature: 0.0,
-          thinkingConfig: { thinkingLevel: ThinkingLevel.LOW }
+  for (const model of models) {
+    let attempt = 0;
+    while (attempt <= maxRetries) {
+      try {
+        const response = await client.models.generateContent({
+          model: model,
+          contents: contents,
+          config: {
+            systemInstruction: systemInstruction,
+            responseMimeType: "application/json",
+            responseSchema: RESUME_RESPONSE_SCHEMA,
+            temperature: 0.1
+          }
+        });
+        return response;
+      } catch (e: any) {
+        attempt++;
+        lastError = e;
+        const errMsg = (e.message || String(e)).toUpperCase();
+
+        const isQuotaExceeded = errMsg.includes("429") || 
+                                errMsg.includes("RESOURCE_EXHAUSTED") || 
+                                errMsg.includes("QUOTA_EXCEEDED");
+
+        const isRetryable = errMsg.includes("503") || 
+                            errMsg.includes("UNAVAILABLE") || 
+                            errMsg.includes("HIGH DEMAND") || 
+                            errMsg.includes("TEMPORARY") || 
+                            errMsg.includes("502") || 
+                            errMsg.includes("504") || 
+                            errMsg.includes("OVERLOADED") ||
+                            isQuotaExceeded;
+
+        if (isRetryable && attempt <= maxRetries) {
+          const delay = baseDelayMs * Math.pow(2, attempt - 1) + Math.random() * 300;
+          console.log(`[Gemini API TS] Retrying model ${model} (attempt ${attempt}/${maxRetries}) in ${Math.round(delay)}ms...`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
         }
-      });
-      return response;
-    } catch (e: any) {
-      attempt++;
-      const errMsg = (e.message || String(e)).toUpperCase();
 
-      // Check for quota or rate limit violations
-      const isQuotaExceeded = errMsg.includes("429") || 
-                              errMsg.includes("RESOURCE_EXHAUSTED") || 
-                              errMsg.includes("QUOTA EXCEEDED") || 
-                              errMsg.includes("QUOTA_EXCEEDED");
-      if (isQuotaExceeded) {
-        console.warn("[Gemini API TS] Quota limit exceeded. Faltering immediately.");
-        throw e;
+        console.warn(`[Gemini API TS] Model ${model} failed (${errMsg.slice(0, 100)}). Switching to fallback model if available...`);
+        break; // break to try next model in loop
       }
-
-      const isRetryable = errMsg.includes("503") || 
-                          errMsg.includes("UNAVAILABLE") || 
-                          errMsg.includes("HIGH DEMAND") || 
-                          errMsg.includes("TEMPORARY") || 
-                          errMsg.includes("502") || 
-                          errMsg.includes("504") || 
-                          errMsg.includes("OVERLOADED");
-
-      if (isRetryable && attempt <= maxRetries) {
-        const delay = baseDelayMs * Math.pow(2, attempt - 1) + Math.random() * 500;
-        console.log(`[Gemini API TS] Retryable error (attempt ${attempt}/${maxRetries}), retrying in ${delay}ms...`);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-        continue;
-      }
-
-      throw e;
     }
   }
+
+  throw lastError || new Error("All Gemini model attempts failed.");
 }
