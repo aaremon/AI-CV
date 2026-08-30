@@ -321,7 +321,7 @@ export default function App() {
         )}
 
         {activeTab === 'linkedin' && (
-          <LinkedInOptimizerTab />
+          <LinkedInOptimizerTab loggedInUser={loggedInUser} />
         )}
 
         {activeTab === 'bio' && (

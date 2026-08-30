@@ -92,6 +92,10 @@ interface LinkedInOptimizationResult {
   cvToLinkedInBlueprint?: CvToLinkedInBlueprint;
 }
 
+interface LinkedInOptimizerTabProps {
+  loggedInUser?: any;
+}
+
 const TEMPLATE_ARCHETYPES = [
   {
     id: 'technical_leader',
@@ -120,13 +124,13 @@ const TEMPLATE_ARCHETYPES = [
 ];
 
 const BANNER_THEMES = [
-  { id: 'tech_blue', name: 'Tech Horizon', class: 'bg-gradient-to-r from-blue-700 via-indigo-800 to-slate-900' },
+  { id: 'tech_blue', name: 'Tech Blue', class: 'bg-gradient-to-r from-blue-700 via-indigo-800 to-slate-900' },
   { id: 'emerald', name: 'Emerald Growth', class: 'bg-gradient-to-r from-emerald-800 via-teal-900 to-slate-950' },
   { id: 'sunset', name: 'Vibrant Sunset', class: 'bg-gradient-to-r from-violet-900 via-purple-800 to-rose-900' },
   { id: 'dark_minimal', name: 'Dark Executive', class: 'bg-gradient-to-r from-slate-900 via-slate-800 to-zinc-900' }
 ];
 
-export default function LinkedInOptimizerTab() {
+export default function LinkedInOptimizerTab({ loggedInUser }: LinkedInOptimizerTabProps) {
   // CV Upload & Input State
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
@@ -137,13 +141,30 @@ export default function LinkedInOptimizerTab() {
   const [showPasteOption, setShowPasteOption] = useState(false);
   const [showCustomizer, setShowCustomizer] = useState(false);
 
-  // Profile Identity & State (Auto-extracted from CV or populated by backend)
-  const [candidateName, setCandidateName] = useState('Aaryaman Thapa');
+  // Profile Identity & State (Auto-extracted from CV or populated by logged in user / backend)
+  const getInitialCandidateName = () => {
+    if (loggedInUser?.name && loggedInUser.name !== 'User') return loggedInUser.name;
+    try {
+      const stored = localStorage.getItem('resume_auth_user');
+      if (stored) {
+        const u = JSON.parse(stored);
+        if (u?.name && u.name !== 'User') return u.name;
+      }
+      const p = localStorage.getItem('cv_user_profile');
+      if (p) {
+        const parsed = JSON.parse(p);
+        if (parsed?.name) return parsed.name;
+      }
+    } catch (_) {}
+    return 'Professional Candidate';
+  };
+
+  const [candidateName, setCandidateName] = useState<string>(getInitialCandidateName);
   const [roleTitle, setRoleTitle] = useState('Senior Full Stack Developer');
   const [seniority, setSeniority] = useState('Senior');
   const [industry, setIndustry] = useState('Technology / SaaS');
-  const [currentCompany, setCurrentCompany] = useState('Tech Innovations');
-  const [location, setLocation] = useState('San Francisco Bay Area (Open to Remote)');
+  const [currentCompany, setCurrentCompany] = useState('');
+  const [location, setLocation] = useState('');
   const [templateStyle, setTemplateStyle] = useState('technical_leader');
   const [tone, setTone] = useState('authoritative');
   const [openToWork, setOpenToWork] = useState(true);
@@ -263,16 +284,28 @@ Over the last 5+ years, I have engineered mission-critical applications across T
     }
   });
 
-  // Auto-sync profile name if saved
+  // Auto-sync profile name if user logged in or saved
   useEffect(() => {
+    if (loggedInUser?.name && loggedInUser.name !== 'User') {
+      setCandidateName(loggedInUser.name);
+      return;
+    }
     try {
-      const stored = localStorage.getItem('cv_user_profile');
+      const stored = localStorage.getItem('resume_auth_user');
       if (stored) {
         const u = JSON.parse(stored);
-        if (u && u.name) setCandidateName(u.name);
+        if (u && u.name && u.name !== 'User') {
+          setCandidateName(u.name);
+          return;
+        }
+      }
+      const profile = localStorage.getItem('cv_user_profile');
+      if (profile) {
+        const p = JSON.parse(profile);
+        if (p && p.name) setCandidateName(p.name);
       }
     } catch (_) {}
-  }, []);
+  }, [loggedInUser]);
 
   const handleFileUpload = (file: File) => {
     if (!file) return;
@@ -764,11 +797,8 @@ Recommendation Template: ${data.cvToLinkedInBlueprint?.recommendationRequestTemp
                 )}
               </div>
 
+              {/* Right side status if needed */}
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  <span>Recruiter Search Score: {data.seoScore}%</span>
-                </div>
               </div>
             </div>
 
@@ -776,7 +806,6 @@ Recommendation Template: ${data.cvToLinkedInBlueprint?.recommendationRequestTemp
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-black text-slate-900 dark:text-white">{candidateName}</h2>
-                <span className="text-xs text-slate-400 font-medium">(He/Him)</span>
                 <div className="w-4 h-4 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold">
                   ✓
                 </div>
@@ -786,20 +815,6 @@ Recommendation Template: ${data.cvToLinkedInBlueprint?.recommendationRequestTemp
               <p className="text-xs font-medium text-slate-800 dark:text-slate-200 leading-relaxed max-w-2xl bg-blue-50/40 dark:bg-blue-950/20 p-2.5 rounded-xl border border-blue-100 dark:border-blue-900/40">
                 {currentActiveHeadline}
               </p>
-
-              {/* Company & Location Badges */}
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pt-1">
-                <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-                  <Briefcase className="w-3.5 h-3.5 text-blue-600" />
-                  <span>{currentCompany}</span>
-                </span>
-                <span>•</span>
-                <span>{location}</span>
-                <span>•</span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold hover:underline cursor-pointer">
-                  500+ connections
-                </span>
-              </div>
 
               {/* Open to work ribbon */}
               {openToWork && (
