@@ -24,7 +24,9 @@ import { supabase, isSupabaseConfigured } from './lib/supabase';
 export default function App() {
   // Navigation & session state
   const [showLanding, setShowLanding] = useState<boolean>(() => {
-    return sessionStorage.getItem('cv_engine_started') !== 'true';
+    const isStarted = localStorage.getItem('cv_engine_started') === 'true' || sessionStorage.getItem('cv_engine_started') === 'true';
+    const hasUser = !!localStorage.getItem('resume_auth_user');
+    return !isStarted && !hasUser;
   });
   const [activeTab, setActiveTab] = useState<NavTabType>('dashboard');
   const [currentTime, setCurrentTime] = useState<string>('2026-06-09 05:05:00');
@@ -219,6 +221,7 @@ export default function App() {
     }
     setLoggedInUser(null);
     localStorage.removeItem('resume_auth_user');
+    localStorage.removeItem('cv_engine_started');
     sessionStorage.removeItem('cv_engine_started');
     setShowLanding(true);
   };
@@ -226,11 +229,14 @@ export default function App() {
   const handleAuthSuccess = (userObj: any) => {
     setLoggedInUser(userObj);
     localStorage.setItem('resume_auth_user', JSON.stringify(userObj));
+    localStorage.setItem('cv_engine_started', 'true');
+    sessionStorage.setItem('cv_engine_started', 'true');
     if (userObj.role === 'admin') {
       setIsAdminLoggedIn(true);
       setActiveTab('admin');
     }
     setIsAuthOpen(false);
+    setShowLanding(false);
   };
 
   const handleAdminAuthSuccess = (adminObj?: any) => {
@@ -242,6 +248,8 @@ export default function App() {
     };
     setLoggedInUser(adminUser);
     localStorage.setItem('resume_auth_user', JSON.stringify(adminUser));
+    localStorage.setItem('cv_engine_started', 'true');
+    sessionStorage.setItem('cv_engine_started', 'true');
     setIsAdminLoggedIn(true);
     setActiveTab('admin');
     setIsAuthOpen(false);
@@ -249,6 +257,7 @@ export default function App() {
   };
 
   const handleGetStarted = () => {
+    localStorage.setItem('cv_engine_started', 'true');
     sessionStorage.setItem('cv_engine_started', 'true');
     setShowLanding(false);
   };

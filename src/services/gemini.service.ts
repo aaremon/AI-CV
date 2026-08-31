@@ -59,7 +59,7 @@ export class CentralizedGeminiService {
     } else {
       const client = getGeminiClient();
       const geminiRes = await client.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.7-flash",
         contents: cleanPrompt
       });
       resultText = geminiRes.text ? geminiRes.text.trim() : "";

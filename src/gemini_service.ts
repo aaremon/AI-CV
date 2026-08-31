@@ -172,7 +172,7 @@ export async function callGeminiWithRetry(
   baseDelayMs = 800
 ): Promise<any> {
   const client = getGeminiClient();
-  const models = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+  const models = ["gemini-3.7-flash", "gemini-3.1-flash-lite"];
   let lastError: any = null;
 
   for (const model of models) {

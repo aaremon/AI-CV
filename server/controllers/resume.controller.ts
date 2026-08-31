@@ -194,7 +194,7 @@ Provide ONLY the cover letter text ready to send.`;
       try {
         const client = getGeminiClient();
         const response = await client.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-3.7-flash",
           contents: prompt
         });
         if (response && response.text) {
@@ -415,7 +415,7 @@ Return valid JSON ONLY matching this exact structure:
 }`;
 
         const response = await client.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-3.7-flash",
           contents: prompt
         });
 
