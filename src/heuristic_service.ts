@@ -50,16 +50,269 @@ export interface ParsedResumeResult {
   career_growth_suggestions?: string[];
 }
 
+// Comprehensive multi-domain skill dictionary with boundary-safe patterns
+const COMPREHENSIVE_SKILLS: { label: string; regex: RegExp; fields: string[] }[] = [
+  // Software & Web Development
+  { label: "JavaScript", regex: /\bjavascript\b|\bjs\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "TypeScript", regex: /\btypescript\b|\bts\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "React", regex: /\breact(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Next.js", regex: /\bnext(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Node.js", regex: /\bnode(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Express.js", regex: /\bexpress(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Vue.js", regex: /\bvue(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Angular", regex: /\bangular(\.js)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "HTML5", regex: /\bhtml5?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "CSS3", regex: /\bcss3?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Tailwind CSS", regex: /\btailwind(css)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Bootstrap", regex: /\bbootstrap\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "REST APIs", regex: /\brest(ful)?\s*(api|service)s?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "GraphQL", regex: /\bgraphql\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Redux", regex: /\bredux\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Python", regex: /\bpython3?\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Java", regex: /\bjava\b(?!script)/i, fields: ["Software Development", "Android Development"] },
+  { label: "C++", regex: /\bc\+\+\b/i, fields: ["Software Development"] },
+  { label: "C#", regex: /\bc#\b|\bc\s*sharp\b/i, fields: ["Software Development"] },
+  { label: ".NET", regex: /\b\.net\b|\bdotnet\b/i, fields: ["Software Development"] },
+  { label: "Spring Boot", regex: /\bspring(\s*boot)?\b/i, fields: ["Software Development"] },
+  { label: "Django", regex: /\bdjango\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Flask", regex: /\bflask\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "FastAPI", regex: /\bfastapi\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Go (Golang)", regex: /\bgolang\b|\bgo\s+lang\b/i, fields: ["Software Development"] },
+  { label: "Rust", regex: /\brust\b/i, fields: ["Software Development"] },
+  { label: "PHP", regex: /\bphp\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Laravel", regex: /\blaravel\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Ruby on Rails", regex: /\bruby(\s+on\s+rails)?\b|\brails\b/i, fields: ["Software Development", "Web Development"] },
+
+  // Databases & Cloud / DevOps
+  { label: "SQL", regex: /\bsql\b/i, fields: ["Software Development", "Data Science", "Business Analyst", "Finance & Accounting"] },
+  { label: "PostgreSQL", regex: /\bpostgres(ql)?\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "MySQL", regex: /\bmysql\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "MongoDB", regex: /\bmongo(db)?\b/i, fields: ["Software Development", "Web Development"] },
+  { label: "Redis", regex: /\bredis\b/i, fields: ["Software Development"] },
+  { label: "Docker", regex: /\bdocker\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Kubernetes", regex: /\bkubernetes\b|\bk8s\b/i, fields: ["Software Development"] },
+  { label: "AWS", regex: /\baws\b|\bamazon\s+web\s+services\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Azure", regex: /\bazure\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Google Cloud (GCP)", regex: /\bgcp\b|\bgoogle\s+cloud\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "CI/CD Pipelines", regex: /\bci[\/-]cd\b|\bgithub\s*actions\b|\bjenkins\b/i, fields: ["Software Development"] },
+  { label: "Git & Version Control", regex: /\bgit\b|\bgithub\b|\bgitlab\b/i, fields: ["Software Development", "Data Science"] },
+  { label: "Linux / Unix", regex: /\blinux\b|\bunix\b|\bbash\b/i, fields: ["Software Development"] },
+
+  // Data Science, AI & Machine Learning
+  { label: "Machine Learning", regex: /\bmachine\s*learning\b|\bml\b/i, fields: ["Data Science", "Software Development"] },
+  { label: "Deep Learning", regex: /\bdeep\s*learning\b/i, fields: ["Data Science"] },
+  { label: "Pandas", regex: /\bpandas\b/i, fields: ["Data Science", "Business Analyst"] },
+  { label: "NumPy", regex: /\bnumpy\b/i, fields: ["Data Science"] },
+  { label: "Scikit-Learn", regex: /\bscikit[-_]?learn\b|\bsklearn\b/i, fields: ["Data Science"] },
+  { label: "TensorFlow", regex: /\btensorflow\b|\btf\b/i, fields: ["Data Science"] },
+  { label: "PyTorch", regex: /\bpytorch\b/i, fields: ["Data Science"] },
+  { label: "Data Visualization", regex: /\bdata\s*visualization\b|\bmatplotlib\b|\bseaborn\b/i, fields: ["Data Science", "Business Analyst"] },
+  { label: "NLP", regex: /\bnlp\b|\bnatural\s+language\s+processing\b/i, fields: ["Data Science"] },
+  { label: "Computer Vision", regex: /\bcomputer\s+vision\b|\bopencv\b/i, fields: ["Data Science"] },
+  { label: "Generative AI", regex: /\bgenerative\s+ai\b|\bgenai\b|\bllm\b|\blarge\s+language\s+models?\b/i, fields: ["Data Science", "Software Development"] },
+  { label: "Statistical Modeling", regex: /\bstatistics\b|\bstatistical\s+modeling\b|\bhypothesis\s+testing\b/i, fields: ["Data Science", "Business Analyst"] },
+  { label: "R Programming", regex: /\br\s+programming\b|\br\s+studio\b/i, fields: ["Data Science"] },
+
+  // Mobile Development
+  { label: "Flutter", regex: /\bflutter\b/i, fields: ["Software Development", "Android Development", "iOS Development"] },
+  { label: "React Native", regex: /\breact\s+native\b/i, fields: ["Software Development", "Android Development", "iOS Development"] },
+  { label: "Kotlin", regex: /\bkotlin\b/i, fields: ["Android Development", "Software Development"] },
+  { label: "Android SDK", regex: /\bandroid(\s+studio|\s+sdk)?\b/i, fields: ["Android Development"] },
+  { label: "Jetpack Compose", regex: /\bjetpack\s+compose\b/i, fields: ["Android Development"] },
+  { label: "Swift", regex: /\bswift\b/i, fields: ["iOS Development", "Software Development"] },
+  { label: "SwiftUI", regex: /\bswiftui\b/i, fields: ["iOS Development"] },
+  { label: "Xcode", regex: /\bxcode\b/i, fields: ["iOS Development"] },
+
+  // UI/UX Design
+  { label: "Figma", regex: /\bfigma\b/i, fields: ["UI/UX Design", "Software Development"] },
+  { label: "UI Prototyping", regex: /\bwirefram(es|ing)\b|\bprototyp(es|ing)\b/i, fields: ["UI/UX Design"] },
+  { label: "User Research", regex: /\buser\s+research\b|\busability\s+testing\b/i, fields: ["UI/UX Design"] },
+  { label: "Design Systems", regex: /\bdesign\s+systems?\b/i, fields: ["UI/UX Design"] },
+  { label: "Adobe XD", regex: /\badobe\s+xd\b|\bphotoshop\b|\billustrator\b/i, fields: ["UI/UX Design"] },
+  { label: "Information Architecture", regex: /\binformation\s+architecture\b/i, fields: ["UI/UX Design"] },
+
+  // Business Analyst & Project Management
+  { label: "Requirements Gathering", regex: /\brequirements?\s+(gathering|analysis|documentation)\b|\bbrd\b|\bfrd\b/i, fields: ["Business Analyst", "Project Management"] },
+  { label: "Tableau", regex: /\btableau\b/i, fields: ["Business Analyst", "Data Science", "Finance & Accounting"] },
+  { label: "Power BI", regex: /\bpower\s*bi\b/i, fields: ["Business Analyst", "Finance & Accounting", "Data Science"] },
+  { label: "Agile & Scrum", regex: /\bagile\b|\bscrum\b|\bsprint\s+planning\b/i, fields: ["Project Management", "Business Analyst", "Software Development"] },
+  { label: "Jira / Confluence", regex: /\bjira\b|\bconfluence\b|\btrello\b|\basana\b/i, fields: ["Project Management", "Business Analyst"] },
+  { label: "Risk Management", regex: /\brisk\s+management\b|\brisk\s+mitigation\b/i, fields: ["Project Management", "Finance & Accounting"] },
+  { label: "Stakeholder Management", regex: /\bstakeholder\s+(management|engagement|communication)\b/i, fields: ["Project Management", "Business Analyst"] },
+  { label: "Process Modeling (BPMN)", regex: /\bbpmn\b|\bprocess\s+(mapping|optimization|flow)\b/i, fields: ["Business Analyst"] },
+
+  // Digital Marketing & Sales
+  { label: "Search Engine Optimization (SEO)", regex: /\bseo\b|\bsearch\s+engine\s+optimization\b/i, fields: ["Digital Marketing"] },
+  { label: "SEM / Google Ads", regex: /\bgoogle\s+ads\b|\bsem\b|\bppc\b|\bsearch\s+engine\s+marketing\b/i, fields: ["Digital Marketing"] },
+  { label: "Content Marketing", regex: /\bcontent\s+(marketing|strategy|creation)\b|\bcopywriting\b/i, fields: ["Digital Marketing"] },
+  { label: "Social Media Strategy", regex: /\bsocial\s+media(\s+marketing)?\b|\bmeta\s+ads\b|\blinkedin\s+ads\b/i, fields: ["Digital Marketing"] },
+  { label: "Email Marketing & Automation", regex: /\bemail\s+marketing\b|\bmailchimp\b|\bhubspot\b|\bkindsight\b/i, fields: ["Digital Marketing"] },
+  { label: "Google Analytics / GA4", regex: /\bgoogle\s+analytics\b|\bga4\b/i, fields: ["Digital Marketing", "Business Analyst"] },
+  { label: "CRM & Salesforce", regex: /\bsalesforce\b|\bcrm\b|\bhubspot\s+crm\b|\bpipedrive\b/i, fields: ["Sales", "Customer Service", "Digital Marketing"] },
+  { label: "B2B Lead Generation", regex: /\blead\s+generation\b|\bprospecting\b|\bcold\s+(calling|outreach)\b/i, fields: ["Sales"] },
+  { label: "Pipeline & Deal Closing", regex: /\bpipeline\s+management\b|\bcontract\s+negotiation\b|\bdeal\s+closing\b/i, fields: ["Sales"] },
+
+  // Finance & Accounting
+  { label: "Financial Modeling", regex: /\bfinancial\s+model(ing)?\b|\bdcf\b|\bvaluation\b/i, fields: ["Finance & Accounting"] },
+  { label: "Advanced Excel", regex: /\bexcel\b|\bvlookup\b|\bxlookup\b|\bpivot\s+tables?\b|\bmacros\b/i, fields: ["Finance & Accounting", "Business Analyst", "Human Resources"] },
+  { label: "QuickBooks & ERP", regex: /\bquickbooks\b|\bsap\b|\boracle\s+financials\b|\bxero\b/i, fields: ["Finance & Accounting"] },
+  { label: "Financial Reporting (GAAP/IFRS)", regex: /\bgaap\b|\bifrs\b|\bfinancial\s+statements?\b|\bbalance\s+sheet\b/i, fields: ["Finance & Accounting"] },
+  { label: "Auditing & Tax Compliance", regex: /\baudit(ing)?\b|\btax(ation)?\b|\bcompliance\b/i, fields: ["Finance & Accounting"] },
+  { label: "Budgeting & Forecasting", regex: /\bbudget(ing)?\b|\bforecasting\b|\bvariance\s+analysis\b/i, fields: ["Finance & Accounting", "Project Management"] },
+
+  // Human Resources & Customer Service
+  { label: "Talent Acquisition & Recruiting", regex: /\btalent\s+acquisition\b|\brecruit(ing|ment)\b|\bsourcing\b|\bapplicant\s+tracking\b/i, fields: ["Human Resources"] },
+  { label: "Employee Relations & Onboarding", regex: /\bemployee\s+relations\b|\bonboarding\b|\bperformance\s+management\b/i, fields: ["Human Resources"] },
+  { label: "HRIS & Payroll Management", regex: /\bhris\b|\bworkday\b|\badp\b|\bbamboohr\b|\bpayroll\b/i, fields: ["Human Resources"] },
+  { label: "Customer Support & Ticketing", regex: /\bzendesk\b|\bfreshdesk\b|\bticketing\b|\bcustomer\s+service\b/i, fields: ["Customer Service"] },
+  { label: "Conflict Resolution & Escalation", regex: /\bconflict\s+resolution\b|\bescalation\s+management\b|\bde-escalation\b/i, fields: ["Customer Service", "Human Resources"] },
+  { label: "Customer Success & Retention (CSAT/NPS)", regex: /\bcsat\b|\bnps\b|\bcustomer\s+retention\b|\bchurn\s+reduction\b/i, fields: ["Customer Service", "Sales"] }
+];
+
+// Target Field Benchmarks & Custom Recommendations
+const FIELD_BENCHMARKS: {
+  [key: string]: {
+    defaultSkills: string[];
+    recommendedSkills: string[];
+    courses: CourseItem[];
+    certifications: string[];
+    projects: string[];
+    keywords: string[];
+  };
+} = {
+  "Software Development": {
+    defaultSkills: ["JavaScript", "TypeScript", "React", "Node.js", "Git & Version Control", "REST APIs"],
+    recommendedSkills: ["Docker", "Kubernetes", "PostgreSQL", "AWS", "CI/CD Pipelines", "System Architecture", "GraphQL", "Microservices"],
+    courses: [
+      { title: "Meta: Full-Stack Engineer Professional Certificate (Coursera)", link: "https://www.coursera.org/professional-certificates/meta-full-stack-engineer" },
+      { title: "Frontend Masters: Complete Full-Stack Web Development Path", link: "https://frontendmasters.com/" },
+      { title: "Udemy: Master Modern Software Architecture & System Design", link: "https://www.udemy.com/" }
+    ],
+    certifications: ["AWS Certified Solutions Architect Associate", "Certified Kubernetes Application Developer (CKAD)", "Meta Certified Full Stack Developer"],
+    projects: ["Full-Stack Distributed Application with Docker and CI/CD", "Real-Time Collaboration Platform with WebSocket microservices"],
+    keywords: ["TypeScript", "React", "Node.js", "System Design", "Cloud Infrastructure", "CI/CD", "RESTful APIs", "Microservices"]
+  },
+  "Data Science": {
+    defaultSkills: ["Python", "SQL", "Pandas", "NumPy", "Data Visualization", "Statistical Modeling"],
+    recommendedSkills: ["PyTorch", "TensorFlow", "Scikit-Learn", "Generative AI", "FastAPI", "Docker", "Model Deployment", "MLOps"],
+    courses: [
+      { title: "DeepLearning.AI: Machine Learning Specialization (Coursera)", link: "https://www.coursera.org/specializations/machine-learning-introduction" },
+      { title: "IBM Data Science Professional Certificate (Coursera)", link: "https://www.coursera.org/professional-certificates/ibm-data-science" },
+      { title: "Kaggle: Advanced Machine Learning & Feature Engineering Series", link: "https://www.kaggle.com/learn" }
+    ],
+    certifications: ["TensorFlow Developer Certificate", "AWS Certified Machine Learning Specialty", "Google Cloud Professional Data Engineer"],
+    projects: ["End-to-End Predictive Analytics Pipeline with Automated MLOps", "Generative AI LLM-Powered Semantic Search & Retrieval System"],
+    keywords: ["Machine Learning", "Python", "Deep Learning", "PyTorch", "Data Modeling", "Feature Engineering", "SQL", "Model Deployment"]
+  },
+  "Business Analyst": {
+    defaultSkills: ["Requirements Gathering", "SQL", "Advanced Excel", "Tableau", "Agile & Scrum", "Process Modeling (BPMN)"],
+    recommendedSkills: ["Power BI", "Data Visualization", "Jira / Confluence", "Stakeholder Management", "Python for Analytics", "Financial Modeling"],
+    courses: [
+      { title: "Google: Data Analytics Professional Certificate (Coursera)", link: "https://www.coursera.org/professional-certificates/google-data-analytics" },
+      { title: "IIBA: Certified Business Analysis Professional (CBAP) Training", link: "https://www.iiba.org/" },
+      { title: "Udemy: Business Analysis Fundamentals & Agile Story Mapping", link: "https://www.udemy.com/" }
+    ],
+    certifications: ["Certified Business Analysis Professional (CBAP)", "PMI Professional in Business Analysis (PMI-PBA)", "Microsoft Certified: Power BI Data Analyst Associate"],
+    projects: ["Enterprise Business Process Optimization & Gap Analysis Report", "Executive KPI Dashboard in Power BI with Automated Data Pipelines"],
+    keywords: ["Requirements Gathering", "BRD/FRD", "Power BI", "SQL", "Stakeholder Alignment", "BPMN", "Agile", "User Stories"]
+  },
+  "Digital Marketing": {
+    defaultSkills: ["Search Engine Optimization (SEO)", "SEM / Google Ads", "Content Marketing", "Social Media Strategy", "Google Analytics / GA4"],
+    recommendedSkills: ["Email Marketing & Automation", "CRM & Salesforce", "A/B Testing", "Conversion Rate Optimization (CRO)", "Copywriting", "HubSpot"],
+    courses: [
+      { title: "Google: Digital Marketing & E-commerce Professional Certificate", link: "https://www.coursera.org/professional-certificates/google-digital-marketing-ecommerce" },
+      { title: "HubSpot Academy: Inbound Marketing & Content Strategy Certification", link: "https://academy.hubspot.com/" },
+      { title: "Meta: Certified Digital Marketing Associate Program", link: "https://www.facebook.com/business/learn/certification" }
+    ],
+    certifications: ["Google Ads Search & Measurement Certification", "HubSpot Inbound Marketing Certified", "Meta Certified Digital Marketing Associate"],
+    projects: ["Omnichannel Multi-Tier Growth Campaign with 40%+ ROI Increase", "Comprehensive Technical SEO Audit & Conversion Optimization Overhaul"],
+    keywords: ["SEO", "Google Ads", "GA4", "ROAS", "Content Strategy", "Email Automation", "Conversion Optimization", "Lead Generation"]
+  },
+  "Human Resources": {
+    defaultSkills: ["Talent Acquisition & Recruiting", "Employee Relations & Onboarding", "HRIS & Payroll Management", "Advanced Excel"],
+    recommendedSkills: ["Conflict Resolution & Escalation", "Labor Law & Compliance", "Performance Management", "Diversity & Inclusion (DEI)", "Compensation & Benefits"],
+    courses: [
+      { title: "University of Minnesota: Human Resource Management Specialization", link: "https://www.coursera.org/specializations/human-resource-management" },
+      { title: "SHRM: Certified Professional (SHRM-CP) Exam Prep Masterclass", link: "https://www.shrm.org/" },
+      { title: "HRCI: Associate Professional in Human Resources (aPHR) Training", link: "https://www.hrci.org/" }
+    ],
+    certifications: ["SHRM Certified Professional (SHRM-CP)", "Professional in Human Resources (PHR - HRCI)", "Talent Management Practitioner Certification"],
+    projects: ["End-to-End Talent Acquisition Pipeline Reducing Time-to-Hire by 30%", "Enterprise Employee Onboarding & Retention Framework Implementation"],
+    keywords: ["Talent Acquisition", "Employee Relations", "HRIS", "Performance Management", "Compliance", "Onboarding", "Retention", "DEI"]
+  },
+  "Finance & Accounting": {
+    defaultSkills: ["Financial Modeling", "Advanced Excel", "Financial Reporting (GAAP/IFRS)", "Budgeting & Forecasting", "SQL"],
+    recommendedSkills: ["QuickBooks & ERP", "Auditing & Tax Compliance", "Power BI", "Valuation Analysis", "Risk Management", "Variance Analysis"],
+    courses: [
+      { title: "Wharton: Business and Financial Modeling Specialization (Coursera)", link: "https://www.coursera.org/specializations/wharton-business-financial-modeling" },
+      { title: "CFI: Financial Modeling & Valuation Analyst (FMVA) Certification", link: "https://corporatefinanceinstitute.com/" },
+      { title: "Udemy: Complete Financial Analyst and Accounting Masterclass", link: "https://www.udemy.com/" }
+    ],
+    certifications: ["Financial Modeling & Valuation Analyst (FMVA)", "Certified Public Accountant (CPA / ACCA)", "Chartered Financial Analyst (CFA Level 1)"],
+    projects: ["Multi-Year DCF Financial Valuation Model with Scenario Sensitivity Analysis", "Corporate Budget Forecasting & Automated Expense Variance Dashboard"],
+    keywords: ["Financial Modeling", "GAAP", "Forecasting", "Variance Analysis", "Advanced Excel", "Auditing", "Cash Flow", "ERP Systems"]
+  },
+  "Project Management": {
+    defaultSkills: ["Agile & Scrum", "Jira / Confluence", "Stakeholder Management", "Risk Management", "Requirements Gathering"],
+    recommendedSkills: ["Budgeting & Forecasting", "Sprint Planning", "Resource Allocation", "Change Management", "Kanban", "Cross-Functional Leadership"],
+    courses: [
+      { title: "Google: Project Management Professional Certificate (Coursera)", link: "https://www.coursera.org/professional-certificates/google-project-management" },
+      { title: "PMI: Project Management Professional (PMP) Exam Prep", link: "https://www.pmi.org/certifications/project-management-pmp" },
+      { title: "Scrum Alliance: Certified ScrumMaster (CSM) Training", link: "https://www.scrumalliance.org/" }
+    ],
+    certifications: ["Project Management Professional (PMP)", "Certified ScrumMaster (CSM)", "PMI Agile Certified Practitioner (PMI-ACP)"],
+    projects: ["Agile Transformation & Sprint Workflow Migration for 20+ Engineers", "Cross-Functional Multi-Milestone Enterprise Product Delivery Plan"],
+    keywords: ["Agile", "Scrum Master", "Jira", "Risk Mitigation", "Sprint Planning", "Resource Management", "Stakeholder Delivery", "PMP"]
+  },
+  "UI/UX Design": {
+    defaultSkills: ["Figma", "UI Prototyping", "User Research", "Design Systems", "Adobe XD"],
+    recommendedSkills: ["Information Architecture", "Usability Testing", "HTML5", "CSS3", "Design Sprint", "Accessibility (WCAG)"],
+    courses: [
+      { title: "Google: UX Design Professional Certificate (Coursera)", link: "https://www.coursera.org/professional-certificates/google-ux-design" },
+      { title: "Interaction Design Foundation: UX & UI Design Master Tracks", link: "https://www.interaction-design.org/" },
+      { title: "Figma Academy: Advanced Design Systems & Variables Masterclass", link: "https://www.figma.com/resources/" }
+    ],
+    certifications: ["Google UX Design Professional Certificate", "Nielsen Norman Group UX Master Certified", "Interaction Design Foundation (IxDF) Specialist"],
+    projects: ["Comprehensive Mobile & Web Design System with 100+ Reusable Components", "End-to-End E-Commerce User Journey Redesign with 25%+ Usability Lift"],
+    keywords: ["Figma", "UI/UX", "User Research", "Wireframing", "Design Systems", "Prototyping", "WCAG Accessibility", "Information Architecture"]
+  },
+  "Sales": {
+    defaultSkills: ["CRM & Salesforce", "B2B Lead Generation", "Pipeline & Deal Closing", "Advanced Excel"],
+    recommendedSkills: ["Account Management", "Cold Calling & Email Outreach", "Contract Negotiation", "Quota Attainment", "HubSpot CRM", "Solution Selling"],
+    courses: [
+      { title: "Northwestern University: High-Impact Business Writing & Sales Pitching", link: "https://www.coursera.org/specializations/business-writing" },
+      { title: "HubSpot Academy: Inbound Sales & Enterprise Deal Closing Certification", link: "https://academy.hubspot.com/" },
+      { title: "Salesforce: Sales Development Representative Professional Certificate", link: "https://www.coursera.org/professional-certificates/salesforce-sales-development-representative" }
+    ],
+    certifications: ["Salesforce Certified Sales Representative", "HubSpot Inbound Sales Certified", "Certified Professional Sales Person (CPSP)"],
+    projects: ["Outbound B2B Multi-Touch Prospecting Campaign Driving $500k+ Pipeline", "Sales Pipeline Stage Optimization & CRM Automation Overhaul"],
+    keywords: ["B2B Sales", "Salesforce", "Lead Generation", "Pipeline Management", "Quota Attainment", "Account Management", "Contract Negotiation"]
+  },
+  "Customer Service": {
+    defaultSkills: ["Customer Support & Ticketing", "Conflict Resolution & Escalation", "Customer Success & Retention (CSAT/NPS)", "CRM & Salesforce"],
+    recommendedSkills: ["Zendesk Administrator", "Active Listening", "De-escalation Techniques", "Knowledge Base Management", "SLA Compliance", "Interpersonal Communication"],
+    courses: [
+      { title: "CVS Health / Coursera: Customer Service Excellence & Communication Skills", link: "https://www.coursera.org/learn/customer-service" },
+      { title: "Zendesk Training: Omnichannel Support Masterclass", link: "https://training.zendesk.com/" },
+      { title: "Udemy: Customer Success Management & Churn Prevention", link: "https://www.udemy.com/" }
+    ],
+    certifications: ["Zendesk Certified Support Specialist", "Certified Customer Experience Professional (CCXP)", "Customer Service Institute of America (CSIA) Certified"],
+    projects: ["Customer Support SLA Optimization Improving Resolution Time by 40%", "Omnichannel Self-Service Knowledge Base Reducing Ticket Volume by 25%"],
+    keywords: ["Customer Service", "Zendesk", "CSAT", "Conflict Resolution", "Ticketing", "Customer Retention", "Escalations", "SLA Management"]
+  }
+};
+
 export function localHeuristicAnalysis(
   rawText: string,
   fileName: string,
   actName: string,
   actMail: string,
-  actMob: string
+  actMob: string,
+  selectedTargetField?: string
 ): ParsedResumeResult {
   const text = (rawText || "").toLowerCase();
 
-  // Try to find raw email address inside CV
+  // 1. Dynamic Contact & Name Extraction
   let finalEmail = actMail;
   const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
   const emailMatches = rawText ? rawText.match(emailRegex) : null;
@@ -67,7 +320,6 @@ export function localHeuristicAnalysis(
     finalEmail = emailMatches[0].trim();
   }
 
-  // Try to find raw contact phone inside CV
   let finalPhone = actMob;
   const phoneRegex = /(\+?\d{1,4}[-.\s]??)?\(?\d{3}\)?[-.\s]??\d{3}[-.\s]??\d{4}/g;
   const phoneMatches = rawText ? rawText.match(phoneRegex) : null;
@@ -75,274 +327,243 @@ export function localHeuristicAnalysis(
     finalPhone = phoneMatches[0].trim();
   }
 
-  // Try to extract a clean name from the top lines of CV text if possible
-  let finalName = actName;
-  if (rawText && rawText.length > 20) {
+  let finalName = actName && actName !== "Candidate" && actName !== "Applicant Candidate" ? actName : "";
+  if (!finalName && rawText && rawText.length > 20) {
     const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-    if (lines.length > 0) {
-      const candidateName = lines[0];
-      if (candidateName.length > 3 && candidateName.length < 45 && !/email|phone|resume|curriculum|portfolio|github|web|http|const|import|education|skills/i.test(candidateName)) {
-        finalName = candidateName;
+    for (const candidateLine of lines.slice(0, 5)) {
+      if (
+        candidateLine.length >= 3 &&
+        candidateLine.length <= 40 &&
+        !/email|phone|tel|mobile|resume|curriculum|vitae|github|linkedin|http|www|page|\.com|\.pdf|summary|objective|skills|experience/i.test(candidateLine) &&
+        /^[a-zA-Z\s.'-]+$/.test(candidateLine)
+      ) {
+        finalName = candidateLine;
+        break;
+      }
+    }
+  }
+  if (!finalName) finalName = actName || "Professional Candidate";
+
+  // 2. Section Checks & Document Factor Analysis
+  const hasObj = /objective|summary|profile|about me|professional summary|executive summary|career profile/.test(text);
+  const hasEdu = /education|college|degree|university|academic|bachelor|master|phd|diploma|gpa|b\.s|b\.a|b\.tech|m\.s|m\.tech|mba/.test(text);
+  const hasExp = /experience|work|job|employment|history|position|responsibilities|professional experience|career history/.test(text);
+  const hasInt = /intern|internship|trainee|apprentice|fellowship/.test(text);
+  const hasSkl = /skills|technologies|languages|tools|competencies|expertise|proficiencies|technical stack/.test(text);
+  const hasHob = /hobbies|hobby|recreation|extracurricular|volunteer|volunteering/.test(text);
+  const hasInterests = /interests|interest|passion|personal projects/.test(text);
+  const hasAch = /achievements|awards|prize|recognition|honors|dean's list|promoted|exceeded|ranked|valedictorian/.test(text) ||
+                 /\b\d{1,3}%\b|\$\d+|\b\d+\+\s*(users|clients|projects|million|k)\b/i.test(text);
+  const hasCert = /certifications|certified|certificates|courses|licenses|accreditation/.test(text);
+  const hasPrj = /projects|personal projects|academic projects|capstone|portfolio|github\.com/.test(text);
+
+  // 3. Multi-Domain Skill Extraction
+  const detectedSkillSet = new Set<string>();
+  const fieldMatches: { [key: string]: number } = {
+    "Software Development": 0,
+    "Data Science": 0,
+    "Business Analyst": 0,
+    "Digital Marketing": 0,
+    "Human Resources": 0,
+    "Finance & Accounting": 0,
+    "Project Management": 0,
+    "UI/UX Design": 0,
+    "Sales": 0,
+    "Customer Service": 0
+  };
+
+  for (const item of COMPREHENSIVE_SKILLS) {
+    if (item.regex.test(text)) {
+      detectedSkillSet.add(item.label);
+      for (const f of item.fields) {
+        if (fieldMatches[f] !== undefined) {
+          fieldMatches[f] += 1;
+        }
       }
     }
   }
 
-  // Highlight key section checks
-  const hasObj = /objective|summary|profile|about me|professional summary/.test(text);
-  const hasEdu = /education|college|degree|university|academic|bachelor|master|phd|school/.test(text);
-  const hasExp = /experience|work|job|employment|history|position|professional experience/.test(text);
-  const hasInt = /intern|internship|trainee|apprenticeship/.test(text);
-  const hasSkl = /skills|technologies|languages|tools|competencies/.test(text);
-  const hasHob = /hobbies|hobby|recreational/.test(text);
-  const hasInterests = /interests|interest|passion/.test(text);
-  const hasAch = /achievements|awards|prize|recognition|honors/.test(text);
-  const hasCert = /certifications|certified|certificates|courses|license/.test(text);
-  const hasPrj = /projects|personal projects|academic projects|github|portfolio/.test(text);
-
-  // Compute resume score
-  let score = 0;
-  if (hasObj) score += 6;
-  if (hasEdu) score += 12;
-  if (hasExp) score += 16;
-  if (hasInt) score += 6;
-  if (hasSkl) score += 7;
-  if (hasHob) score += 4;
-  if (hasInterests) score += 5;
-  if (hasAch) score += 13;
-  if (hasCert) score += 12;
-  if (hasPrj) score += 19;
-
-  if (score < 40) {
-    score = Math.floor(Math.random() * (75 - 55 + 1)) + 55;
-  }
-
-  // Detect skills
-  const allKnownSkills = [
-    "python", "javascript", "react", "node", "java", "c++", "django", "flask", 
-    "docker", "aws", "sql", "flutter", "swift", "kotlin", "html", "css", "vue", 
-    "figma", "sketch", "machine learning", "data science", "pandas", "numpy", 
-    "tensorflow", "pytorch", "keras", "android", "ios", "react native", "next.js",
-    "typescript", "postgresql", "mongodb", "git", "ci/cd", "kubernetes"
-  ];
-
-  const detectedSkills: string[] = [];
-  for (const s of allKnownSkills) {
-    if (text.includes(s)) {
-      if (["aws", "sql", "ios", "ci/cd", "html", "css"].includes(s)) {
-        detectedSkills.push(s.toUpperCase());
-      } else {
-        detectedSkills.push(s.charAt(0).toUpperCase() + s.slice(1));
+  // 4. Field Prediction & Alignment
+  let bestField = selectedTargetField && selectedTargetField !== "Other" ? selectedTargetField : "";
+  if (!bestField) {
+    let highestCount = -1;
+    for (const [f, count] of Object.entries(fieldMatches)) {
+      if (count > highestCount) {
+        highestCount = count;
+        bestField = f;
       }
+    }
+    if (highestCount === 0 || !bestField) {
+      bestField = "Software Development";
     }
   }
 
+  const benchmark = FIELD_BENCHMARKS[bestField] || FIELD_BENCHMARKS["Software Development"];
+
+  // Populate skills fallback from benchmark if completely empty
+  const detectedSkills = Array.from(detectedSkillSet);
   if (detectedSkills.length === 0) {
-    detectedSkills.push("React", "JavaScript", "HTML5", "CSS3", "Git", "Node.js");
+    detectedSkills.push(...benchmark.defaultSkills.slice(0, 5));
   }
 
-  // Predict Field/Track
-  const dsKws = ["machine learning", "data science", "pandas", "numpy", "tensorflow", "pytorch", "keras", "ai", "artificial intelligence"];
-  const webKws = ["react", "node", "html", "css", "javascript", "vue", "flask", "django", "express", "next.js", "typescript"];
-  const andKws = ["android", "kotlin", "retrofit", "jetpack"];
-  const iosKws = ["ios", "swift", "xcode", "cocoapods"];
-  const uiKws = ["figma", "sketch", "adobe xd", "ui", "ux", "design", "wireframe"];
-
-  const dsScore = dsKws.filter(kw => text.includes(kw)).length;
-  const webScore = webKws.filter(kw => text.includes(kw)).length;
-  const andScore = andKws.filter(kw => text.includes(kw)).length;
-  const iosScore = iosKws.filter(kw => text.includes(kw)).length;
-  const uiScore = uiKws.filter(kw => text.includes(kw)).length;
-
-  const scores: { [key: string]: number } = {
-    "Data Science": dsScore,
-    "Web Development": webScore,
-    "Android Development": andScore,
-    "iOS Development": iosScore,
-    "UI-UX Development": uiScore
-  };
-
-  let bestField = "Web Development";
-  let maxScore = -1;
-  for (const [field, fScore] of Object.entries(scores)) {
-    if (fScore > maxScore) {
-      maxScore = fScore;
-      bestField = field;
-    }
+  // 5. Experience Level Detection
+  let candLevel: 'Fresher' | 'Intermediate' | 'Experienced' = 'Fresher';
+  const yearsMatch = text.match(/(\d+)\+?\s*(years?|yrs?)\s*(of)?\s*(experience|exp)?/i);
+  let detectedYears = 0;
+  if (yearsMatch) {
+    detectedYears = parseInt(yearsMatch[1], 10) || 0;
+  }
+  const dateRanges = text.match(/20\d{2}\s*[-–to]+\s*(20\d{2}|present|current)/gi);
+  if (dateRanges && dateRanges.length > 0) {
+    detectedYears = Math.max(detectedYears, dateRanges.length * 2);
   }
 
-  if (maxScore === 0) {
-    bestField = "Web Development";
+  if (detectedYears >= 5 || hasExp && /lead|senior|principal|manager|head|director|architect/i.test(text)) {
+    candLevel = 'Experienced';
+  } else if (detectedYears >= 2 || hasExp && dateRanges && dateRanges.length >= 2) {
+    candLevel = 'Intermediate';
+  } else {
+    candLevel = 'Fresher';
   }
 
-  // Detect Experience Level
-  let candLevel = "Fresher";
-  if (/year|years|exp|experience/.test(text)) {
-    if (/[3-9]|10/.test(text)) {
-      candLevel = "Experienced";
-    } else if (/[1-2]/.test(text)) {
-      candLevel = "Intermediate";
-    }
+  // 6. Degree Extraction
+  let degreeGuess = "Bachelor of Science";
+  if (/ph\.?d|doctorate/i.test(text)) {
+    degreeGuess = "Ph.D. / Doctorate";
+  } else if (/m\.?s|master|m\.tech|mba|m\.a|msc/i.test(text)) {
+    degreeGuess = "Master's Degree (M.S. / MBA)";
+  } else if (/bachelor|b\.s|b\.tech|bba|b\.a|bsc|b\.eng/i.test(text)) {
+    degreeGuess = "Bachelor's Degree";
+  } else if (/associate|diploma/i.test(text)) {
+    degreeGuess = "Associate Degree / Diploma";
   }
 
-  // Recommended skills & courses based on field
-  const recoSkillsMap: { [key: string]: string[] } = {
-    "Data Science": ["Pandas", "Scikit-Learn", "Matplotlib", "Seaborn", "PyTorch", "SQL Databases", "FastAPI", "Docker", "Model Deployment"],
-    "Web Development": ["TypeScript", "Next.js", "Tailwind CSS", "Redux Toolkit", "PostgreSQL", "Docker", "GraphQL", "AWS S3"],
-    "Android Development": ["Kotlin Coroutines", "Dagger Hilt", "Jetpack Compose", "Room DB", "Viper Architecture", "Firebase Auth"],
-    "iOS Development": ["SwiftUI", "Combine Framework", "CoreData", "Swift Package Manager", "App Store Connect", "XCTest"],
-    "UI-UX Development": ["Figma Variables", "Prototyping", "User Research", "Wireframing", "Design Systems", "Usability Testing"]
-  };
-  const recommendedSkills = recoSkillsMap[bestField] || ["React", "TypeScript", "Node.js", "PostgreSQL", "Docker"];
+  // 7. Transparent 10-Factor Scoring Matrix (0-100)
+  let rawScore = 0;
+  if (hasObj) rawScore += 8;
+  if (hasEdu) rawScore += 12;
+  if (hasExp) rawScore += 18;
+  if (hasInt) rawScore += 6;
+  if (hasSkl) rawScore += 10;
+  if (hasHob) rawScore += 4;
+  if (hasInterests) rawScore += 4;
+  if (hasAch) rawScore += 14;
+  if (hasCert) rawScore += 10;
+  if (hasPrj) rawScore += 14;
 
-  const coursesMap: { [key: string]: CourseItem[] } = {
-    "Data Science": [
-      { title: "Coursera: Applied Data Science with Python Specialization", link: "https://www.coursera.org/specializations/data-science-python" },
-      { title: "DeepLearning.AI: TensorFlow Developer Professional Certificate", link: "https://www.coursera.org/professional-certificates/tensorflow-in-practice" },
-      { title: "Kaggle: Machine Learning Micro-Course Series", link: "https://www.kaggle.com/learn" }
-    ],
-    "Web Development": [
-      { title: "Udemy: The Complete JavaScript Course 2026", link: "https://www.udemy.com/course/the-complete-javascript-course/" },
-      { title: "Frontend Masters: Full-Stack Web Development Path", link: "https://frontendmasters.com/" },
-      { title: "Scrimba: The Frontend Developer Career Path", link: "https://scrimba.com/learn/frontend" }
-    ],
-    "Android Development": [
-      { title: "Google: Android Basics in Kotlin Developer Course", link: "https://developer.android.com/courses/android-basics-kotlin/course" },
-      { title: "Udacity: Advanced Android App Development", link: "https://www.udacity.com/course/advanced-android-app-development--ud883" },
-      { title: "Pluralsight: Build Apps with Jetpack Compose", link: "https://www.pluralsight.com/paths/android-development" }
-    ],
-    "iOS Development": [
-      { title: "Hacking with Swift: 100 Days of SwiftUI", link: "https://www.hackingwithswift.com/100/swiftui" },
-      { title: "Udemy: iOS & Swift - The Complete iOS App Development Bootcamp", link: "https://www.udemy.com/course/ios-13-app-development-bootcamp/" },
-      { title: "Stanford: CS193p Developing Applications for iOS", link: "https://cs193p.sites.stanford.edu/" }
-    ],
-    "UI-UX Development": [
-      { title: "Google: UX Design Professional Certificate", link: "https://www.coursera.org/professional-certificates/google-ux-design" },
-      { title: "Interaction Design Foundation: User Experience Courses", link: "https://www.interaction-design.org/" },
-      { title: "Figma Resources: Design Essentials", link: "https://www.figma.com/resources/" }
-    ]
-  };
-  const recommendedCourses = coursesMap[bestField] || coursesMap["Web Development"];
+  const skillMatchCount = detectedSkills.filter(s => benchmark.recommendedSkills.includes(s) || benchmark.defaultSkills.includes(s)).length;
+  const keywordBonus = Math.min(skillMatchCount * 3, 15);
+  const finalResumeScore = Math.min(Math.max(rawScore + (skillMatchCount >= 3 ? 5 : 0), 45), 98);
+  const atsCompatibilityScore = Math.min(Math.max(finalResumeScore + keywordBonus - (hasExp ? 0 : 5), 50), 96);
+
+  // Missing Skills tailored to target field
+  const missingSkills = benchmark.recommendedSkills.filter(s => !detectedSkillSet.has(s)).slice(0, 6);
 
   // Feedback Items
   const feedback: FeedbackItem[] = [
     {
-      factor: "Objective or Summary",
+      factor: "Executive Summary / Objective",
       status: hasObj ? "added" : "missing",
-      detail: hasObj ? "Summary is beautifully defined." : "Add a brief professional objective summary to resume."
+      detail: hasObj
+        ? "Professional summary is present and clearly articulates your core value proposition."
+        : "Add a 2-3 line executive summary at the top to highlight your primary domain expertise."
     },
     {
-      factor: "Education Details",
+      factor: "Education Credentials",
       status: hasEdu ? "added" : "missing",
-      detail: hasEdu ? "Academic degrees are listed." : "List your college or school degree cleanly."
+      detail: hasEdu
+        ? `Academic qualifications (${degreeGuess}) are clearly listed with institution details.`
+        : "List your degree, major, university name, and graduation year."
     },
     {
-      factor: "Experience or Work Experience",
+      factor: "Professional Work Experience",
       status: hasExp ? "added" : "missing",
-      detail: hasExp ? "Work background is clearly structured." : "Consider writing down jobs or project leadership positions."
+      detail: hasExp
+        ? "Work history is structured with chronological responsibilities and role designations."
+        : "Add commercial work history or relevant contract positions with quantifiable bullet points."
     },
     {
-      factor: "Internships",
-      status: hasInt ? "added" : "missing",
-      detail: hasInt ? "Intern position included." : "Highlight relevant trainee positions or internships if newer to industry."
+      factor: "Internship & Practical Experience",
+      status: hasInt || hasExp ? "added" : "missing",
+      detail: hasInt || hasExp
+        ? "Practical hands-on industry experience is documented."
+        : "Highlight relevant internships, student associations, or apprenticeship programs."
     },
     {
-      factor: "Skills section",
+      factor: "Domain Skills Matrix",
       status: hasSkl ? "added" : "missing",
-      detail: hasSkl ? "Keywords list is easily scannable." : "Build a clean technical skills grid."
+      detail: hasSkl
+        ? `Detected ${detectedSkills.length} relevant skill keywords matching industry taxonomy.`
+        : "Structure your skills into categorized groupings (e.g. Core Skills, Tools, Methodologies)."
     },
     {
-      factor: "Hobbies",
-      status: hasHob ? "added" : "missing",
-      detail: hasHob ? "Hobbies/activities mentioned." : "Add a simple hobbies line for personality details."
-    },
-    {
-      factor: "Interests",
-      status: hasInterests ? "added" : "missing",
-      detail: hasInterests ? "Technical interests declared." : "Add field interest indicators."
-    },
-    {
-      factor: "Achievements",
+      factor: "Quantified Metrics & Achievements",
       status: hasAch ? "added" : "missing",
-      detail: hasAch ? "Key achievements outlined with metrics." : "Add high-impact awards or metric achievements."
+      detail: hasAch
+        ? "Strong presence of metric-driven achievements (percentages, revenues, scale metrics)."
+        : "Use the Google XYZ Formula: 'Accomplished [X], as measured by [Y], by doing [Z]' in bullet points."
     },
     {
-      factor: "Certifications section",
+      factor: "Professional Certifications",
       status: hasCert ? "added" : "missing",
-      detail: hasCert ? "Certificates successfully listed." : "Add technical certs to boost confidence."
+      detail: hasCert
+        ? "Verified industry certifications listed to reinforce credibility."
+        : `Consider earning recognized accreditations in ${bestField} to stand out to recruiters.`
     },
     {
-      factor: "Projects",
+      factor: "Key Projects & Portfolio",
       status: hasPrj ? "added" : "missing",
-      detail: hasPrj ? "High-quality project portfolio items found." : "Create dedicated projects sections to show mastery."
+      detail: hasPrj
+        ? "Demonstrated practical application through documented projects and deliverables."
+        : "Add 2-3 high-impact project showcases with architecture context and live repository links."
     }
   ];
-
-  // Try guessing degree
-  let degreeGuess = "Bachelor's Degree";
-  if (text.includes("master") || text.includes("m.s") || text.includes("m.tech")) {
-    degreeGuess = "Master of Science";
-  } else if (text.includes("phd") || text.includes("doctorate")) {
-    degreeGuess = "Ph.D.";
-  } else if (text.includes("bachelor") || text.includes("b.s") || text.includes("b.tech") || text.includes("computer science")) {
-    degreeGuess = "Bachelor of Science";
-  }
-
-  const atsScore = Math.min(Math.max(score + (hasSkl ? 6 : -4) + (hasExp ? 8 : 2), 48), 96);
-  const candLevelTyped: 'Fresher' | 'Intermediate' | 'Experienced' =
-    candLevel === 'Experienced' ? 'Experienced' : candLevel === 'Intermediate' ? 'Intermediate' : 'Fresher';
 
   return {
     name: finalName,
     email: finalEmail,
     phone: finalPhone,
     degree: degreeGuess,
-    no_of_pages: text.length < 3000 ? 1 : 2,
-    cand_level: candLevelTyped,
+    no_of_pages: text.length < 2500 ? 1 : 2,
+    cand_level: candLevel,
     predicted_field: bestField,
-    current_skills: detectedSkills.slice(0, 12),
-    recommended_skills: recommendedSkills,
-    resume_score: score,
-    ats_compatibility_score: atsScore,
-    missing_skills: recommendedSkills.slice(0, 5),
+    current_skills: detectedSkills.slice(0, 14),
+    recommended_skills: benchmark.recommendedSkills,
+    resume_score: finalResumeScore,
+    ats_compatibility_score: atsCompatibilityScore,
+    missing_skills: missingSkills,
     experience_relevance: hasExp
-      ? "Demonstrated industry experience aligns directly with standard technical benchmarks. Adding quantifiable impact metrics will further strengthen ATS ranking."
-      : "Early-stage trajectory. Emphasize capstone projects, open-source contributions, and internship roles to boost ATS screening rate.",
+      ? `Demonstrated experience directly aligns with ${bestField} industry standards. Adding specific business metrics will optimize recruiter conversion.`
+      : `Early career profile. Emphasize capstone initiatives, certifications, and technical deliverables in ${bestField} to pass automated screening.`,
     education_relevance: hasEdu
-      ? "Academic qualifications provide a solid foundation for this technical track."
-      : "Ensure relevant college coursework, certifications, and technical accreditations are prominent.",
+      ? `Academic background (${degreeGuess}) supports your qualification trajectory for ${bestField} roles.`
+      : `Ensure relevant degree coursework, honors, or professional accreditations are highlighted.`,
     strengths: [
-      hasSkl ? "Core technical proficiencies and skills matrix clearly identified" : "Aptitude and foundational potential",
-      hasExp ? "Documented professional work history and trajectory" : "Demonstrated project development focus",
-      hasEdu ? "Structured academic qualification background" : "Self-driven technical learning path",
-      "Document format is parsable by standard ATS engines"
+      hasSkl ? `Strong representation of key competencies (${detectedSkills.slice(0, 3).join(", ")})` : "Foundational knowledge and career interest",
+      hasExp ? "Documented professional employment trajectory" : "Demonstrated project development aptitude",
+      hasAch ? "Includes quantifiable achievements and impact metrics" : "Structured chronological presentation",
+      "Clean, readable typography parseable by automated ATS software"
     ],
     weaknesses: [
-      !hasAch ? "Missing quantifiable impact metrics (e.g. latency reduction, % efficiency gains, user growth)" : "",
-      !hasCert ? "No industry-standard technical certifications listed" : "",
-      !hasInt && !hasExp ? "Limited commercial or internship experience documented" : ""
+      !hasAch ? "Missing quantifiable percentage/dollar impact metrics in bullet points" : "",
+      !hasCert ? `No active ${bestField} professional certifications listed` : "",
+      missingSkills.length > 0 ? `Missing several high-demand keyword tags: ${missingSkills.slice(0, 3).join(", ")}` : ""
     ].filter(Boolean),
     industry_specific_recommendations: [
-      `Prioritize mastering modern in-demand frameworks and tools in ${bestField}`,
-      "Incorporate unit testing, automated CI/CD pipelines, and cloud deployment in project showcases",
-      "Format work experience using the Google XYZ accomplishment formula (Accomplished [X] as measured by [Y], by doing [Z])"
+      `Incorporate target keywords from ${bestField} job descriptions in the top third of your resume`,
+      `Structure bullet points using strong action verbs (Engineered, Accelerated, Optimized, Spearheaded)`,
+      `Ensure full alignment between your resume keywords and your public LinkedIn profile`
     ],
-    suggested_certifications: [
-      `Certified ${bestField} Professional`,
-      "AWS Certified Cloud Practitioner",
-      "Professional Developer Associate"
-    ],
-    suggested_projects: [
-      `Full-stack ${bestField} Application with real-time analytics and authentication`,
-      "Scalable API microservice with automated testing and Docker containerization"
-    ],
-    suggested_keywords: Array.from(new Set([...detectedSkills, "Agile", "Git", "REST APIs", "CI/CD", "System Design", "Cloud"])).slice(0, 8),
-    interview_readiness: score >= 70
-      ? "High — Strong profile readiness for technical screening rounds. Focus on system architecture deep dives and behavioral STAR responses."
-      : "Moderate — Bolster your project portfolio, practice algorithmic problem solving, and refine section summaries.",
+    suggested_certifications: benchmark.certifications,
+    suggested_projects: benchmark.projects,
+    suggested_keywords: benchmark.keywords,
+    interview_readiness: finalResumeScore >= 75
+      ? "High — Strong profile readiness for technical and behavioral screening rounds. Focus on deep-dive architectural and STAR stories."
+      : "Moderate — Polish accomplishment metrics, bridge missing skill gaps, and practice STAR-format scenario questions.",
     career_growth_suggestions: [
-      `Target high-growth ${bestField} roles while building specialized domain depth`,
-      "Contribute to production-grade repositories and open source to increase recruiter visibility",
-      "Establish a continuous learning path with hands-on architecture certifications"
+      `Target high-growth ${bestField} positions while expanding specialized domain breadth`,
+      "Build visible public deliverables (GitHub, case studies, or published articles) to establish authority",
+      "Network directly with engineering and hiring managers on LinkedIn using tailored outreach notes"
     ],
     score_factors: {
       has_objective: hasObj,
@@ -357,6 +578,6 @@ export function localHeuristicAnalysis(
       has_projects: hasPrj
     },
     feedback,
-    recommended_courses: recommendedCourses
+    recommended_courses: benchmark.courses
   };
 }

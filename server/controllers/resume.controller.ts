@@ -45,11 +45,12 @@ export async function analyzeResume(req: Request, res: Response) {
 
         if (isPdf) {
           try {
-            const parser = new PDFParse({ data: fileBuffer });
+            const parser = new PDFParse({ data: new Uint8Array(fileBuffer) });
             const parsed = await parser.getText();
             extractedText = parsed.text ? parsed.text.trim() : "";
+            await parser.destroy();
           } catch (pdfErr) {
-            console.warn("PDF extraction fallback:", pdfErr);
+            console.warn("PDF extraction fallback with Uint8Array:", pdfErr);
           }
         } else if (isDocx) {
           try {
@@ -60,10 +61,10 @@ export async function analyzeResume(req: Request, res: Response) {
           }
         }
 
-        // Fallback text extraction from buffer
+        // Fallback text extraction from buffer (extracting printable text streams)
         if (!extractedText || extractedText.length < 5) {
           const rawBufferText = fileBuffer.toString("utf-8");
-          const cleanText = rawBufferText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, " ").trim();
+          const cleanText = rawBufferText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, " ").replace(/\s+/g, " ").trim();
           if (cleanText.length > 20) {
             extractedText = cleanText;
           }
@@ -77,9 +78,11 @@ export async function analyzeResume(req: Request, res: Response) {
     const targetField = selected_field || "Software Development";
     let analysisData: any = null;
 
+    console.log(`[ATS Server] Analyzing resume: length=${extractedText.length} chars, candidate=${act_name || 'N/A'}, field=${targetField}, hasGeminiKey=${Boolean(process.env.GEMINI_API_KEY)}`);
+
     if (process.env.GEMINI_API_KEY && extractedText && extractedText.length > 20) {
       try {
-        const systemInstruction = `You are a world-class ATS Resume Evaluator and Career Advisor specializing in tech talent matching. Analyze the resume provided against industry benchmarks and the target field "${targetField}". Output valid JSON conforming to the schema with comprehensive analysis, score factors (boolean flags for each section), constructive feedback items (with factor name, status "added" or "missing", and detailed suggestions), ATS compatibility score (0-100), overall resume score (0-100), predicted field, candidate experience level (Fresher, Intermediate, Experienced), current skills found, recommended skills, recommended learning courses with title and real course links (e.g., Coursera, Udemy, edX), strengths, weaknesses, suggested projects, suggested certifications, suggested keywords, and career growth roadmap.`;
+        const systemInstruction = `You are a world-class ATS Resume Evaluator and Career Advisor specializing in talent matching. Analyze the resume provided against industry benchmarks and the target field "${targetField}". Output valid JSON conforming to the schema with comprehensive analysis, score factors (boolean flags for each section), constructive feedback items (with factor name, status "added" or "missing", and detailed suggestions), ATS compatibility score (0-100), overall resume score (0-100), predicted field, candidate experience level (Fresher, Intermediate, Experienced), current skills found, recommended skills, recommended learning courses with title and real course links (e.g., Coursera, Udemy, edX), strengths, weaknesses, suggested projects, suggested certifications, suggested keywords, and career growth roadmap.`;
 
         const userPrompt = `Candidate Name: ${act_name || "Extract from resume text"}
 Candidate Email: ${act_mail || "Extract from resume text"}
@@ -102,14 +105,15 @@ ${extractedText.slice(0, 15000)}`;
       }
     }
 
-    // If Gemini didn't run or failed, use local heuristic parser
+    // If Gemini didn't run or failed, use local multi-domain heuristic parser
     if (!analysisData) {
       analysisData = localHeuristicAnalysis(
         extractedText || `Candidate Name: ${act_name}\nTarget Field: ${targetField}`,
         fileName || "Resume.pdf",
         act_name || "Candidate",
         act_mail || (owner_email || "candidate@example.com"),
-        act_mob || "+1-555-0199"
+        act_mob || "+1-555-0199",
+        targetField
       );
       if (selected_field && selected_field !== "Other") {
         analysisData.predicted_field = selected_field;
@@ -253,9 +257,10 @@ export async function optimizeLinkedInProfile(req: Request, res: Response) {
 
         if (isPdf) {
           try {
-            const parser = new PDFParse({ data: fileBuffer });
+            const parser = new PDFParse({ data: new Uint8Array(fileBuffer) });
             const parsed = await parser.getText();
             extractedResumeText = parsed.text ? parsed.text.trim() : "";
+            await parser.destroy();
           } catch (pdfErr) {
             console.warn("LinkedIn CV PDF extraction fallback:", pdfErr);
           }
