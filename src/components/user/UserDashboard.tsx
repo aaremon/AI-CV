@@ -16,6 +16,7 @@ import {
   Lock,
   HardDrive
 } from 'lucide-react';
+import logo from '../../assets/images/mero_match_exact_logo_1782115392578.jpg';
 
 interface UserDashboardProps {
   loggedInUser: any;
@@ -135,6 +136,25 @@ export default function UserDashboard({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-12">
+      {/* Top Mero Match Brand Header */}
+      <div className="flex items-center pb-2 border-b border-slate-200/80 dark:border-slate-800/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-white dark:bg-white p-1.5 shadow-sm border border-slate-200/90 dark:border-slate-700/80 flex items-center justify-center shrink-0">
+            <img
+              src={logo}
+              alt="Mero Match"
+              className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          <div>
+            <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-slate-900 dark:text-white uppercase font-sans">
+              MERO MATCH
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-8 md:p-10 border border-slate-800 shadow-2xl">
         <div className="absolute -right-12 -bottom-12 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />

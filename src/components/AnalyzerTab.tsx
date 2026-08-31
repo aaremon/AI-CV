@@ -63,6 +63,7 @@ import ClusteringMap from './ClusteringMap';
 import SkillUpgradePathway from './SkillUpgradePathway';
 import CareerHacks from './CareerHacks';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import logo from '../assets/images/mero_match_exact_logo_1782115392578.jpg';
 
 interface AnalyzerTabProps {
   loggedInUser: any;
@@ -376,6 +377,25 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
   return (
     <div className="space-y-8 max-w-6xl mx-auto py-2">
       
+      {/* Top Mero Match Brand Header */}
+      <div className="flex items-center pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-white dark:bg-white p-1.5 shadow-sm border border-slate-200/90 dark:border-slate-700/80 flex items-center justify-center shrink-0">
+            <img
+              src={logo}
+              alt="Mero Match"
+              className="w-full h-full object-contain"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          <div>
+            <span className="text-xl sm:text-2xl font-black font-display tracking-tight text-slate-900 dark:text-white uppercase font-sans">
+              MERO MATCH
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Executive Key Metrics Row (from Agenco website mockup) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 border border-slate-200/80 dark:border-slate-800/85 rounded-3xl bg-white dark:bg-[#141c2f] divide-y lg:divide-y-0 lg:divide-x divide-slate-100 dark:divide-slate-800/80 overflow-hidden shadow-xs transition-colors">
         <div className="p-6 text-center">

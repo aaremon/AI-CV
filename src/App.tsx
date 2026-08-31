@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar, { NavTabType } from './components/Navbar';
+import TopHeader from './components/TopHeader';
 import AuthModal from './components/AuthModal';
 import PrivacySettingsModal from './components/PrivacySettingsModal';
 import CvBuilderTab from './components/CvBuilderTab';
@@ -225,7 +226,26 @@ export default function App() {
   const handleAuthSuccess = (userObj: any) => {
     setLoggedInUser(userObj);
     localStorage.setItem('resume_auth_user', JSON.stringify(userObj));
+    if (userObj.role === 'admin') {
+      setIsAdminLoggedIn(true);
+      setActiveTab('admin');
+    }
     setIsAuthOpen(false);
+  };
+
+  const handleAdminAuthSuccess = (adminObj?: any) => {
+    const adminUser = adminObj || {
+      id: 999,
+      email: 'thapakaji@gmail.com',
+      name: 'Platform Administrator',
+      role: 'admin'
+    };
+    setLoggedInUser(adminUser);
+    localStorage.setItem('resume_auth_user', JSON.stringify(adminUser));
+    setIsAdminLoggedIn(true);
+    setActiveTab('admin');
+    setIsAuthOpen(false);
+    setShowLanding(false);
   };
 
   const handleGetStarted = () => {
@@ -245,6 +265,7 @@ export default function App() {
           <AuthModal
             onClose={() => setIsAuthOpen(false)}
             onAuthSuccess={handleAuthSuccess}
+            onAdminAuthSuccess={handleAdminAuthSuccess}
           />
         )}
       </>
@@ -272,98 +293,117 @@ export default function App() {
         onOpenPrivacySettings={() => setIsPrivacySettingsOpen(true)}
       />
 
-      {/* Main content body with responsive scroll boundary and optimized padding */}
-      <main className="flex-1 overflow-y-auto px-3 py-5 sm:p-6 md:p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
-        {activeTab === 'dashboard' && (
-          <UserDashboard
-            loggedInUser={loggedInUser}
-            currentTime={currentTime}
-            onNavigate={(tab) => setActiveTab(tab as NavTabType)}
-            onOpenPrivacySettings={() => setIsPrivacySettingsOpen(true)}
-          />
-        )}
+      {/* Main Content Area with Top Header */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Top Header bar with professional right-corner Admin Panel button */}
+        <TopHeader
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          isAdminLoggedIn={isAdminLoggedIn}
+          loggedInUser={loggedInUser}
+          darkMode={darkMode}
+          onToggleDarkMode={handleToggleDarkMode}
+          onOpenAuth={() => setIsAuthOpen(true)}
+          onOpenPrivacySettings={() => setIsPrivacySettingsOpen(true)}
+        />
 
-        {activeTab === 'my_cvs' && (
-          <MyCVsTab
-            loggedInUser={loggedInUser}
-            onNavigate={(tab) => setActiveTab(tab as NavTabType)}
-          />
-        )}
+        {/* Main content body with responsive scroll boundary and optimized padding */}
+        <main className="flex-1 overflow-y-auto px-3 py-5 sm:p-6 md:p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
+          {activeTab === 'dashboard' && (
+            <UserDashboard
+              loggedInUser={loggedInUser}
+              currentTime={currentTime}
+              onNavigate={(tab) => setActiveTab(tab as NavTabType)}
+              onOpenPrivacySettings={() => setIsPrivacySettingsOpen(true)}
+            />
+          )}
 
-        {activeTab === 'generated_docs' && (
-          <GeneratedDocsTab
-            loggedInUser={loggedInUser}
-            onNavigate={(tab) => setActiveTab(tab as NavTabType)}
-          />
-        )}
+          {activeTab === 'my_cvs' && (
+            <MyCVsTab
+              loggedInUser={loggedInUser}
+              onNavigate={(tab) => setActiveTab(tab as NavTabType)}
+            />
+          )}
 
-        {activeTab === 'privacy_security' && (
-          <SecuritySettingsTab
-            loggedInUser={loggedInUser}
-            onLogout={handleLogout}
-            onProfileUpdated={(updated) => {
-              setLoggedInUser(updated);
-              localStorage.setItem('resume_auth_user', JSON.stringify(updated));
-            }}
-          />
-        )}
+          {activeTab === 'generated_docs' && (
+            <GeneratedDocsTab
+              loggedInUser={loggedInUser}
+              onNavigate={(tab) => setActiveTab(tab as NavTabType)}
+            />
+          )}
 
-        {activeTab === 'builder' && (
-          <CvBuilderTab />
-        )}
+          {activeTab === 'privacy_security' && (
+            <SecuritySettingsTab
+              loggedInUser={loggedInUser}
+              onLogout={handleLogout}
+              onProfileUpdated={(updated) => {
+                setLoggedInUser(updated);
+                localStorage.setItem('resume_auth_user', JSON.stringify(updated));
+              }}
+            />
+          )}
 
-        {activeTab === 'ats' && (
-          <AnalyzerTab loggedInUser={loggedInUser} currentTime={currentTime} />
-        )}
+          {activeTab === 'builder' && (
+            <CvBuilderTab />
+          )}
 
-        {activeTab === 'cover_letter' && (
-          <CoverLetterTab />
-        )}
+          {activeTab === 'ats' && (
+            <AnalyzerTab
+              loggedInUser={loggedInUser}
+              currentTime={currentTime}
+            />
+          )}
 
-        {activeTab === 'linkedin' && (
-          <LinkedInOptimizerTab loggedInUser={loggedInUser} />
-        )}
+          {activeTab === 'cover_letter' && (
+            <CoverLetterTab />
+          )}
 
-        {activeTab === 'bio' && (
-          <BioGeneratorTab />
-        )}
+          {activeTab === 'linkedin' && (
+            <LinkedInOptimizerTab loggedInUser={loggedInUser} />
+          )}
 
-        {activeTab === 'emails' && (
-          <OutreachEmailsTab />
-        )}
+          {activeTab === 'bio' && (
+            <BioGeneratorTab />
+          )}
 
-        {activeTab === 'slides' && (
-          <PresentationSlides />
-        )}
+          {activeTab === 'emails' && (
+            <OutreachEmailsTab />
+          )}
 
-        {activeTab === 'feedback' && (
-          <FeedbackTab allFeedback={allFeedback} onFeedbackSumitted={fetchFeedbackHistory} />
-        )}
+          {activeTab === 'slides' && (
+            <PresentationSlides />
+          )}
 
-        {activeTab === 'about' && (
-          <AboutTab />
-        )}
+          {activeTab === 'feedback' && (
+            <FeedbackTab allFeedback={allFeedback} onFeedbackSumitted={fetchFeedbackHistory} />
+          )}
 
-        {activeTab === 'admin' && (
-          <AdminDashboardOverview
-            adminUsername={adminUsername}
-            setAdminUsername={setAdminUsername}
-            adminPassword={adminPassword}
-            setAdminPassword={setAdminPassword}
-            isAdminLoggedIn={isAdminLoggedIn}
-            setIsAdminLoggedIn={setIsAdminLoggedIn}
-            adminError={adminError}
-            setAdminError={setAdminError}
-            onLogout={handleLogout}
-          />
-        )}
-      </main>
+          {activeTab === 'about' && (
+            <AboutTab />
+          )}
+
+          {activeTab === 'admin' && (
+            <AdminDashboardOverview
+              adminUsername={adminUsername}
+              setAdminUsername={setAdminUsername}
+              adminPassword={adminPassword}
+              setAdminPassword={setAdminPassword}
+              isAdminLoggedIn={isAdminLoggedIn}
+              setIsAdminLoggedIn={setIsAdminLoggedIn}
+              adminError={adminError}
+              setAdminError={setAdminError}
+              onLogout={handleLogout}
+            />
+          )}
+        </main>
+      </div>
 
       {/* Auth Login/Signup Modal */}
       {isAuthOpen && (
         <AuthModal
           onClose={() => setIsAuthOpen(false)}
           onAuthSuccess={handleAuthSuccess}
+          onAdminAuthSuccess={handleAdminAuthSuccess}
         />
       )}
 

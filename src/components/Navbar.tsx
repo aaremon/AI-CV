@@ -116,12 +116,6 @@ export default function Navbar({
         { id: 'bio', label: 'Bio Generator', icon: UserCheck },
         { id: 'emails', label: 'Outreach Emails', icon: Send },
       ]
-    },
-    {
-      category: 'ADMIN & SYSTEM',
-      items: [
-        { id: 'admin', label: 'Admin Panel', icon: Shield, dot: isAdminLoggedIn }
-      ]
     }
   ];
 
@@ -182,8 +176,7 @@ export default function Navbar({
                   MM
                 </div>
                 <div>
-                  <span className="font-black text-xs text-slate-900 dark:text-white uppercase block">Mero Match</span>
-                  <span className="text-[9px] font-mono text-indigo-500 block">Master Environment</span>
+                  <span className="font-black text-xs text-slate-900 dark:text-white uppercase block tracking-wider">Mero Match</span>
                 </div>
               </div>
               <button onClick={() => setMobileMenuOpen(false)} className="p-1 text-slate-400">
@@ -260,16 +253,15 @@ export default function Navbar({
         {/* PANE 1: NARROW ICON DOCK BAR (~64px) */}
         <div className="w-16 h-full flex flex-col justify-between items-center py-4 border-r border-slate-200/60 dark:border-slate-850 bg-white dark:bg-[#0c111e]">
           
-          {/* Top Logo Badge (Matching image top "PN" avatar block) */}
+          {/* Top Logo Badge (Matching Mero Match exact branding) */}
           <div className="flex flex-col items-center space-y-4">
             <button
               onClick={onGoHome}
               className="group flex flex-col items-center cursor-pointer"
               title="Mero Match Hub"
             >
-              <div className="w-10 h-10 rounded-xl bg-slate-950 dark:bg-slate-900 border border-slate-800 text-white font-black text-xs flex flex-col items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                <span className="leading-none text-[11px]">MM</span>
-                <span className="text-[8px] font-mono text-indigo-400 font-normal mt-0.5 tracking-tighter">-CE</span>
+              <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white p-1 border border-slate-200 dark:border-slate-700 shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center overflow-hidden">
+                <img src={logo} alt="Mero Match Logo" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
               </div>
             </button>
 
@@ -335,19 +327,6 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Admin & System Settings Button */}
-            <button
-              onClick={() => handleNavClick('admin')}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
-                activeTab === 'admin'
-                  ? 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400'
-                  : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-850'
-              }`}
-              title="Admin Portal"
-            >
-              <Shield className="w-4 h-4" />
-            </button>
-
             {/* Profile Avatar / User Button (Matching image cat avatar circle) */}
             <button
               onClick={loggedInUser ? onLogout : onOpenAuth}
@@ -363,19 +342,20 @@ export default function Navbar({
         {paneExpanded && (
           <div className="w-52 h-full flex flex-col justify-between p-4 bg-[#F8FAFC]/90 dark:bg-[#0c111e] overflow-y-auto border-r border-slate-200/60 dark:border-slate-850 animate-fade-in">
             
-            {/* Top Workspace / Project Name Selector (Matching image "Project Name / Master Environment") */}
+            {/* Top Workspace / Brand Header */}
             <div className="space-y-4">
               <div className="pb-3 border-b border-slate-200/70 dark:border-slate-800/80">
                 <div className="flex items-center justify-between cursor-pointer group" onClick={onGoHome}>
-                  <div>
-                    <h2 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight flex items-center gap-1.5">
-                      <span>Mero Match</span>
-                      <ChevronDown className="w-3 h-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200" />
-                    </h2>
-                    <p className="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 flex items-center gap-1 mt-0.5 font-bold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Master Environment</span>
-                    </p>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-white dark:bg-white p-1 border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-center shrink-0">
+                      <img src={logo} alt="Mero Match" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+                    </div>
+                    <div>
+                      <h2 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1">
+                        <span>MERO MATCH</span>
+                        <ChevronDown className="w-3 h-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200" />
+                      </h2>
+                    </div>
                   </div>
                 </div>
               </div>

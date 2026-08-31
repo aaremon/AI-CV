@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Shield,
   ShieldAlert,
   Users,
   FileText,
@@ -173,19 +174,24 @@ export default function AdminDashboardOverview({
   // Login View if not logged in
   if (!isAdminLoggedIn) {
     return (
-      <div className="max-w-md mx-auto my-12 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6">
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+      <div className="max-w-md mx-auto my-12 bg-white dark:bg-[#111726] rounded-3xl p-8 border border-slate-200/90 dark:border-slate-800 shadow-xl space-y-6">
+        <div className="text-center space-y-3">
+          <div className="w-14 h-14 bg-gradient-to-tr from-slate-950 via-slate-900 to-indigo-900 text-white rounded-2xl flex items-center justify-center mx-auto shadow-md border border-slate-800">
             <Lock className="w-6 h-6 text-indigo-400" />
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Admin Control Panel</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Authenticated administrator access required to view metrics and user management.
-          </p>
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-[10px] font-mono font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-1.5">
+              <Shield className="w-3 h-3" /> Secure Gateway
+            </div>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Admin Control Panel</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Elevated credentials required to manage platform operations, user accounts, and AI diagnostics.
+            </p>
+          </div>
         </div>
 
         {adminError && (
-          <div className="p-3.5 bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-300 rounded-xl text-xs font-semibold flex items-center gap-2">
+          <div className="p-3.5 bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-300 rounded-xl text-xs font-semibold flex items-center gap-2 border border-rose-200 dark:border-rose-900">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{adminError}</span>
           </div>
@@ -193,39 +199,40 @@ export default function AdminDashboardOverview({
 
         <form onSubmit={handleAdminLogin} className="space-y-4 text-xs">
           <div>
-            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Admin Username / Email</label>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">Admin Email / Username</label>
             <input
               type="text"
               value={adminUsername}
               onChange={(e) => setAdminUsername(e.target.value)}
               placeholder="thapakaji@gmail.com"
               required
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Password</label>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
             <input
               type="password"
               value={adminPassword}
               onChange={(e) => setAdminPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium transition-all"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition-all shadow-lg cursor-pointer"
+            className="w-full py-3.5 bg-slate-950 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-bold rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-2 text-xs"
           >
-            Authenticate Admin Session
+            <KeyRound className="w-4 h-4" />
+            <span>Authenticate Admin Session</span>
           </button>
         </form>
 
-        <div className="bg-indigo-50/70 dark:bg-indigo-950/40 p-3.5 rounded-2xl border border-indigo-100 dark:border-indigo-900/60 text-[11px] text-indigo-700 dark:text-indigo-300 leading-relaxed text-center font-medium">
-          💡 <b>Admin Credentials</b>: Email <b>thapakaji@gmail.com</b> (or <b>admin</b>) & Password <b>password</b>
+        <div className="bg-slate-50 dark:bg-slate-900/60 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed text-center">
+          Default Admin: <strong className="text-slate-900 dark:text-slate-200 font-mono">thapakaji@gmail.com</strong> / Password: <strong className="text-slate-900 dark:text-slate-200 font-mono">password</strong>
         </div>
       </div>
     );
@@ -243,22 +250,22 @@ export default function AdminDashboardOverview({
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-12">
       {/* Header Bar */}
-      <div className="bg-slate-900 text-white p-6 md:p-8 rounded-3xl border border-slate-800 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs font-bold uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs font-bold uppercase tracking-wider mb-1.5">
             <ShieldCheck className="w-4 h-4 text-indigo-400" />
             <span>Platform Administration & Operations</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Admin Control Center</h1>
-          <p className="text-xs text-slate-300 mt-1">
-            Least-privilege platform oversight, user status controls, AI feature usage, and security audit logs.
+          <h1 className="text-2xl md:text-3xl font-black tracking-tight font-display">Admin Control Center</h1>
+          <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            Platform oversight, user credentials management, AI diagnostic telemetry, and security audit trail.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={fetchAdminData}
-            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl cursor-pointer transition-all"
+            className="p-2.5 bg-white/10 hover:bg-white/20 text-slate-200 rounded-xl cursor-pointer transition-all border border-white/10"
             title="Refresh Metrics"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -266,7 +273,7 @@ export default function AdminDashboardOverview({
 
           <button
             onClick={() => setIsAdminLoggedIn(false)}
-            className="px-4 py-2.5 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-500/30 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
           >
             <LogOut className="w-4 h-4" />
             <span>Exit Admin Mode</span>
