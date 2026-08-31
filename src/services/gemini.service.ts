@@ -58,10 +58,18 @@ export class CentralizedGeminiService {
       }
     } else {
       const client = getGeminiClient();
-      const geminiRes = await client.models.generateContent({
-        model: "gemini-3.7-flash",
-        contents: cleanPrompt
-      });
+      let geminiRes: any;
+      try {
+        geminiRes = await client.models.generateContent({
+          model: "gemini-3.5-flash-lite",
+          contents: cleanPrompt
+        });
+      } catch {
+        geminiRes = await client.models.generateContent({
+          model: "gemini-3.6-flash",
+          contents: cleanPrompt
+        });
+      }
       resultText = geminiRes.text ? geminiRes.text.trim() : "";
     }
 

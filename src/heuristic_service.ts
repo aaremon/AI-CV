@@ -426,17 +426,8 @@ export function localHeuristicAnalysis(
     candLevel = 'Fresher';
   }
 
-  // 6. Degree Extraction
-  let degreeGuess = "Bachelor of Science";
-  if (/ph\.?d|doctorate/i.test(text)) {
-    degreeGuess = "Ph.D. / Doctorate";
-  } else if (/m\.?s|master|m\.tech|mba|m\.a|msc/i.test(text)) {
-    degreeGuess = "Master's Degree (M.S. / MBA)";
-  } else if (/bachelor|b\.s|b\.tech|bba|b\.a|bsc|b\.eng/i.test(text)) {
-    degreeGuess = "Bachelor's Degree";
-  } else if (/associate|diploma/i.test(text)) {
-    degreeGuess = "Associate Degree / Diploma";
-  }
+  // 6. Comprehensive Accurate Degree & Education Extraction
+  let degreeGuess = extractDegreeFromText(rawText);
 
   // 7. Transparent 10-Factor Scoring Matrix (0-100)
   let rawScore = 0;
@@ -580,4 +571,109 @@ export function localHeuristicAnalysis(
     feedback,
     recommended_courses: benchmark.courses
   };
+}
+
+/**
+ * Intelligent parser to extract candidate's actual Degree, Major, Institution, and Graduation Year
+ */
+export function extractDegreeFromText(rawText: string): string {
+  if (!rawText || rawText.trim().length === 0) {
+    return "Bachelor's Degree";
+  }
+
+  const lines = rawText.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+
+  // 1. Degree match regexes for full title extraction
+  const degreePatterns = [
+    // Bachelor variations
+    /(?:bachelor(?:'s)?(?:\s+of|\s+in)?|b\.?s\.?c?|b\.?tech|b\.?e|bba|bca|b\.?a|bcom|b\.?sc\s*csit|b\.?eng)\s*(?:in|of|-|–|:|,)?\s*([a-zA-Z\s&/,'-]+(?:\(\w+\))?)/i,
+    // Master variations
+    /(?:master(?:'s)?(?:\s+of|\s+in)?|m\.?s\.?c?|m\.?tech|m\.?e|mba|mca|m\.?a|mcom|m\.?eng)\s*(?:in|of|-|–|:|,)?\s*([a-zA-Z\s&/,'-]+(?:\(\w+\))?)/i,
+    // Ph.D. / Doctorate variations
+    /(?:ph\.?d\.?|doctor(?:ate)?(?:\s+of|\s+in)?)\s*(?:in|of|-|–|:|,)?\s*([a-zA-Z\s&/,'-]+)/i,
+    // Associate & Diploma
+    /(?:associate(?:'s)?(?:\s+of|\s+in)?|diploma(?:\s+in)?)\s*(?:in|of|-|–|:|,)?\s*([a-zA-Z\s&/,'-]+)/i,
+    // High school / +2
+    /(?:\+2|plus\s*two|high\s*school|higher\s*secondary|a\s*levels?|ib\s*diploma)\s*(?:in|of|-|–|:|,)?\s*([a-zA-Z\s&/,'-]+)?/i
+  ];
+
+  // Look for education block in the resume
+  let inEducationSection = false;
+  const educationLines: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const isSectionHeader = /^(education|academic|qualifications|educational background|academic credentials|academics|degrees?)/i.test(line);
+    const isNextSection = /^(experience|work experience|employment|projects|skills|technical skills|certifications|awards|summary|objective|interests|languages)/i.test(line);
+
+    if (isSectionHeader) {
+      inEducationSection = true;
+      continue;
+    } else if (inEducationSection && isNextSection) {
+      inEducationSection = false;
+      break;
+    }
+
+    if (inEducationSection) {
+      educationLines.push(line);
+    }
+  }
+
+  // Scan education section first, or full text if section wasn't delimited
+  const linesToScan = educationLines.length > 0 ? educationLines : lines;
+
+  for (const line of linesToScan) {
+    // Ignore pure section headers
+    if (/^(education|academics|qualifications|degrees?|educational background)$/i.test(line)) continue;
+
+    for (const pattern of degreePatterns) {
+      const match = line.match(pattern);
+      if (match) {
+        let cleanDegree = line.replace(/^[•\-\*–\d\.\s]+/, "").trim();
+        // Clean out excessive noise
+        if (cleanDegree.length > 90) {
+          cleanDegree = cleanDegree.slice(0, 85).trim() + "...";
+        }
+        if (cleanDegree.length >= 4) {
+          return cleanDegree;
+        }
+      }
+    }
+  }
+
+  // Look for university / college mentions
+  for (const line of linesToScan) {
+    if (/(university|college|institute|campus|academy|school of)\b/i.test(line)) {
+      const cleanLine = line.replace(/^[•\-\*–\d\.\s]+/, "").trim();
+      if (cleanLine.length >= 6 && cleanLine.length <= 90) {
+        return cleanLine;
+      }
+    }
+  }
+
+  // Fallback to coarse classification
+  const lowerAll = rawText.toLowerCase();
+  if (/ph\.?d|doctorate/i.test(lowerAll)) {
+    return "Ph.D. / Doctorate";
+  } else if (/mba\b/i.test(lowerAll)) {
+    return "Master of Business Administration (MBA)";
+  } else if (/m\.?s|master|m\.tech|m\.a|msc/i.test(lowerAll)) {
+    return "Master's Degree (M.S. / M.Sc.)";
+  } else if (/bba\b/i.test(lowerAll)) {
+    return "Bachelor of Business Administration (BBA)";
+  } else if (/bca\b/i.test(lowerAll)) {
+    return "Bachelor of Computer Applications (BCA)";
+  } else if (/b\.?sc\s*csit/i.test(lowerAll)) {
+    return "B.Sc. in CSIT / Computer Science";
+  } else if (/b\.?tech|b\.?e\b/i.test(lowerAll)) {
+    return "Bachelor of Technology / Engineering (B.Tech / B.E.)";
+  } else if (/bachelor|b\.s|b\.a|bsc/i.test(lowerAll)) {
+    return "Bachelor's Degree";
+  } else if (/associate|diploma/i.test(lowerAll)) {
+    return "Associate Degree / Diploma";
+  } else if (/\+2|plus two|high school/i.test(lowerAll)) {
+    return "Higher Secondary (+2 / High School)";
+  }
+
+  return "Bachelor's Degree";
 }

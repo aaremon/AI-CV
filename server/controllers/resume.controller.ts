@@ -193,10 +193,19 @@ Provide ONLY the cover letter text ready to send.`;
     if (process.env.GEMINI_API_KEY) {
       try {
         const client = getGeminiClient();
-        const response = await client.models.generateContent({
-          model: "gemini-3.7-flash",
-          contents: prompt
-        });
+        const candidateModels = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.7-flash"];
+        let response: any = null;
+        for (const m of candidateModels) {
+          try {
+            response = await client.models.generateContent({
+              model: m,
+              contents: prompt
+            });
+            if (response && response.text) break;
+          } catch (modelErr) {
+            console.warn(`Cover letter model ${m} failed:`, (modelErr as any)?.message || modelErr);
+          }
+        }
         if (response && response.text) {
           return res.json({ success: true, letter: response.text.trim() });
         }
@@ -414,10 +423,19 @@ Return valid JSON ONLY matching this exact structure:
   }
 }`;
 
-        const response = await client.models.generateContent({
-          model: "gemini-3.7-flash",
-          contents: prompt
-        });
+        const candidateModels = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.7-flash"];
+        let response: any = null;
+        for (const m of candidateModels) {
+          try {
+            response = await client.models.generateContent({
+              model: m,
+              contents: prompt
+            });
+            if (response && response.text) break;
+          } catch (modelErr) {
+            console.warn(`LinkedIn optimizer model ${m} failed:`, (modelErr as any)?.message || modelErr);
+          }
+        }
 
         if (response && response.text) {
           let cleanJson = response.text.trim();
