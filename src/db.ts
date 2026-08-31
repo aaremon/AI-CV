@@ -16,7 +16,12 @@ interface DbSchema {
   notifications: any[];
 }
 
+let isDbInitialized = false;
+
 function initDb() {
+  if (isDbInitialized && fs.existsSync(DB_FILE)) {
+    return;
+  }
   if (!fs.existsSync(DB_DIR)) {
     fs.mkdirSync(DB_DIR, { recursive: true });
   }
@@ -46,6 +51,7 @@ function initDb() {
 
   if (!fs.existsSync(DB_FILE)) {
     fs.writeFileSync(DB_FILE, JSON.stringify(defaultDb, null, 2), "utf8");
+    isDbInitialized = true;
   } else {
     try {
       const content = fs.readFileSync(DB_FILE, "utf8");
@@ -68,10 +74,15 @@ function initDb() {
       for (const u of data.auth_users || []) {
         if (!u.email) continue;
         const normalized = u.email.toLowerCase().trim();
-        if (normalized === "admin@cvoptimizer.com") continue; // remove legacy placeholder admin
+        if (normalized === "admin@cvoptimizer.com") {
+          modified = true;
+          continue; // remove legacy placeholder admin
+        }
         if (!emailMap.has(normalized)) {
           emailMap.set(normalized, true);
           cleanUsers.push(u);
+        } else {
+          modified = true;
         }
       }
       
@@ -80,9 +91,14 @@ function initDb() {
         cleanUsers.unshift(defaultDb.auth_users[0]);
         modified = true;
       } else {
-        existingAdmin.role = "admin";
-        existingAdmin.passwordHash = "plain:password";
-        modified = true;
+        if (existingAdmin.role !== "admin") {
+          existingAdmin.role = "admin";
+          modified = true;
+        }
+        if (existingAdmin.passwordHash !== "plain:password") {
+          existingAdmin.passwordHash = "plain:password";
+          modified = true;
+        }
       }
 
       // Ensure sequential distinct IDs
@@ -96,8 +112,10 @@ function initDb() {
       if (modified) {
         fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf8");
       }
+      isDbInitialized = true;
     } catch (e) {
       fs.writeFileSync(DB_FILE, JSON.stringify(defaultDb, null, 2), "utf8");
+      isDbInitialized = true;
     }
   }
 }

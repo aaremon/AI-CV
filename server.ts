@@ -31,7 +31,18 @@ app.use("/api", apiRoutes);
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        watch: {
+          ignored: [
+            "**/data/**",
+            "**/user.json",
+            "**/privacy_audit.json",
+            "**/*.json.tmp*",
+            "**/data/db.json"
+          ]
+        }
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);
