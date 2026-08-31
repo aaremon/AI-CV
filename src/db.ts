@@ -465,3 +465,32 @@ export function insertFeedback(feedback: any): any {
   writeDb(db);
   return newRecord;
 }
+
+// --- Reset Full Database Helper ---
+export function resetEntireDatabase(): boolean {
+  const defaultDb: DbSchema = {
+    auth_users: [
+      {
+        id: 1,
+        email: "thapakaji@gmail.com",
+        name: "Platform Administrator",
+        phone: "+1-800-555-ADMIN",
+        passwordHash: "plain:password",
+        role: "admin",
+        status: "active",
+        mfa_enabled: false,
+        created_at: new Date().toISOString()
+      }
+    ],
+    users: [],
+    feedback: [],
+    user_versions: [],
+    user_documents: [],
+    user_sessions: [],
+    security_events: [],
+    admin_audit_logs: [],
+    notifications: []
+  };
+  writeDb(defaultDb);
+  return true;
+}

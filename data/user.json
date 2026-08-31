@@ -7,26 +7,6 @@
     "role": "admin",
     "status": "active",
     "mfa_enabled": false,
-    "registered_at": "2026-08-14T05:02:32.843Z"
-  },
-  {
-    "id": 2,
-    "name": "Ram Bikram Kunwar",
-    "email": "rambk@gmail.com",
-    "phone": "123456789",
-    "role": "user",
-    "status": "active",
-    "mfa_enabled": false,
-    "registered_at": "2026-08-14T06:03:39.221Z"
-  },
-  {
-    "id": 3,
-    "name": "Jane Developer",
-    "email": "jane.dev@example.com",
-    "phone": "+1-555-0188",
-    "role": "user",
-    "status": "active",
-    "mfa_enabled": false,
-    "registered_at": "2026-08-14T06:27:06.760Z"
+    "registered_at": "2026-08-31T06:00:00.000Z"
   }
 ]

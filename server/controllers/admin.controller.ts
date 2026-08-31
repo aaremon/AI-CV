@@ -8,7 +8,8 @@ import {
   getAdminAuditLogs,
   updateAuthUser,
   insertSecurityEvent,
-  insertAdminAuditLog
+  insertAdminAuditLog,
+  resetEntireDatabase
 } from "../../src/db";
 
 export async function adminLogin(req: Request, res: Response) {
@@ -266,6 +267,15 @@ export async function getAdminRecords(req: Request, res: Response) {
   try {
     const records = getUsers();
     return res.json(records);
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message || String(e) });
+  }
+}
+
+export async function resetDatabaseData(req: Request, res: Response) {
+  try {
+    resetEntireDatabase();
+    return res.json({ success: true, message: "All historical data cleared successfully. Database is fresh." });
   } catch (e: any) {
     return res.status(500).json({ error: e.message || String(e) });
   }

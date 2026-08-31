@@ -11,7 +11,8 @@ import {
   getSystemHealth,
   getAdminSecurityEvents,
   getAdminAuditLogsList,
-  getAdminRecords
+  getAdminRecords,
+  resetDatabaseData
 } from "../controllers/admin.controller";
 
 const router = Router();
@@ -30,5 +31,6 @@ router.get("/system-health", requireAdmin, getSystemHealth);
 router.get("/security-events", requireAdmin, getAdminSecurityEvents);
 router.get("/audit-logs", requireAdmin, getAdminAuditLogsList);
 router.get("/records", requireAdmin, getAdminRecords);
+router.post("/reset-data", requireAdmin, resetDatabaseData);
 
 export default router;
