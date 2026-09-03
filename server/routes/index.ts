@@ -8,6 +8,11 @@ import resumeRoutes from "./resume.routes";
 
 const router = Router();
 
+// Health check
+router.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 // Route modules
 router.use("/auth", authRoutes);
 router.use("/user", userRoutes);

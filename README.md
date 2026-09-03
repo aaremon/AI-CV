@@ -1,301 +1,532 @@
-# AI-Powered CV Optimizer & Career Acceleration Suite
+# Mero Match - AI CV Analyzer & Career Acceleration Suite
 
-> **Tagline:** *"Upload. Optimize. Get Hired."*  
-> **Target Platform:** Full-Stack Web Application (Node.js + Express.js + React 19 + TypeScript + Vite + Tailwind CSS + Google Gemini AI)
+> **Tagline:** *"Upload. Analyze. Match. Get Hired."*  
+> **Platform:** Full-Stack Web Application (Node.js + Express.js + React 19 + TypeScript + Vite + Tailwind CSS v4 + Google Gemini AI)
 
 ---
 
 ## 📑 Table of Contents
-1. [Executive Summary & Motivation](#1-executive-summary--motivation)
-2. [Step-by-Step Guide: Running Locally in VS Code](#2-step-by-step-guide-running-locally-in-vs-code)
-3. [System Architecture & Data Flow](#3-system-architecture--data-flow)
-4. [Complete Project Mechanics (For Final Defense & Viva)](#4-complete-project-mechanics-for-final-defense--viva)
-   - [A. Resume File Ingestion (PDF / DOCX Parsing)](#a-resume-file-ingestion-pdf--docx-parsing)
-   - [B. 10-Category ATS Scoring Algorithm](#b-10-category-ats-scoring-algorithm)
-   - [C. AI Engine & Heuristic Fallback Engine](#c-ai-engine--heuristic-fallback-engine)
-   - [D. LinkedIn Profile Optimizer & Coaching Blueprint](#d-linkedin-profile-optimizer--coaching-blueprint)
-   - [E. Cover Letter & Outreach Email Generators](#e-cover-letter--outreach-email-generators)
-   - [F. Database & Persistence Layer](#f-database--persistence-layer)
-   - [G. Admin Dashboard & Telemetry](#g-admin-dashboard--telemetry)
-5. [Anticipated Defense Questions & Answers (Viva Prep)](#5-anticipated-defense-questions--answers-viva-prep)
-6. [Credentials & Configuration Reference](#6-credentials--configuration-reference)
+1. [Executive Summary & Vision](#1-executive-summary--vision)
+2. [Key Features & Capabilities](#2-key-features--capabilities)
+3. [Step-by-Step Guide: Running Locally in VS Code](#3-step-by-step-guide-running-locally-in-vs-code)
+4. [System Architecture, DFD & Use Case Diagrams](#4-system-architecture-dfd--use-case-diagrams)
+   - [4.1 System Architecture Diagram](#41-system-architecture-diagram)
+   - [4.2 Data Flow Diagram (DFD) - Level 0 Context Diagram](#42-data-flow-diagram-dfd---level-0-context-diagram)
+   - [4.3 Data Flow Diagram (DFD) - Level 1 Detailed Pipeline](#43-data-flow-diagram-dfd---level-1-detailed-pipeline)
+   - [4.4 Use Case Diagram](#44-use-case-diagram)
+5. [Core Engine Mechanics & Algorithms](#5-core-engine-mechanics--algorithms)
+   - [A. Multi-Format Resume Ingestion (PDF / DOCX Parsing)](#a-multi-format-resume-ingestion-pdf--docx-parsing)
+   - [B. 10-Factor ATS Scoring Matrix (0–100)](#b-10-factor-ats-scoring-matrix-0100)
+   - [C. Intelligent Degree & Education Extraction](#c-intelligent-degree--education-extraction)
+   - [D. Multi-Industry NLP Sector Clustering Map](#d-multi-industry-nlp-sector-clustering-map)
+   - [E. Resilient Multi-Model Gemini AI Cascade & Offline Heuristics](#e-resilient-multi-model-gemini-ai-cascade--offline-heuristics)
+   - [F. LinkedIn Profile Optimizer & Career Blueprint](#f-linkedin-profile-optimizer--career-blueprint)
+   - [G. Cover Letter & Outreach Studio](#g-cover-letter--outreach-studio)
+   - [H. Persistence Layer & Live Watcher Isolation](#h-persistence-layer--live-watcher-isolation)
+   - [I. Admin Dashboard & Telemetry](#i-admin-dashboard--telemetry)
+6. [Academic Defense & Viva Q&A Guide](#6-academic-defense--viva-qa-guide)
+7. [Credentials & Configuration Reference](#7-credentials--configuration-reference)
 
 ---
 
-## 1. Executive Summary & Motivation
+## 1. Executive Summary & Vision
 
-Modern hiring relies heavily on **Applicant Tracking Systems (ATS)**—software used by over 98% of Fortune 500 companies to filter, score, and rank job applicants before a human recruiter ever sees a resume. Due to non-standard resume formats, missing industry keywords, and weak metric articulation, **over 75% of qualified resumes are automatically rejected**.
+In modern recruitment, over **98% of Fortune 500 organizations** and a growing majority of tech companies rely on **Applicant Tracking Systems (ATS)** to filter candidate applications before human recruiters review them. Due to non-standard resume styling, omitted industry keywords, unquantified achievements, and miscategorized academic credentials, **over 75% of qualified job seekers are rejected at the parsing gate**.
 
-This project provides an end-to-end, full-stack career platform that bridges this gap:
-- **Transparent ATS Analysis:** Evaluates resumes against target Job Descriptions (JD) across a strict 10-category scoring matrix (0–100 score) with detailed keyword gap analysis.
-- **Dynamic CV Builder:** Parses uploaded PDFs and Word documents into structured JSON schemas, enabling one-click edits and multi-template PDF exports.
-- **LinkedIn Profile Coach:** Transforms cold 3rd-person resume bullets into engaging 1st-person recruiter-optimized headlines, summaries, and action blueprints.
-- **Cover Letter & Outreach Studio:** Generates tailored, anti-hallucination cover letters and cold recruiter outreach messages.
-- **High-Availability Hybrid Architecture:** Seamlessly switches between the Google Gemini API (`gemini-2.5-flash`) and a local offline **Heuristic NLP Engine** (`src/heuristic_service.ts`), ensuring 100% uptime even without an internet connection or API quota.
+**Mero Match - AI CV Analyzer** is an end-to-end full-stack career platform designed to democratize hiring transparency:
+- **Accurate Resume Parsing**: Ingests raw PDFs and Microsoft Word (.docx) documents in-memory without data leakage.
+- **Transparent 10-Factor ATS Evaluation**: Breaks down scores (0–100) across transparent criteria including keyword density, skill fit, achievement measurability (STAR formula), and section integrity.
+- **Accurate Degree & Major Recognition**: Employs an intelligent academic parser (`extractDegreeFromText`) that extracts candidates' genuine degrees (e.g., *Bachelor of Business Administration (BBA)*, *B.Sc. in CSIT / Computer Science*, *MBA*, *Higher Secondary (+2)*, *Diplomas*) instead of relying on coarse defaults.
+- **Multi-Industry Domain Clustering**: Analyzes skill signatures across 10 specialized industry tracks (including *Digital Marketing*, *Business Analysis*, *Software Engineering*, *Data Science & AI*, *Product Design*, *Finance*, and *HR*) with strict word-boundary pattern matching.
+- **Enterprise-Grade Availability**: Features a multi-model fallback cascade across Google Gemini Flash models (`gemini-3.5-flash-lite`, `gemini-3.6-flash`, `gemini-3.1-flash-lite`) and an instant offline **Heuristic NLP Engine** (`src/heuristic_service.ts`), ensuring 100% uptime with zero quota bottlenecks.
 
 ---
 
-## 2. Step-by-Step Guide: Running Locally in VS Code
+## 2. Key Features & Capabilities
 
-Follow these clear, beginner-friendly instructions to clone, install, and run this project on your personal computer using Visual Studio Code.
+- 🎯 **ATS Resume Scanner**: Drag-and-drop file upload with real-time scoring, keyword gap diagnosis, and prioritized action badges.
+- 🎓 **Intelligent Degree Parser**: Extracts true degrees, institutions, and graduation years directly from candidate text.
+- 🌐 **Sector & Keyword Clustering Map**: Visualizes candidate affinity across 10 modern economic sectors with keyword proximity bars.
+- 📝 **Dynamic CV Builder**: Clean multi-section interactive editor with live template rendering and PDF download.
+- 💼 **LinkedIn Profile Coach**: Converts formal 3rd-person resume bullets into engaging 1st-person storytelling summaries, search-optimized headlines, and banner suggestions.
+- ✉️ **Cover Letter & Cold Outreach Studio**: Generates anti-hallucination, metric-aligned job application letters and networking DMs.
+- 📊 **Visual Analytics (Recharts)**: Interactive Skill Competency Radars, Category Distribution Bar Charts, and Experience Fit visualizers.
+- 🛡️ **Privacy & PII Sanitizer**: Client-side and server-side regular expression masking for phone numbers, emails, and sensitive identifiers.
+- 🔐 **User Dashboard & Security Center**: Version control for past CV evaluations, saved cover letters, active device session management, and GDPR-compliant one-click data deletion.
+- ⚡ **Admin Command Center**: Real-time system health telemetry, memory usage, API latency tracking, user role management, and audit logs.
+
+---
+
+## 3. Step-by-Step Guide: Running Locally in VS Code
+
+Follow these straightforward steps to run **Mero Match** locally:
 
 ### 📋 Prerequisites
-Before you start, ensure you have the following installed on your computer:
-1. **Node.js** (Version 18.x or higher, recommended: Node.js 20 LTS): [Download Node.js](https://nodejs.org/)
-2. **Visual Studio Code**: [Download VS Code](https://code.visualstudio.com/)
-3. **Git** (Optional, if cloning directly): [Download Git](https://git-scm.com/)
+1. **Node.js** (v18.x or higher, Node.js 20 LTS recommended): [nodejs.org](https://nodejs.org/)
+2. **Visual Studio Code**: [code.visualstudio.com](https://code.visualstudio.com/)
+3. **Git** (optional): [git-scm.com](https://git-scm.com/)
 
 ---
 
-### Step 1: Download or Clone the Repository
-- **Option A (Via Git):**
-  Open your terminal or command prompt and run:
-  ```bash
-  git clone https://github.com/your-username/cv-optimizer.git
-  cd cv-optimizer
-  ```
-- **Option B (Via ZIP Download):**
-  1. Click **Code -> Download ZIP** on GitHub.
-  2. Extract the downloaded ZIP file to a folder on your computer (e.g., `C:\Projects\cv-optimizer` or `~/Projects/cv-optimizer`).
+### Step 1: Clone or Download Repository
+```bash
+git clone https://github.com/your-username/mero-match-cv-analyzer.git
+cd mero-match-cv-analyzer
+```
+*(Or extract the downloaded ZIP folder to your workspace directory).*
 
 ---
 
-### Step 2: Open the Folder in VS Code
-1. Open **Visual Studio Code**.
-2. Click **File -> Open Folder...** (or `Cmd + O` on macOS / `Ctrl + K Ctrl + O` on Windows).
-3. Select the extracted `cv-optimizer` directory and click **Open**.
+### Step 2: Open in VS Code
+1. Launch **Visual Studio Code**.
+2. Select **File -> Open Folder...** and choose the project directory.
 
 ---
 
-### Step 3: Open the Integrated Terminal
-1. In VS Code, open the integrated terminal by pressing:
-   - Windows/Linux: `Ctrl + ~` (tilde) or click **Terminal -> New Terminal** from the top menu bar.
-   - macOS: `Cmd + ~` (tilde).
-2. Verify that your Node.js and npm versions are recognized:
-   ```bash
-   node -v
-   npm -v
-   ```
-   *(Should output `v18.x.x` or `v20.x.x` and `npm 9+` or `10+`)*
-
----
-
-### Step 4: Install Dependencies
-In the terminal, run:
+### Step 3: Install Dependencies
+Open your integrated terminal (`Ctrl + ~` on Windows/Linux or `Cmd + ~` on macOS) and run:
 ```bash
 npm install
 ```
-This will read `package.json` and download all necessary frontend and backend libraries into a local `node_modules` folder.
+This installs all client and server packages, including React 19, Tailwind CSS v4, Express, Lucide Icons, Recharts, and Google GenAI SDK.
 
 ---
 
-### Step 5: Configure Environment Variables
-1. Create a `.env` file in the root directory by copying the sample:
-   - On Windows (PowerShell):
-     ```powershell
-     cp .env.example .env
-     ```
-   - On macOS/Linux:
-     ```bash
-     cp .env.example .env
-     ```
-   - Or simply right-click in the VS Code file explorer -> **New File** -> name it `.env`.
-2. Open `.env` and configure your settings:
+### Step 4: Configure Environment Variables
+1. Create a `.env` file in the project root based on `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Set your configuration in `.env`:
    ```env
-   # Required for AI generation features (obtain free key from https://aistudio.google.com/app/apikey)
+   # Google Gemini API Key (Get a free key from https://aistudio.google.com/app/apikey)
    GEMINI_API_KEY=your_gemini_api_key_here
 
-   # Server Port (Default is 3000)
+   # Server Port
    PORT=3000
    ```
-   > **Note on Offline / No-Key Mode:** Even if you do NOT provide a `GEMINI_API_KEY`, the application is equipped with an integrated **Local Heuristic Fallback Engine** that will automatically compute ATS scores, perform keyword gap analysis, and extract skills locally!
+   > **Note on Offline Mode:** If `GEMINI_API_KEY` is omitted or quota is exhausted, the application automatically switches to its local **Deterministic Heuristic Engine** with 0 downtime.
 
 ---
 
-### Step 6: Start the Development Server
-In the VS Code terminal, run:
+### Step 5: Start the Development Server
 ```bash
 npm run dev
 ```
-
-You will see output indicating that the backend Express server and Vite development server are running:
+The server will boot on port 3000 with Vite middleware:
 ```
-Server running on port 3000
-Vite dev server ready
+Server running on http://localhost:3000
 ```
 
 ---
 
-### Step 7: Open the Application in Your Browser
-Open your web browser (Chrome, Edge, Firefox, or Safari) and visit:
+### Step 6: Launch in Browser
+Navigate to:
 ```
 http://localhost:3000
 ```
-You will see the live application dashboard ready to analyze and build resumes!
+Test the health probe at `http://localhost:3000/api/health` to confirm the backend is responding with `{"status":"ok"}`.
 
 ---
 
-### Step 8: Build for Production (Optional / Evaluation Check)
-To test the standalone production build:
+### Step 7: Build for Standalone Production
 ```bash
 npm run build
 npm start
 ```
-This bundles the React client into `dist/` and packages the Express backend using `esbuild` into a self-contained CommonJS runtime at `dist/server.cjs`.
+`npm run build` compiles the React frontend via Vite into `dist/` and bundles `server.ts` into a standalone CommonJS executable at `dist/server.cjs` via `esbuild`.
 
 ---
 
-## 3. System Architecture & Data Flow
+## 4. System Architecture, DFD & Use Case Diagrams
 
+### 4.1 System Architecture Diagram
+
+```mermaid
+graph TD
+  subgraph ClientTier ["CLIENT TIER (React 19 + TypeScript + Tailwind CSS v4)"]
+    UI_APP["Master Application (App.tsx)"]
+    UI_ATS["ATS Resume Scanner (AnalyzerTab.tsx)"]
+    UI_CLUST["Sector Proximity Map (ClusteringMap.tsx)"]
+    UI_BUILD["Interactive CV Builder (CvBuilderTab.tsx)"]
+    UI_LINKED["LinkedIn Coach (LinkedInOptimizerTab.tsx)"]
+    UI_DOCS["Cover Letter & Outreach Studio"]
+    UI_USER["Candidate Portal (UserDashboard.tsx)"]
+    UI_ADMIN["Admin Command Center (AdminDashboardOverview.tsx)"]
+    UI_VIS["Analytics Suite (Recharts & Gauges)"]
+  end
+
+  subgraph GatewayTier ["SERVER & API GATEWAY TIER (Node.js + Express.js @ Port 3000)"]
+    SVR_ENTRY["Express Server Entry (server.ts)"]
+    VITE_MID["Vite Middleware (Watcher Ignored for Data Files)"]
+    PROBE["Health & Liveness Probe (/api/health)"]
+    SEC_MID["Admin Auth Middleware (auth.middleware.ts)"]
+    ROUTER["Central Modular Router (server/routes/index.ts)"]
+    
+    subgraph Controllers ["Controller Layer"]
+      C_AUTH["Auth Controller"]
+      C_RESUME["Resume & Parsing Controller"]
+      C_USER["User & Session Controller"]
+      C_ADMIN["Admin Telemetry Controller"]
+      C_FEED["Feedback Controller"]
+    end
+  end
+
+  subgraph ProcessingTier ["DOCUMENT PROCESSING & SANITIZATION ENGINE"]
+    PDF_PARSE["In-Memory Buffer PDF Parser (pdf-parse)"]
+    MAMMOTH["In-Memory Buffer DOCX Parser (mammoth)"]
+    PII_GUARD["PII Redactor & AI Privacy Guard"]
+  end
+
+  subgraph IntelligenceTier ["INTELLIGENCE & SCORING LAYER (Dual-Engine Cascade)"]
+    subgraph GeminiCascade ["Google Gemini Cloud AI Cascade (@google/genai)"]
+      M_PRI["1st: gemini-3.5-flash-lite (High Speed / Availability)"]
+      M_SEC["2nd: gemini-3.6-flash (Advanced Reasoning)"]
+      M_TER["3rd: gemini-3.1-flash-lite / gemini-3.7-flash (Failover)"]
+    end
+    
+    subgraph HeuristicEngine ["Local Deterministic Heuristic Engine (100% Offline)"]
+      H_DEGREE["Degree & Academic Extractor (extractDegreeFromText)"]
+      H_MATRIX["10-Factor ATS Scoring Matrix (0-100 Pts)"]
+      H_CLUST["10-Industry NLP Word-Boundary Sector Engine"]
+      H_TOKEN["TF-IDF Keyword & Skill Taxonomy Matcher"]
+    end
+  end
+
+  subgraph PersistenceTier ["PERSISTENCE & DATA SYNCHRONIZATION LAYER"]
+    DB_MGR["Database Engine (src/db.ts - Cached Schema Guard)"]
+    DB_JSON[("Active Database: data/db.json")]
+    USER_JSON[("Mirrored Public Store: user.json")]
+    AUDIT_LOG[("Security & Audit Events Store")]
+  end
+
+  %% Client to Gateway
+  UI_APP --> SVR_ENTRY
+  UI_ATS & UI_BUILD & UI_DOCS --> ROUTER
+  UI_USER & UI_ADMIN --> SEC_MID --> ROUTER
+
+  %% Gateway to Controllers
+  ROUTER --> C_AUTH & C_RESUME & C_USER & C_ADMIN & C_FEED
+
+  %% Ingestion flow
+  C_RESUME --> PDF_PARSE & MAMMOTH --> PII_GUARD
+
+  %% Intelligence invocation
+  PII_GUARD --> GeminiCascade
+  GeminiCascade -- "503 Spike / Quota / Offline Fallback" --> HeuristicEngine
+  PII_GUARD -- "Direct Local Evaluation" --> HeuristicEngine
+
+  %% Persistence flow
+  C_AUTH & C_RESUME & C_USER & C_ADMIN --> DB_MGR
+  DB_MGR --> DB_JSON & USER_JSON & AUDIT_LOG
 ```
-+-------------------------------------------------------------------------+
-|                              CLIENT TIER                                |
-|  React 19 (SPA) + TypeScript + Tailwind CSS + Lucide Icons + Recharts   |
-|  - ATS Scanner Tab (0-100 Matrix, Keyword Gaps, Recommendation Badges)  |
-|  - CV Builder Tab (Form Editor + Live PDF Multi-Template Rendering)     |
-|  - LinkedIn Profile Coach (CV-to-LinkedIn Blueprint, Banner Themes)     |
-|  - Cover Letter & Cold Outreach Generators                              |
-|  - Admin Dashboard & Telemetry Logs                                     |
-+------------------------------------+------------------------------------+
-                                     |
-                       REST API Calls (JSON / Base64)
-                                     |
-+------------------------------------v------------------------------------+
-|                             BACKEND ENGINE                              |
-|  Node.js + Express.js Server (`server.ts`)                              |
-|  - Multipart File Receiver & Base64 Decoder                             |
-|  - Document Extraction Engine (`pdf-parse`, `mammoth` for DOCX)         |
-|  - Authentication Controller (Direct single-factor session storage)    |
-|  - Document & Resume Management APIs (/api/user/documents, /api/resumes)|
-|  - Telemetry & Security Audit Logger                                    |
-+-------------------+--------------------------------+--------------------+
-                    |                                |
-       (If GEMINI_API_KEY Present)          (Offline / Fallback Mode)
-                    |                                |
-+-------------------v--------------+  +--------------v--------------------+
-|         AI CLOUD ENGINE          |  |      LOCAL HEURISTIC ENGINE       |
-|  Google Gemini API               |  |  `src/heuristic_service.ts`       |
-|  (`@google/genai` SDK)           |  |  - Regular Expression Tokenizer   |
-|  - Model: `gemini-2.5-flash`     |  |  - TF-IDF Keyword Matcher         |
-|  - Strict Anti-Hallucination     |  |  - 10-Category Scoring Algorithm  |
-|  - Structured JSON Mode Output   |  |  - Skill Taxonomy Dictionaries    |
-+----------------------------------+  +-----------------------------------+
+
+---
+
+### 4.2 Data Flow Diagram (DFD) - Level 0 Context Diagram
+
+The Level 0 Context Diagram illustrates the system boundary, external actors (Job Seeker / Candidate, System Administrator, and Google Gemini AI Platform), and primary data exchanges.
+
+```mermaid
+flowchart LR
+    Candidate(["👤 Job Seeker / Candidate"])
+    Admin(["🛡️ System Administrator"])
+    Gemini(["🤖 Google Gemini AI Service"])
+
+    System[["⚙️ Mero Match AI CV Analyzer System
+    (Full-Stack Career Acceleration Platform)"]]
+
+    %% Candidate Interactions
+    Candidate -- "1. Upload Resume File (PDF/DOCX/Text)
+    2. Job Description & Target Domain
+    3. User Registration & Auth Credentials
+    4. Feedback & Testimonial" --> System
+
+    System -- "1. 10-Factor ATS Scorecard & Action Plan
+    2. Exact Degree & Academic Extraction
+    3. 10-Sector Proximity Clustering
+    4. Tailored Cover Letters & LinkedIn Pitch
+    5. Formatted PDF CVs & Version History" --> Candidate
+
+    %% Administrator Interactions
+    Admin -- "1. Admin Credentials & Auth Tokens
+    2. User Role Modifications
+    3. Account Enable/Disable Toggles
+    4. Telemetry & Log Inspection Requests" --> System
+
+    System -- "1. System Health & Memory Telemetry
+    2. User Directory & Usage Metrics
+    3. Real-Time Security Intrusion Audit Logs" --> Admin
+
+    %% Gemini AI Interactions
+    System -- "1. Sanitized Resume & Job Text
+    2. Cover Letter Generation Prompts
+    3. LinkedIn Positioning Queries" --> Gemini
+
+    Gemini -- "1. Evaluated Candidate Insights
+    2. Generated Letters & Storytelling Summaries" --> System
 ```
 
 ---
 
-## 4. Complete Project Mechanics (For Final Defense & Viva)
+### 4.3 Data Flow Diagram (DFD) - Level 1 Detailed Pipeline
 
-This section contains the in-depth technical explanations needed to explain the codebase during an academic or technical defense.
+The Level 1 DFD decomposes the system into functional sub-processes, showing data transformations, in-memory buffers, dual AI evaluation pathways, and data store read/write operations.
+
+```mermaid
+flowchart TD
+    Candidate(["👤 Candidate"])
+    Admin(["🛡️ Admin"])
+    GeminiAPI(["🤖 Gemini AI Platform"])
+
+    subgraph DataStores ["Storage & Audit Stores"]
+      D1[("D1: User Accounts & Active Sessions")]
+      D2[("D2: Resume Analysis & ATS Score History")]
+      D3[("D3: Generated Documents & CV Versions")]
+      D4[("D4: Security Events & Audit Trail")]
+    end
+
+    %% Process 1: Ingestion
+    P1["1.0 Ingest & Parse Document"]
+    Candidate -->|"Uploads PDF / Word / Text"| P1
+    P1 -->|"Decoded Binary Buffer"| P1_BUF{"Buffer Type"}
+    P1_BUF -->|"PDF Stream"| P1_PDF["pdf-parse Engine"]
+    P1_BUF -->|"DOCX Stream"| P1_DOC["mammoth Engine"]
+    P1_PDF & P1_DOC -->|"Raw Text"| P2["2.0 PII Sanitizer & Validator"]
+
+    %% Process 2: Sanitization
+    P2 -->|"Sanitized Profile Text"| P3["3.0 Dual Evaluation Orchestrator"]
+
+    %% Process 3: Dual Evaluation
+    P3 -->|"Available API Key"| P3_AI["3.1 Gemini Cascade (3.5 / 3.6 / 3.1)"]
+    P3_AI <-->|"Prompts & Completions"| GeminiAPI
+    P3_AI -.->|"503 High Demand / Offline Failover"| P3_HEUR["3.2 Deterministic Heuristic Engine"]
+    P3 -->|"Offline Mode"| P3_HEUR
+
+    %% Process 4: Scoring & Extraction
+    P3_AI & P3_HEUR --> P4["4.0 Scoring, Degree & Sector Engine"]
+    P4 -->|"Regex Isolation"| P4_DEG["extractDegreeFromText (Exact Degree/Uni)"]
+    P4 -->|"10-Factor Matrix"| P4_SCR["ATS Score (0-100 Pts Breakdown)"]
+    P4 -->|"Word Boundaries"| P4_SEC["10-Industry Sector Map (ClusteringMap)"]
+    
+    P4_DEG & P4_SCR & P4_SEC --> P5["5.0 Document & Analytics Hydration"]
+    P5 -->|"Save Evaluation Record"| D2
+    P5 -->|"Render Radar/Bar Charts & Action Plan"| Candidate
+
+    %% Process 6: Content Generation
+    Candidate -->|"Request Cover Letter / LinkedIn / Bio"| P6["6.0 Content Studio Engine"]
+    P6 <-->|"Prompt Generation"| P3_AI
+    P6 -->|"Store Letter / Pitch"| D3
+    P6 -->|"Deliver Formatted Documents"| Candidate
+
+    %% Process 7: Auth & Security
+    Candidate -->|"Login / Register / MFA"| P7["7.0 Authentication & Session Manager"]
+    P7 <-->|"Read / Write Credentials"| D1
+    P7 -->|"Log Auth Events"| D4
+    P7 -->|"Authenticated Session"| Candidate
+
+    %% Process 8: Admin Telemetry
+    Admin -->|"Admin Login & Metric Query"| P8["8.0 Telemetry & User Moderation"]
+    P8 <-->|"Fetch Users & Update Roles"| D1
+    P8 <-->|"Query Platform Stats"| D2
+    P8 <-->|"Read Security Logs"| D4
+    P8 -->|"System Telemetry & Audit Logs"| Admin
+```
 
 ---
 
-### A. Resume File Ingestion (PDF / DOCX Parsing)
-1. **Client-Side:** The user drags and drops a PDF, DOCX, or TXT resume into `AnalyzerTab.tsx` or `LinkedInOptimizerTab.tsx`. The file is converted to a base64 string using the browser `FileReader` API.
-2. **Server-Side Ingestion (`server.ts`):**
-   - If the file is a PDF: The server strips the base64 data header, converts it to a raw binary buffer (`Buffer.from(base64, 'base64')`), and passes it to `pdf-parse`. `pdf-parse` extracts text streams, layout blocks, and metadata.
-   - If the file is a DOCX: The binary buffer is passed to `mammoth.extractRawText`, which parses the XML structure of the Microsoft Word document into clean text.
-3. **Sanitization:** Excess whitespace, binary null characters, and encoding artifacts are cleaned before passing text to the scoring and AI engines.
+### 4.4 Use Case Diagram
+
+The Use Case Diagram specifies all functional capabilities grouped by actor roles (Job Seeker / Candidate, Platform Administrator, and External AI Service).
+
+```mermaid
+flowchart LR
+    Candidate(["👤 Candidate / Job Seeker"])
+    Admin(["🛡️ Platform Administrator"])
+    GeminiActor(["🤖 Google Gemini AI"])
+
+    subgraph CoreUseCases ["Mero Match Application Capabilities"]
+        UC1(["UC-1: Upload & Parse Multi-Format Resume (PDF/DOCX/TXT)"])
+        UC2(["UC-2: Run 10-Factor ATS Evaluation & Keyword Gap Check"])
+        UC3(["UC-3: Extract Accurate Degree, Major & Academic Year"])
+        UC4(["UC-4: Visualize 10-Sector Proximity Clustering"])
+        UC5(["UC-5: Generate Tailored Cover Letter & Outreach Messages"])
+        UC6(["UC-6: Optimize LinkedIn Profile (Positioning Archetypes)"])
+        UC7(["UC-7: Interactive CV Builder & Live PDF Export"])
+        UC8(["UC-8: Manage CV Version Snapshots & Comparison"])
+        UC9(["UC-9: Candidate Security (MFA, Active Sessions, GDPR Erasure)"])
+        
+        UC10(["UC-10: Monitor Server Telemetry & Memory Consumption"])
+        UC11(["UC-11: Manage User Directory (Role & Status Toggle)"])
+        UC12(["UC-12: Audit Security Intrusion & Admin Action Logs"])
+        UC13(["UC-13: Natural Language Semantic Evaluation (LLM)"])
+    end
+
+    %% Candidate Associations
+    Candidate --> UC1
+    Candidate --> UC2
+    Candidate --> UC3
+    Candidate --> UC4
+    Candidate --> UC5
+    Candidate --> UC6
+    Candidate --> UC7
+    Candidate --> UC8
+    Candidate --> UC9
+
+    %% System / AI Includes & Extends
+    UC1 -.->|"<<includes>>"| UC2
+    UC2 -.->|"<<includes>>"| UC3
+    UC2 -.->|"<<includes>>"| UC4
+    UC2 -.->|"<<invokes>>"| UC13
+    UC5 -.->|"<<invokes>>"| UC13
+    UC6 -.->|"<<invokes>>"| UC13
+    GeminiActor --- UC13
+
+    %% Admin Associations
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC9
+```
 
 ---
 
-### B. 10-Category ATS Scoring Algorithm
-The ATS scanner evaluates resume compatibility against a target Job Description using a transparent mathematical matrix with 10 weighted categories (Total = 100 points):
+## 5. Core Engine Mechanics & Algorithms
 
-| # | Category | Weight | How It Is Evaluated |
+### A. Multi-Format Resume Ingestion (PDF / DOCX Parsing)
+1. The user uploads a `.pdf`, `.docx`, or `.txt` document or pastes raw text into `src/components/AnalyzerTab.tsx`.
+2. The browser converts the document to a Base64 string via the HTML5 `FileReader` API.
+3. On the Express server (`server/controllers/resume.controller.ts`):
+   - **PDFs**: Ingested via binary buffer into `pdf-parse`, extracting clean text streams while discarding broken encoding characters.
+   - **DOCX**: Ingested via `mammoth.extractRawText`, parsing Microsoft Word XML structures into semantic paragraphs.
+4. Extracted text is normalized and sanitized before passing to the evaluation pipeline.
+
+---
+
+### B. 10-Factor ATS Scoring Matrix (0–100)
+Every resume is scored against target job descriptions across 10 deterministic factors:
+
+| # | Factor | Max Pts | Evaluation Methodology |
 | :--- | :--- | :--- | :--- |
-| **1** | **Keyword Match** | 15 pts | Calculates frequency and contextual density of target JD keywords in the resume. |
-| **2** | **Skills Match** | 15 pts | Compares required hard skills (e.g., React, TypeScript, Docker) and soft skills against candidate experience. |
-| **3** | **Experience Relevance** | 15 pts | Checks whether past role responsibilities align with the seniorities and duties outlined in the JD. |
-| **4** | **Education Match** | 10 pts | Matches required degrees (e.g., BS in Computer Science), fields of study, and academic equivalents. |
-| **5** | **Job Title Match** | 10 pts | Analyzes similarity between target job title and past candidate designations. |
-| **6** | **Formatting & Structure** | 10 pts | Checks for standard headers, parseable tables, font consistency, and absence of unreadable graphics. |
-| **7** | **Section Completeness** | 5 pts | Verifies presence of all core sections: Summary, Experience, Education, Skills, and Contact Info. |
-| **8** | **Achievement Strength** | 10 pts | Scans bullet points for the **STAR / XYZ formula** (Action Verb + Quantifiable Metric + Outcome). |
-| **9** | **Contact & Social Info** | 5 pts | Verifies email, phone number, LinkedIn URL, and portfolio/GitHub links. |
-| **10**| **ATS Parser Readability** | 5 pts | Tests clean token extraction without character distortion or broken text encoding. |
+| **1** | **Keyword Match** | 15 pts | Term frequency and contextual placement of critical job requirements. |
+| **2** | **Skills Match** | 15 pts | Overlap of hard technical skills and core domain proficiencies. |
+| **3** | **Experience Relevance** | 15 pts | Seniority, responsibility breadth, and domain alignment. |
+| **4** | **Education & Degree Match** | 10 pts | Verified academic degrees, majors, and institutional credentials. |
+| **5** | **Job Title Match** | 10 pts | Similarity between target designation and past candidate roles. |
+| **6** | **Formatting & Structure** | 10 pts | Standard headers, readable font hierarchy, absence of broken tables. |
+| **7** | **Section Completeness** | 5 pts | Presence of Summary, Experience, Education, Skills, and Contact sections. |
+| **8** | **Achievement Strength** | 10 pts | Scans bullet points for the **STAR / XYZ formula** (Action Verb + Quantified Number + Outcome). |
+| **9** | **Contact & Social Info** | 5 pts | Validates clean email, phone number, LinkedIn URL, and portfolio links. |
+| **10**| **ATS Parser Readability** | 5 pts | Validates clean character streams free of non-standard glyphs. |
 
-**Score Interpretation:**
-- `80 - 100`: **Excellent Match** (High probability of passing automated enterprise ATS filters).
-- `60 - 79`: **Moderate Match** (Needs keyword alignment and metric additions).
-- `0 - 59`: **High Risk of ATS Rejection** (Missing critical skill keywords or core formatting).
-
----
-
-### C. AI Engine & Heuristic Fallback Engine
-1. **Google Gemini Integration (`src/gemini_service.ts`):**
-   - Leverages the official Google GenAI SDK (`@google/genai`) using the high-speed, cost-effective `gemini-2.5-flash` model.
-   - Enforces structured JSON output schema to ensure predictable type safety across TypeScript components.
-   - Uses **Anti-Hallucination Prompts**: Strictly prevents the model from fabricating non-existent employers, fake metrics, or unearned certifications.
-2. **Deterministic Heuristic Engine (`src/heuristic_service.ts`):**
-   - If `GEMINI_API_KEY` is not provided or if the API rate limit is exceeded, the application triggers its built-in heuristic engine.
-   - Performs dictionary-based skill extraction across 500+ technical and soft skill taxonomies.
-   - Computes TF-IDF (Term Frequency-Inverse Document Frequency) keyword overlap between the CV and JD.
-   - Generates deterministic category breakdowns and actionable recommendation tips.
+**Score Benchmark:**
+- `80 – 100`: **Interview Ready** (Passed top ATS filters).
+- `60 – 79`: **Needs Optimization** (Missing core keywords or quantified metrics).
+- `0 – 59`: **High Rejection Risk** (Structural deficiencies or major skill omissions).
 
 ---
 
-### D. LinkedIn Profile Optimizer & Coaching Blueprint
-The LinkedIn Optimizer (`src/components/LinkedInOptimizerTab.tsx`) solves a common candidate dilemma: *A CV is a formal retrospective document written in 3rd-person bullets, while LinkedIn is an interactive, searchable digital portfolio written in engaging 1st-person narrative.*
-
-- **One-Click Ingestion:** Candidate uploads their CV, and the system extracts their primary title, core competencies, and career milestones.
-- **Dynamic Identity:** Displays the logged-in candidate's name dynamically without hardcoded sample data.
-- **Multiple Positioning Archetypes:**
-  - *Technical Leader & Architect* (Scale, system design, engineering mentorship).
-  - *0-to-1 Product Engineer* (Rapid product delivery, startup velocity, user impact).
-  - *Recruiter SEO & Keyword Stack* (Maximized for recruiter boolean queries).
-  - *Visionary Storyteller* (Career passion, mission, and long-term vision).
-- **Banner Theme Selector:** Features modern banner presets including Tech Blue, Emerald Growth, Vibrant Sunset, and Dark Executive.
-- **5-Step Action Blueprint:** Actionable checklist for headlines, storyteller summary, STAR bullets, top 5 skill tags, and manager recommendation templates.
-
----
-
-### E. Cover Letter & Outreach Email Generators
-- **Cover Letter Studio (`src/components/CoverLetterTab.tsx`):** Synthesizes the applicant's real CV achievements with target company requirements to produce 3 customizable paragraphs (Opening Hook, Core Experience & Metric Alignment, Enthusiastic Call-to-Action).
-- **Outreach Email Studio (`src/components/OutreachEmailsTab.tsx`):** Provides instant templates for Recruiter Outreach, Hiring Manager DMs, Referral Requests, and Post-Interview Thank You notes.
+### C. Intelligent Degree & Education Extraction
+In earlier systems, basic regex matching often defaulted candidates to generic "Bachelor of Science" degrees. **Mero Match** features an intelligent academic parser in `extractDegreeFromText` (`src/heuristic_service.ts`):
+- Delimits education and academic credential blocks from the rest of the resume.
+- Accurately captures full degree titles with majors:
+  - *Bachelor of Business Administration (BBA)*
+  - *B.Sc. in CSIT / Computer Science*
+  - *Bachelor of Computer Applications (BCA)*
+  - *Bachelor of Technology / Engineering (B.Tech / B.E.)*
+  - *Master of Business Administration (MBA) / M.S. / M.Sc.*
+  - *Higher Secondary (+2 / High School) & Associate Diplomas*
+  - *Ph.D. / Doctorate Programs*
+- Preserves university names and graduation years, eliminating inaccurate credential flags.
 
 ---
 
-### F. Database & Persistence Layer
-- **Local Persistence (`data/db.json` via `src/db.ts`):** Stores user profiles, CV versions, generated documents, and user feedback locally with zero complex database setup.
-- **Supabase Client Support (`src/lib/supabase.ts`):** Ready-to-connect integration with cloud PostgreSQL if cloud sync is enabled.
-- **Document Management (`/api/user/documents`):** Users can save any generated strategy pack, cover letter, or elevator pitch directly to their "Saved Documents" tab for later retrieval.
+### D. Multi-Industry NLP Sector Clustering Map
+The `ClusteringMap.tsx` component calculates candidate alignment across 10 modern economic sectors using strict word-boundary regular expressions:
+1. **Digital Marketing & Growth** (SEO, SEM, Google Ads, GA4, Meta Ads, Email Marketing)
+2. **Business Analysis & Strategy** (BRD, FRD, BPMN, Power BI, Jira, Agile/Scrum)
+3. **Web & Software Engineering** (TypeScript, React, Next.js, Node.js, Spring Boot, Go, Python)
+4. **Data Science, Analytics & AI** (Machine Learning, PyTorch, Pandas, NLP, GenAI, SQL)
+5. **UI/UX & Product Design** (Figma, Wireframing, User Research, Design Systems)
+6. **Finance, Accounting & Valuation** (Financial Modeling, Excel, DCF, GAAP, Tax, Auditing)
+7. **Human Resources & Talent** (Recruitment, HRIS, Talent Acquisition, Payroll)
+8. **Sales & Customer Success** (Salesforce, CRM, Pipeline Management, CSAT, Deal Closing)
+9. **Cloud & Systems DevOps** (Docker, Kubernetes, AWS, Terraform, CI/CD, Linux)
+10. **Mobile App Innovation** (Flutter, React Native, Swift, Kotlin, iOS/Android)
 
 ---
 
-### G. Admin Dashboard & Telemetry
-- Accessible via admin credentials (`thapakaji@gmail.com` or `admin` with password `password`).
-- Visualizes platform usage metrics via Recharts (Total Scans, Average ATS Match Score, Daily Activity).
-- Displays AI token usage, API response latency, and system audit logs.
-- Allows administrator role and account status toggles.
+### E. Resilient Multi-Model Gemini AI Cascade & Offline Heuristics
+To prevent 503 high-demand throttles and latency spikes, **Mero Match** employs an automated multi-tier cascade in `src/gemini_service.ts`, `server/controllers/resume.controller.ts`, and `src/services/gemini.service.ts`:
+1. **Primary**: `gemini-3.5-flash-lite` (Ultra-fast, lowest latency, high throughput).
+2. **Tier 2**: `gemini-3.6-flash` (Advanced reasoning for nuanced career evaluation).
+3. **Tier 3**: `gemini-3.1-flash-lite` & `gemini-3.7-flash` (Failover redundancy).
+4. **Zero-Failure Fallback**: `src/heuristic_service.ts` (Deterministic offline rule engine requiring 0 internet connectivity or API keys).
 
 ---
 
-## 5. Anticipated Defense Questions & Answers (Viva Prep)
+### F. LinkedIn Profile Optimizer & Career Blueprint
+Transforms static resume bullet points into recruiter-optimized personal branding:
+- **Tone Shift**: Converts dry 3rd-person past tense into engaging 1st-person narrative.
+- **Positioning Archetypes**:
+  - *Technical Leader & Architect*
+  - *0-to-1 Product Engineer*
+  - *Recruiter SEO & Keyword Stack*
+  - *Visionary Storyteller*
+- **Banner Theme Suggestions**: Color pairings and styling advice.
+- **5-Step Action Blueprint**: Actionable checklist covering headlines, About summaries, featured media, skill endorsements, and recommendations.
 
-| # | Expected Question | Ideal Answer / Defense Explanation |
+---
+
+### G. Cover Letter & Outreach Studio
+- **Cover Letter Generator**: Synthesizes the candidate's authentic achievements with target company mission statements into a crisp, three-part letter (The Hook, The Metric-Driven Alignment, The Confident Call-to-Action).
+- **Outreach Email Studio**: One-click cold recruiter messages, hiring manager outreach, and interview thank-you notes.
+
+---
+
+### H. Persistence Layer & Live Watcher Isolation
+- **JSON Storage Engine (`src/db.ts`)**: Manages records in `data/db.json` and mirrored public records in `user.json`.
+- **Vite Watcher Isolation (`vite.config.ts` & `server.ts`)**: Configured `watch.ignored` patterns for `**/data/**`, `**/user.json`, and `**/privacy_audit.json`. This completely prevents server file writes from triggering client hot-reload loops.
+- **Cached Initialization**: Database bootstrap runs once, avoiding repetitive file rewrites on concurrent requests.
+
+---
+
+### I. Admin Dashboard & Telemetry
+Accessible via administrator accounts (`thapakaji@gmail.com` or `admin` / `password`):
+- Server uptime and memory consumption metrics.
+- API response latency and health probes.
+- User management table (role assignment and account status toggles).
+- Live security event logs and administrative audit trail.
+
+---
+
+## 6. Academic Defense & Viva Q&A Guide
+
+| # | Anticipated Viva Question | Model Answer |
 | :--- | :--- | :--- |
-| **Q1** | **Why did you build a hybrid AI + Heuristic engine instead of relying purely on an LLM?** | LLM API calls require an active internet connection, incur financial costs, and can be subject to rate limits or latency. By engineering an offline Heuristic Engine in `heuristic_service.ts`, our platform guarantees **100% availability and deterministic 0–100 mathematical scoring** even when running offline or in restricted environments. |
-| **Q2** | **How do you prevent the AI from hallucinating fake experience on resumes?** | Our system prompts enforce strict anti-hallucination rules. The prompt instructs the Gemini model to act strictly as a *formatting and articulation coach* rather than a creator. It is forbidden from inventing unlisted company names, altering employment dates, or introducing fake numerical metrics. |
-| **Q3** | **How does your ATS scoring compare to commercial tools like Jobscan?** | Like Jobscan, our engine evaluates exact keyword density and hard/soft skill overlap. However, we expand on traditional tools by providing a **transparent 10-category breakdown** (including action-verb strength, formatting compatibility, and contact integrity) along with direct CV-to-LinkedIn and Cover Letter transformation pipelines in a single dashboard. |
-| **Q4** | **How are files processed and is user data kept secure?** | File uploads are processed in-memory as binary buffers using `pdf-parse` and `mammoth`. Resumes are not sold or forwarded to third-party ad networks. In local mode, data resides strictly in `data/db.json` on the host server. |
-| **Q5** | **Why was Vite + React 19 chosen for the frontend?** | React 19 provides modular state management and rapid DOM reconciliation. Vite offers lightning-fast build bundling and hot reloading. We decoupled all API calls into server-side routes (`/api/*`), ensuring secret API keys are never exposed in client browser bundles. |
+| **Q1** | **Why did you implement a hybrid AI + Heuristic architecture instead of relying only on an LLM?** | Pure LLM architectures suffer from latency, financial cost, rate limits (HTTP 429), and temporary high-demand outages (HTTP 503). By engineering a local deterministic heuristic engine in `src/heuristic_service.ts`, **Mero Match** guarantees **100% platform availability and reproducible 0–100 mathematical scoring** even without an active internet connection. |
+| **Q2** | **How do you address the hallucination problem in automated resume scoring?** | We implement rigid anti-hallucination prompt constraints paired with a JSON Schema response format. The model is strictly instructed to act as an *evaluator and formatting coach*, forbidden from fabricating unlisted companies, degrees, dates, or numerical achievements. |
+| **Q3** | **How does Mero Match solve false-positive degree matching?** | Rather than performing naive substring matches, `extractDegreeFromText` isolates the education section and executes targeted regular expressions with boundary markers. This accurately distinguishes between BBA, BCA, B.Sc. CSIT, B.Tech, MBA, M.S., and High School credentials. |
+| **Q4** | **How is file upload security and data privacy enforced?** | File uploads are processed in-memory as binary buffers using `pdf-parse` and `mammoth` without permanent temporary file writes. In addition, regex PII sanitizers strip credit cards and SSNs, and users can trigger one-click GDPR-compliant data erasure at any time. |
+| **Q5** | **How did you prevent file-watcher reload loops with local JSON persistence?** | In development mode, Vite's file watcher monitors workspace files. When the backend updated `data/db.json`, Vite treated it as source code and triggered a browser reload. We resolved this by explicitly configuring `watch.ignored` in `vite.config.ts` and `server.ts` to ignore all data and runtime storage files. |
 
 ---
 
-## 6. Credentials & Configuration Reference
+## 7. Credentials & Configuration Reference
 
-### Admin Login Credentials
+### Administrator Login Credentials
 - **Email / Username:** `thapakaji@gmail.com` (or `admin`)
 - **Password:** `password`
-- **Authentication Flow:** Direct single-factor login (MFA/2FA prompts removed for instant, seamless evaluation).
+- **Role:** Administrator (full access to system health, telemetry, and user directory)
 
-### Project Scripts Reference
-- `npm run dev`: Runs the full-stack application using `tsx server.ts` (starts backend Express server with Vite middleware on port 3000).
-- `npm run build`: Compiles the React client with Vite and bundles `server.ts` into CommonJS format at `dist/server.cjs` via `esbuild`.
-- `npm start`: Runs the compiled production server from `dist/server.cjs`.
-- `npm run lint`: Runs ESLint across the codebase to check syntax and type health.
+### NPM Scripts Reference
+| Command | Action |
+| :--- | :--- |
+| `npm run dev` | Boots Express backend with Vite middleware via `tsx server.ts` on port 3000. |
+| `npm run build` | Compiles the React SPA to `dist/` and bundles `server.ts` to `dist/server.cjs`. |
+| `npm start` | Executes the compiled production bundle via `node dist/server.cjs`. |
+| `npm run lint` | Runs `tsc --noEmit` to validate all TypeScript types and imports. |
 
 ---
 
-*Created for AI Studio & Academic Project Defense.*
+*Mero Match - Developed for academic project defense and real-world career empowerment.*
