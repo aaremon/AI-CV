@@ -206,7 +206,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-screen bg-[#F8FAFC] dark:bg-[#0c111e] overflow-hidden transition-colors duration-200" id="app-container">
+    <div className="flex flex-col md:flex-row h-screen w-screen bg-white dark:bg-[#0c111e] overflow-hidden transition-colors duration-200" id="app-container">
       {/* Sidebar Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -241,7 +241,7 @@ export default function App() {
         />
 
         {/* Main content body with responsive scroll boundary and optimized padding */}
-        <main className="flex-1 overflow-y-auto px-3 py-5 sm:p-6 md:p-8 bg-[#F8FAFC] dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
+        <main className="flex-1 overflow-y-auto px-3 py-5 sm:p-6 md:p-8 bg-white dark:bg-[#0b0f19] transition-colors duration-200" id="content-body">
           {activeTab === 'dashboard' && (
             <UserDashboard
               loggedInUser={loggedInUser}

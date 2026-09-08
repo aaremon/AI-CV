@@ -337,7 +337,7 @@ export default function Navbar({
 
         {/* PANE 2: EXPANDABLE CATEGORIES & SUB-MENU PANE (~210px) */}
         {paneExpanded && (
-          <div className="w-52 h-full flex flex-col justify-between p-4 bg-[#F8FAFC]/90 dark:bg-[#0c111e] overflow-y-auto border-r border-slate-200/60 dark:border-slate-850 animate-fade-in">
+          <div className="w-52 h-full flex flex-col justify-between p-4 bg-white dark:bg-[#0c111e] overflow-y-auto border-r border-slate-200/60 dark:border-slate-850 animate-fade-in">
             
             {/* Top Workspace / Brand Header */}
             <div className="space-y-4">

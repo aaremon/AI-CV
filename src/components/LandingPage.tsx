@@ -22,7 +22,7 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted, onOpenAuth, loggedInUser }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0c111e] bg-grid-dot relative flex flex-col justify-between overflow-x-hidden antialiased transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-[#0c111e] bg-grid-dot relative flex flex-col justify-between overflow-x-hidden antialiased transition-colors duration-200">
       
       {/* Editorial Decorative Upper Blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[300px] bg-gradient-to-b from-indigo-50/30 dark:from-indigo-950/5 via-transparent to-transparent pointer-events-none select-none" />
