@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": 1,
+    "created_at": "2026-09-07T11:45:00.000Z",
+    "owner_email": "aaryaman1@gmail.com",
+    "name": "UI/UX Product Designer - Tech Specialist",
+    "version_number": "v1.0",
+    "target_role": "UI/UX Design",
+    "ats_score": 72,
+    "cv_data": {
+      "applicant_name": "Aaryaman Thapa",
+      "degree": "Bachelor of Business Information System (BBIS)",
+      "target_role": "UI/UX Design",
+      "summary": "Tailored candidate profile optimized for User Interface and Experience design roles. Emphasizes Figma, design systems, usability heuristics, wireframing, and user research.",
+      "skills": [
+        "Figma",
+        "UI/UX Design",
+        "Wireframing",
+        "Prototyping",
+        "User Research",
+        "Interaction Design",
+        "Design Systems",
+        "Digital Marketing Strategy"
+      ],
+      "highlights": [
+        "Specialized UI/UX portfolio orientation with interactive prototyping emphasis",
+        "Targeted keywords: Design Systems, Information Architecture, Heuristic Evaluation",
+        "Quantified impact on conversion rate optimization and digital content structure"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "created_at": "2026-09-08T08:15:00.000Z",
+    "owner_email": "aaryaman1@gmail.com",
+    "name": "Frontend Web & Interface Developer - Growth Spec",
+    "version_number": "v2.0",
+    "target_role": "Software Development",
+    "ats_score": 68,
+    "cv_data": {
+      "applicant_name": "Aaryaman Thapa",
+      "degree": "Bachelor of Business Information System (BBIS)",
+      "target_role": "Software Development",
+      "summary": "Hybrid developer profile combining frontend UI engineering (HTML, CSS, JavaScript, React fundamentals) with product intuition and digital analytics.",
+      "skills": [
+        "JavaScript",
+        "HTML/CSS",
+        "React.js",
+        "Web Design",
+        "Marketing Analytics",
+        "Data Analysis",
+        "REST APIs",
+        "Git & GitHub"
+      ],
+      "highlights": [
+        "Focused on modern frontend interface development and responsive layouts",
+        "Emphasizes bridge between technical software development and marketing performance",
+        "Optimized for tech startup roles requiring both design sensibility and frontend skills"
+      ]
+    }
+  }
+]

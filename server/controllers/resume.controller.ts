@@ -138,15 +138,18 @@ ${extractedText.slice(0, 15000)}`;
     const recordPayload = {
       owner_email: owner_email ? owner_email.toLowerCase().trim() : null,
       name: analysisData.name,
+      applicant_name: analysisData.name || "Resume Document",
       email: analysisData.email,
       resume_score: String(analysisData.resume_score || 75),
       timestamp: new Date().toISOString(),
       reco_field: selected_field || analysisData.predicted_field || "Tech",
+      predicted_role: selected_field || analysisData.predicted_field || "Target Role Not Specified",
       cand_level: analysisData.cand_level || "Fresher",
       skills: analysisData.current_skills || [],
       recommended_skills: analysisData.recommended_skills || [],
       courses: analysisData.recommended_courses || [],
       pdf_name: fileName || (rawText ? "Pasted_Text_Resume.txt" : "Resume.pdf"),
+      resume_name: fileName || (rawText ? "Pasted_Text_Resume.txt" : "Resume.pdf"),
       pdf_url: null,
       data_json: {
         scoring: {

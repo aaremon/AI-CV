@@ -343,11 +343,11 @@ export default function UserDashboard({
                         {score}%
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                          {rec.applicant_name || rec.predicted_role || 'CV Document'}
+                        <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-[180px]">
+                          {rec.applicant_name || rec.name || rec.data_json?.name || 'Resume Document'}
                         </h4>
                         <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                          {rec.predicted_role || 'Software Engineer'} • {new Date(rec.timestamp || Date.now()).toLocaleDateString()}
+                          {rec.predicted_role || rec.reco_field || rec.data_json?.predicted_field || 'Target Role'} • {new Date(rec.timestamp || rec.created_at || Date.now()).toLocaleDateString()}
                         </span>
                       </div>
                     </div>

@@ -168,7 +168,10 @@
         "Contribute to open-source software projects to build industry recognition",
         "Obtain advanced cloud certifications to move into cloud architecture tracks"
       ]
-    }
+    },
+    "applicant_name": "John Doe",
+    "predicted_role": "Web Development",
+    "resume_name": "John_Doe_CV.txt"
   },
   {
     "id": 2,
@@ -399,6 +402,422 @@
         "Participate in design hackathons to gain rapid problem-solving experience.",
         "Transition from a generalist digital background into a dedicated Junior UI/UX Designer role."
       ]
-    }
+    },
+    "applicant_name": "Aaryaman Thapa",
+    "predicted_role": "UI/UX Design",
+    "resume_name": "Aaryaman CV (1).pdf"
+  },
+  {
+    "id": 3,
+    "created_at": "2026-09-08T08:12:13.869Z",
+    "owner_email": "aa@gmail.com",
+    "name": "aaryaman thapa",
+    "email": "aa@gmail.com",
+    "resume_score": "62",
+    "timestamp": "2026-09-08T08:12:13.869Z",
+    "reco_field": "Software Development",
+    "cand_level": "Fresher",
+    "skills": [
+      "Digital Marketing Strategy",
+      "Social Media Content & Engagement",
+      "Content Planning & Copywriting",
+      "Campaign Creation & Optimization",
+      "Audience Segmentation",
+      "Consumer Behavior Analysis",
+      "Basic SEO & Web Content",
+      "Marketing Analytics & Reporting",
+      "Promotional Graphic Design",
+      "Website Design & Digital Content",
+      "Microsoft Excel & Data Analysis",
+      "Team Collaboration & Communication"
+    ],
+    "recommended_skills": [
+      "Java",
+      "Python",
+      "JavaScript",
+      "SQL",
+      "React.js",
+      "Node.js",
+      "Git",
+      "REST APIs",
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming",
+      "Agile Methodologies"
+    ],
+    "courses": [
+      {
+        "title": "The Complete 2024 Web Development Bootcamp by Dr. Angela Yu",
+        "link": "https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+      },
+      {
+        "title": "Python for Everybody Specialization by University of Michigan on Coursera",
+        "link": "https://www.coursera.org/specializations/python"
+      },
+      {
+        "title": "Data Structures and Algorithms Specialization by UC San Diego on Coursera",
+        "link": "https://www.coursera.org/specializations/data-structures-algorithms"
+      }
+    ],
+    "pdf_name": "Aaryaman CV (1).pdf",
+    "pdf_url": null,
+    "data_json": {
+      "scoring": {
+        "overallScore": 62,
+        "atsScore": 58
+      },
+      "name": "aaryaman thapa",
+      "email": "aa@gmail.com",
+      "phone": "3023983098",
+      "degree": "Bachelor of Business Information System (BBIS)",
+      "no_of_pages": 1,
+      "cand_level": "Fresher",
+      "predicted_field": "Software Development",
+      "current_skills": [
+        "Digital Marketing Strategy",
+        "Social Media Content & Engagement",
+        "Content Planning & Copywriting",
+        "Campaign Creation & Optimization",
+        "Audience Segmentation",
+        "Consumer Behavior Analysis",
+        "Basic SEO & Web Content",
+        "Marketing Analytics & Reporting",
+        "Promotional Graphic Design",
+        "Website Design & Digital Content",
+        "Microsoft Excel & Data Analysis",
+        "Team Collaboration & Communication"
+      ],
+      "recommended_skills": [
+        "Java",
+        "Python",
+        "JavaScript",
+        "SQL",
+        "React.js",
+        "Node.js",
+        "Git",
+        "REST APIs",
+        "Data Structures & Algorithms",
+        "Object-Oriented Programming",
+        "Agile Methodologies"
+      ],
+      "resume_score": 62,
+      "score_factors": {
+        "has_objective": true,
+        "has_education": true,
+        "has_experience": true,
+        "has_internship": false,
+        "has_skills": true,
+        "has_hobbies": false,
+        "has_interests": false,
+        "has_achievements": true,
+        "has_certifications": true,
+        "has_projects": true
+      },
+      "feedback": [
+        {
+          "factor": "Technical Skills",
+          "status": "missing",
+          "detail": "Your current skills list leans heavily toward digital marketing rather than core software development. Include programming languages like Python, Java, or JavaScript."
+        },
+        {
+          "factor": "Projects Section",
+          "status": "added",
+          "detail": "You included 'Mero Match', which is a great start. Be sure to elaborate on the technical architecture, tech stack, and your specific contributions."
+        },
+        {
+          "factor": "Work Experience",
+          "status": "missing",
+          "detail": "Formal full-time or internship experience in software engineering is missing. Consider adding software development internships or open-source contributions."
+        },
+        {
+          "factor": "Certifications",
+          "status": "added",
+          "detail": "Certifications are present, but consider adding industry-recognized certifications in cloud computing or software engineering frameworks."
+        }
+      ],
+      "recommended_courses": [
+        {
+          "title": "The Complete 2024 Web Development Bootcamp by Dr. Angela Yu",
+          "link": "https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+        },
+        {
+          "title": "Python for Everybody Specialization by University of Michigan on Coursera",
+          "link": "https://www.coursera.org/specializations/python"
+        },
+        {
+          "title": "Data Structures and Algorithms Specialization by UC San Diego on Coursera",
+          "link": "https://www.coursera.org/specializations/data-structures-algorithms"
+        }
+      ],
+      "ats_compatibility_score": 58,
+      "missing_skills": [
+        "Python",
+        "Java",
+        "JavaScript",
+        "SQL",
+        "Git/GitHub",
+        "RESTful APIs",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "experience_relevance": "The candidate has experience primarily in digital marketing, graphic design, and basic website design, which is tangentially related to tech but lacks deep software engineering experience.",
+      "education_relevance": "The Bachelor of Business Information Systems (BBIS) provides a solid bridge between business requirements and technical solutions, making it a good foundation for Software Development.",
+      "strengths": [
+        "Strong educational background in Business Information Systems",
+        "Demonstrated interest in technology through workshops and project work like 'Mero Match'",
+        "Active involvement in extracurricular activities and organizing committees"
+      ],
+      "weaknesses": [
+        "Lack of core software development skills and programming language proficiencies on the resume",
+        "Resume currently emphasizes digital marketing and design over software engineering competencies",
+        "Absence of metrics or quantifiable achievements in project descriptions"
+      ],
+      "industry_specific_recommendations": [
+        "Pivot the resume focus from marketing to software development by highlighting programming projects.",
+        "Learn version control tools like Git and showcase GitHub repositories.",
+        "Incorporate data structures and algorithms into your problem-solving toolkit."
+      ],
+      "suggested_certifications": [
+        "AWS Certified Developer - Associate",
+        "Oracle Certified Professional: Java SE Programmer",
+        "Meta Front-End Developer Professional Certificate"
+      ],
+      "suggested_projects": [
+        "Full-Stack E-Commerce Web Application using React and Node.js",
+        "Algorithmic Problem Solving Repository in Python/Java",
+        "Task Management REST API with User Authentication and Database Integration"
+      ],
+      "suggested_keywords": [
+        "Software Development",
+        "Object-Oriented Programming",
+        "Data Structures",
+        "Algorithms",
+        "Full-Stack",
+        "REST API",
+        "Git",
+        "Database Management"
+      ],
+      "interview_readiness": "Needs preparation on core computer science fundamentals, data structures and algorithms, and system design principles before applying to software engineering roles.",
+      "career_growth_suggestions": [
+        "Build a robust GitHub portfolio showcasing at least 3 full-stack or backend projects.",
+        "Secure an entry-level Software Engineering or Frontend/Backend Development internship.",
+        "Participate in coding bootcamps or hackathons to accelerate technical proficiency."
+      ]
+    },
+    "applicant_name": "aaryaman thapa",
+    "predicted_role": "Software Development",
+    "resume_name": "Aaryaman CV (1).pdf"
+  },
+  {
+    "id": 4,
+    "created_at": "2026-09-08T08:12:46.213Z",
+    "owner_email": "aaryaman1@gmail.com",
+    "name": "Aaryaman Thapa",
+    "email": "aaryaman1@gmail.com",
+    "resume_score": "68",
+    "timestamp": "2026-09-08T08:12:46.212Z",
+    "reco_field": "Software Development",
+    "cand_level": "Fresher",
+    "skills": [
+      "Digital Marketing Strategy",
+      "Social Media Content & Engagement",
+      "Content Planning & Copywriting",
+      "Campaign Creation & Optimization",
+      "Audience Segmentation",
+      "Consumer Behavior Analysis",
+      "Basic SEO & Web Content",
+      "Marketing Analytics & Reporting",
+      "Promotional Graphic Design",
+      "Website Design & Digital Content",
+      "Microsoft Excel & Data Analysis",
+      "Team Collaboration & Communication",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Programming Fundamentals"
+    ],
+    "recommended_skills": [
+      "React.js",
+      "Node.js",
+      "Git & GitHub",
+      "RESTful APIs",
+      "Database Management (SQL/NoSQL)",
+      "TypeScript",
+      "Agile/Scrum Methodologies",
+      "Problem Solving",
+      "Data Structures and Algorithms",
+      "UI/UX Principles"
+    ],
+    "courses": [
+      {
+        "title": "The Complete 2024 Web Development Bootcamp",
+        "link": "https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+      },
+      {
+        "title": "Meta Front-End Developer Professional Certificate",
+        "link": "https://www.coursera.org/professional-certificates/meta-front-end-developer"
+      },
+      {
+        "title": "JavaScript Algorithms and Data Structures Certification",
+        "link": "https://www.freecodecamp.org/"
+      }
+    ],
+    "pdf_name": "Aaryaman CV (1).pdf",
+    "pdf_url": null,
+    "data_json": {
+      "scoring": {
+        "overallScore": 68,
+        "atsScore": 70
+      },
+      "name": "Aaryaman Thapa",
+      "email": "aaryaman1@gmail.com",
+      "phone": "9848482343",
+      "degree": "Bachelor of Business Information Systems (BBIS)",
+      "no_of_pages": 1,
+      "cand_level": "Fresher",
+      "predicted_field": "Web Development",
+      "current_skills": [
+        "Digital Marketing Strategy",
+        "Social Media Content & Engagement",
+        "Content Planning & Copywriting",
+        "Campaign Creation & Optimization",
+        "Audience Segmentation",
+        "Consumer Behavior Analysis",
+        "Basic SEO & Web Content",
+        "Marketing Analytics & Reporting",
+        "Promotional Graphic Design",
+        "Website Design & Digital Content",
+        "Microsoft Excel & Data Analysis",
+        "Team Collaboration & Communication",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Programming Fundamentals"
+      ],
+      "recommended_skills": [
+        "React.js",
+        "Node.js",
+        "Git & GitHub",
+        "RESTful APIs",
+        "Database Management (SQL/NoSQL)",
+        "TypeScript",
+        "Agile/Scrum Methodologies",
+        "Problem Solving",
+        "Data Structures and Algorithms",
+        "UI/UX Principles"
+      ],
+      "resume_score": 68,
+      "score_factors": {
+        "has_objective": true,
+        "has_education": true,
+        "has_experience": true,
+        "has_internship": false,
+        "has_skills": true,
+        "has_hobbies": false,
+        "has_interests": false,
+        "has_achievements": true,
+        "has_certifications": true,
+        "has_projects": true
+      },
+      "feedback": [
+        {
+          "factor": "Objective/Summary",
+          "status": "added",
+          "detail": "Summary is present but leans heavily toward digital marketing rather than software development."
+        },
+        {
+          "factor": "Work Experience",
+          "status": "added",
+          "detail": "Experience is present, but needs a stronger focus on software engineering roles, technical stack utilization, and quantified achievements."
+        },
+        {
+          "factor": "Projects",
+          "status": "added",
+          "detail": "Projects like 'Mero Match' are listed, but should explicitly mention the tech stack used (e.g., React, Node, database)."
+        },
+        {
+          "factor": "Internship",
+          "status": "missing",
+          "detail": "Add an internship or formal software engineering placement to boost corporate credibility."
+        },
+        {
+          "factor": "Technical Skills",
+          "status": "added",
+          "detail": "Skills are mixed between marketing and tech; segregate them clearly into 'Programming Languages', 'Frameworks', and 'Tools'."
+        }
+      ],
+      "recommended_courses": [
+        {
+          "title": "The Complete 2024 Web Development Bootcamp",
+          "link": "https://www.udemy.com/course/the-complete-web-development-bootcamp/"
+        },
+        {
+          "title": "Meta Front-End Developer Professional Certificate",
+          "link": "https://www.coursera.org/professional-certificates/meta-front-end-developer"
+        },
+        {
+          "title": "JavaScript Algorithms and Data Structures Certification",
+          "link": "https://www.freecodecamp.org/"
+        }
+      ],
+      "ats_compatibility_score": 70,
+      "missing_skills": [
+        "React.js",
+        "Node.js",
+        "Git/GitHub",
+        "REST APIs",
+        "SQL",
+        "TypeScript",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "experience_relevance": "The candidate has academic exposure and projects related to web platforms, but current experience leans heavily toward digital marketing and graphic design rather than core software development.",
+      "education_relevance": "The Bachelor of Business Information Systems (BBIS) degree bridges business acumen with information systems, providing a solid foundation for software development, though more core CS coursework is recommended.",
+      "strengths": [
+        "Strong multidisciplinary background combining business systems, web design, and programming fundamentals.",
+        "Demonstrated initiative through active participation in tech workshops and university leadership events.",
+        "Clear project examples such as the 'Mero Match' platform."
+      ],
+      "weaknesses": [
+        "Resume summary focuses heavily on marketing rather than software development.",
+        "Lack of explicit mention of version control tools like Git and GitHub.",
+        "Technical stack for projects is not sufficiently detailed."
+      ],
+      "industry_specific_recommendations": [
+        "Tailor the resume summary specifically to software development and full-stack/front-end engineering.",
+        "Explicitly list programming languages and tools used within each project description.",
+        "Include links to GitHub repositories and live deployments for all projects."
+      ],
+      "suggested_certifications": [
+        "AWS Certified Cloud Practitioner",
+        "Meta Front-End Developer Certificate",
+        "JavaScript Developer Certificate"
+      ],
+      "suggested_projects": [
+        "Full-Stack E-commerce Application with React and Node.js",
+        "Task Management Web App with User Authentication and Database Integration",
+        "Algorithmic Problem Solver Visualizer using Vanilla JavaScript"
+      ],
+      "suggested_keywords": [
+        "JavaScript",
+        "HTML5",
+        "CSS3",
+        "React",
+        "Node.js",
+        "Git",
+        "RESTful API",
+        "Web Development",
+        "Full-Stack",
+        "Database Management"
+      ],
+      "interview_readiness": "Moderate. The candidate needs to prepare thoroughly for fundamental data structures, algorithms, and core JavaScript concepts to transition effectively into a software development role.",
+      "career_growth_suggestions": [
+        "Build a robust GitHub portfolio showcasing at least 3-4 end-to-end web development projects.",
+        "Contribute to open-source software projects to gain collaborative coding experience.",
+        "Network with industry professionals through tech meetups and LinkedIn to secure software engineering internships."
+      ]
+    },
+    "applicant_name": "Aaryaman Thapa",
+    "predicted_role": "Software Development",
+    "resume_name": "Aaryaman CV (1).pdf"
   }
 ]

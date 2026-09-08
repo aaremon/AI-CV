@@ -301,11 +301,23 @@ export function deleteAuthUserByEmail(email: string): boolean {
 export function getAtsScanResults(ownerEmail?: string): any[] {
   initDb();
   const records = safeReadJson<any[]>(STORE_PATHS.ATS_SCANNER, []);
+  const normalized = records.map((r: any) => ({
+    ...r,
+    applicant_name: r.applicant_name || r.name || r.data_json?.name || "Candidate",
+    predicted_role: r.predicted_role || r.reco_field || r.data_json?.predicted_field || r.data_json?.target_role || "Target Role Not Specified",
+    resume_name: r.resume_name || r.pdf_name || r.filename || "Uploaded Document",
+    ats_score: r.ats_score || r.data_json?.scoring?.overallScore || r.resume_score || 75
+  }));
   if (ownerEmail) {
     const target = ownerEmail.toLowerCase().trim();
-    return records.filter((r: any) => (r.owner_email || "").toLowerCase().trim() === target);
+    return normalized.filter((r: any) => {
+      const matchOwner = (r.owner_email || "").toLowerCase().trim() === target;
+      const matchEmail = (r.email || "").toLowerCase().trim() === target;
+      const matchDataEmail = (r.data_json?.email || "").toLowerCase().trim() === target;
+      return matchOwner || matchEmail || matchDataEmail;
+    });
   }
-  return records;
+  return normalized;
 }
 
 export function getUsers(): any[] {
@@ -323,7 +335,10 @@ export function insertAtsScanResult(user: any): any {
   const newRecord = {
     id: nextId,
     created_at: new Date().toISOString(),
-    ...user
+    ...user,
+    applicant_name: user.applicant_name || user.name || user.data_json?.name || "Candidate",
+    predicted_role: user.predicted_role || user.reco_field || user.data_json?.predicted_field || user.data_json?.target_role || "Target Role Not Specified",
+    resume_name: user.resume_name || user.pdf_name || user.filename || "Uploaded Document"
   };
   records.push(newRecord);
   safeWriteJson(STORE_PATHS.ATS_SCANNER, records, [

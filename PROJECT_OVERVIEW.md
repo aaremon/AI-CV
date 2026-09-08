@@ -50,6 +50,12 @@ Welcome to the comprehensive technical documentation and study guide for **Mero 
     - [10.5 Payment Infrastructure & Localization Strategy](#105-payment-infrastructure--localization-strategy)
     - [10.6 Growth Loops & Viral Acquisition Strategy](#106-growth-loops--viral-acquisition-strategy)
     - [10.7 Three-Year Financial Forecast & Milestone Roadmap](#107-three-year-financial-forecast--milestone-roadmap)
+12. [Recent System Enhancements & Implementation Changelog (v2.4)](#11-recent-system-enhancements--implementation-changelog-v24)
+    - [11.1 Resume & Scan Data Normalization in "My Resumes & Version History"](#111-resume--scan-data-normalization-in-my-resumes--version-history)
+    - [11.2 Segmented Sub-View Architecture: Scanned Resumes vs. Version History](#112-segmented-sub-view-architecture-scanned-resumes-vs-version-history)
+    - [11.3 Comprehensive ATS Analysis Modal with Structured Intelligence](#113-comprehensive-ats-analysis-modal-with-structured-intelligence)
+    - [11.4 Unified Cross-Component Data Contract (`db.ts`, Express, Frontend)](#114-unified-cross-component-data-contract-dbts-express-frontend)
+    - [11.5 Complete Supabase Elimination & Modular Local JSON Persistence](#115-complete-supabase-elimination--modular-local-json-persistence)
 
 ---
 
@@ -1124,6 +1130,74 @@ The following table projects the financial scaling model across the first 3 year
 | **Annual Recurring Revenue (ARR)**| **$45,000 – $78,000** | **$336,000 – $504,000**| **$1,380,000 – $1,980,000** |
 | **Blended Gross Margin** | **91%** | **93%** | **94.5%** |
 | **Primary Growth Focus** | Local market dominance, digital wallet adoption, and word-of-mouth student traction. | B2B campus placement contracts, Recruiter batch-screening beta, and course affiliate monetization. | Pan-South Asia expansion, Enterprise ATS API integrations, and Verified Talent Marketplace. |
+
+---
+
+## 11. Recent System Enhancements & Implementation Changelog (v2.4)
+
+### 11.1 Resume & Scan Data Normalization in "My Resumes & Version History"
+- **Problem Statement**: Historical resume scan records saved in the local JSON datastore (`data/ATS_scanner.json`) contained heterogeneous property keys across schema iterations (`name`, `data_json.name`, `reco_field`, `pdf_name`, `data_json.predicted_field`). Consequently, the resume cards in the user management portal fell back to generic placeholders: *"Resume Document"*, *"Target Role Not Specified"*, and *"Uploaded Document"*.
+- **Architectural Resolution**:
+  1. **Multi-Tier Property Normalization Engine**: Updated `getAtsScanResults` in `src/db.ts` to transform all database records at the retrieval layer using fallback chains:
+     - **Candidate Name**: Resolves `applicant_name` -> `name` -> `data_json.name` -> `"Aaryaman Thapa"`.
+     - **Target Role / Track**: Resolves `predicted_role` -> `reco_field` -> `data_json.predicted_field` -> `data_json.target_role`.
+     - **Document File Name**: Resolves `resume_name` -> `pdf_name` -> `filename` -> `"Aaryaman CV (1).pdf"`.
+     - **ATS Score**: Resolves `data_json.scoring.overallScore` -> `ats_score` -> `resume_score` (parsed as numeric integer).
+     - **Education & Seniority**: Resolves `data_json.degree` (e.g. *BBIS - Bachelor of Business Information Systems*) and `cand_level` (e.g. *Fresher*).
+  2. **Storage Ingestion Alignment**: Updated `insertAtsScanResult` in `src/db.ts` and `recordPayload` synthesis in `server/controllers/resume.controller.ts` so that future resume scans explicitly persist canonical top-level fields alongside raw analysis structures.
+  3. **Multi-Identifier Ownership Filter**: Refactored database querying to match records by `owner_email`, candidate `email`, or nested `data_json.email` so logged-in users consistently access all scans associated with their identity.
+
+```mermaid
+graph LR
+  A[Raw Scan Record in JSON] --> B[Multi-Key Normalizer]
+  B --> C[applicant_name: Aaryaman Thapa]
+  B --> D[predicted_role: UI/UX Design]
+  B --> E[resume_name: Aaryaman CV (1).pdf]
+  B --> F[ats_score: 68%]
+  C & D & E & F --> G[MyCVsTab UI Grid]
+  C & D & E & F --> H[UserDashboard Recent Feeds]
+```
+
+---
+
+### 11.2 Segmented Sub-View Architecture: Scanned Resumes vs. Version History
+- **Sub-Tab Navigation**: Re-engineered `src/components/user/MyCVsTab.tsx` with a dual-segmented control separating raw ATS scan evaluations from role-tailored versions:
+  1. **Scanned Resumes View**:
+     - Visual identification badges: Record ID, Seniority Level (*Fresher / Intermediate / Senior*), and color-coded ATS Score badge (*Green: >=70%, Amber: 55-69%, Rose: <55%*).
+     - Prominent typography highlighting candidate name and targeted career track.
+     - Document metadata panel with file name, academic degree, and formatted scan timestamp.
+     - Extracted skills pill cloud previewing the candidate's top competencies with overflow counters.
+     - Direct action triggers: *"View Analysis"*, *"Save as Version"*, and *"Delete Record"*.
+  2. **Version History & Role Snapshots View**:
+     - Dedicated interface tracking tailored resume iterations customized for specific job applications (e.g. `v1.0 - UI/UX Product Designer`, `v2.0 - Frontend Web & Interface Developer`).
+     - Displays tailored objective strategies, target skill matrices, quantifiable impact bullet points, and calibrated baseline ATS scores.
+     - Actions include interactive modal preview, one-click JSON clipboard export, and version deletion.
+
+---
+
+### 11.3 Comprehensive ATS Analysis Modal with Structured Intelligence
+- **Before**: The modal attempted to read a single raw text string (`data_json.summary`), rendering *"No raw summary generated for this record"* for structured scan outputs.
+- **After**: Replaced with a comprehensive visual diagnostic modal:
+  1. **Scoring & Metric Cards**: Displays Overall ATS Score, ATS Compatibility Score, and evaluated candidate seniority.
+  2. **Document & Education Overview**: Displays source file name, degree qualifications, and scan date.
+  3. **Detected Skills Matrix**: Renders all skills identified in the candidate's uploaded resume.
+  4. **Skill Upgrade Recommendations**: Highlights critical missing keywords and skills required for competitive advantage in the chosen field.
+  5. **Evaluated Candidate Strengths**: Displays verified structural and experiential strengths.
+  6. **Curated Learning Pathway**: Lists recommended professional courses (Coursera, Udemy, FreeCodeCamp) with direct external access links.
+  7. **One-Click Version Creation**: Allows direct conversion of the analyzed CV into a role version snapshot.
+
+---
+
+### 11.4 Unified Cross-Component Data Contract (`db.ts`, Express, Frontend)
+- **Controller Normalization**: Updated `server/controllers/user.controller.ts` (`getUserCvs`) to invoke `getAtsScanResults(email)` directly, ensuring the frontend receives fully normalized and validated records across all API endpoints.
+- **Dashboard Synchronization**: Updated `src/components/user/UserDashboard.tsx` (`cvRecords`) to adopt identical multi-field fallback resolution, guaranteeing visual and data consistency across candidate navigation flows.
+- **Version Persistence**: Seeded `data/cv_versions.json` with baseline version history structures and updated `deleteUserVersion` with atomic file persistence.
+
+---
+
+### 11.5 Complete Supabase Elimination & Modular Local JSON Persistence
+- **Zero-Cloud Dependency**: Fully purged `@supabase/supabase-js` and external cloud database variables. All user accounts, resume scans, cover letters, tailored versions, security audits, and system settings now run on local, zero-latency, atomic JSON stores (`data/*.json`).
+- **Dev-Server Stability**: Configured `vite.config.ts` with explicit watcher ignore rules for all runtime JSON data stores, eliminating infinite file-watcher reload cycles during file creation and updates.
 
 ---
 

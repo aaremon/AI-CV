@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   getUsers,
+  getAtsScanResults,
   getUserVersions,
   insertUserVersion,
   deleteUserVersion,
@@ -23,7 +24,7 @@ export async function getUserCvs(req: Request, res: Response) {
   try {
     const email = req.query.email as string;
     if (!email) return res.status(400).json({ error: "Email parameter required." });
-    const records = getUsers().filter(r => r.owner_email === email.toLowerCase().trim());
+    const records = getAtsScanResults(email);
     return res.json({ success: true, cvs: records });
   } catch (e: any) {
     return res.status(500).json({ error: e.message || String(e) });
