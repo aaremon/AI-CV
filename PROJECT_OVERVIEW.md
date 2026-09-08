@@ -40,8 +40,16 @@ Welcome to the comprehensive technical documentation and study guide for **Mero 
    - [Candidate Dashboard Suite (`src/components/user/`)](#83-candidate-dashboard-suite-srccomponentsuser)
    - [Administrative Command Center (`src/components/admin/`)](#84-administrative-command-center-srccomponentsadmin)
    - [Visualization Suite (`Recharts` & SVG Clusters)](#85-visualization-suite-recharts--svg-clusters)
-9. [Comprehensive File-by-File Reference Matrix](#9-comprehensive-file-by-file-reference-matrix)
-10. [Developer, Evaluator & Viva Defense Guide](#10-developer-evaluator--viva-defense-guide)
+9. [Comprehensive File-by-File Reference Matrix](#8-comprehensive-file-by-file-reference-matrix)
+10. [Developer, Evaluator & Viva Defense Guide](#9-developer-evaluator--viva-defense-guide)
+11. [Complete Business & Revenue Model](#10-complete-business--revenue-model)
+    - [10.1 Executive Overview & Market Opportunity](#101-executive-overview--market-opportunity)
+    - [10.2 The Five Core Revenue Streams](#102-the-five-core-revenue-streams)
+    - [10.3 Plan Comparison & Feature Entitlement Matrix](#103-plan-comparison--feature-entitlement-matrix)
+    - [10.4 Unit Economics & Cost Structure (90%+ Gross Margin)](#104-unit-economics--cost-structure-90-gross-margin)
+    - [10.5 Payment Infrastructure & Localization Strategy](#105-payment-infrastructure--localization-strategy)
+    - [10.6 Growth Loops & Viral Acquisition Strategy](#106-growth-loops--viral-acquisition-strategy)
+    - [10.7 Three-Year Financial Forecast & Milestone Roadmap](#107-three-year-financial-forecast--milestone-roadmap)
 
 ---
 
@@ -111,11 +119,15 @@ graph TD
     end
   end
 
-  subgraph PersistenceTier ["STORAGE & PERSISTENCE LAYER"]
-    DB_ENGINE["Cached Storage Engine (src/db.ts)"]
-    ACTIVE_DB[("Active DB: data/db.json")]
-    MIRROR_USER[("Mirrored Public Store: user.json")]
-    SECURITY_LOGS[("Security Events & Audit Logs")]
+  subgraph PersistenceTier ["MODULAR DECOUPLED PERSISTENCE LAYER"]
+    DB_ENGINE["Modular Storage Engine (src/db.ts)"]
+    D_USER[("user.json: User Accounts & Auth")]
+    D_ATS[("ATS_scanner.json: ATS Evaluations")]
+    D_LOG[("admin_log.json: Audit & Security Logs")]
+    D_COVER[("cover_letter.json: AI Cover Letters")]
+    D_LINKEDIN[("linkedin.json: LinkedIn Strategy Packs")]
+    D_VERSIONS[("cv_versions.json: Builder Versions")]
+    D_FEED[("feedback.json: User Feedback")]
   end
 
   %% Client to Server interactions
@@ -137,8 +149,11 @@ graph TD
 
   %% Scoring to persistence & return
   GeminiCascade & HeuristicEngine --> CTL_RESUME
-  CTL_AUTH & CTL_RESUME & CTL_USER & CTL_ADMIN --> DB_ENGINE
-  DB_ENGINE --> ACTIVE_DB & MIRROR_USER & SECURITY_LOGS
+  CTL_AUTH --> DB_ENGINE --> D_USER
+  CTL_RESUME --> DB_ENGINE --> D_ATS & D_COVER & D_LINKEDIN
+  CTL_USER --> DB_ENGINE --> D_VERSIONS & D_COVER & D_LINKEDIN
+  CTL_ADMIN --> DB_ENGINE --> D_LOG
+  CTL_FEED --> DB_ENGINE --> D_FEED
 ```
 
 ---
@@ -441,7 +456,7 @@ flowchart TD
 6. **Sector Clustering (`ClusteringMap.tsx`)**:
    - Regex word-boundary algorithms map extracted skills against 10 distinct job sectors (Digital Marketing, Business Analysis, Software Engineering, Data Science, UI/UX, Finance, HR, Sales, DevOps, Mobile).
 7. **Persistence & Telemetry (`src/db.ts`)**:
-   - Evaluated resume records, score breakdowns, and missing skill badges are persisted to `data/db.json`.
+   - Evaluated resume records, score breakdowns, and missing skill badges are persisted to `data/ATS_scanner.json` and mirrored in `ATS_scanner.json`.
    - The response returns structured JSON to hydrate the client dashboard with animated Recharts visualizations.
 
 ---
@@ -451,10 +466,10 @@ flowchart TD
 2. **Controller Processing (`AuthController`)**:
    - Hashes passwords with prefix-based salting (`plain:password` format for sandbox compatibility).
    - Assigns role: designated administrators (`thapakaji@gmail.com`) receive `admin` privileges; others receive standard `user` status.
-3. **Dual Persistence Synchronization**:
-   - Writes the master record to `data/db.json`.
-   - Triggers `syncUserJson()` to update public, clean user entries in `/user.json`.
-   - Logs an audit event (`USER_REGISTERED` or `USER_LOGGED_IN`).
+3. **Modular Persistence Synchronization**:
+   - Writes the master record to `data/user.json`.
+   - Triggers `syncUserJson()` to update clean user entries in `/user.json`.
+   - Logs an audit event (`USER_REGISTERED` or `USER_LOGGED_IN`) to `data/admin_log.json`.
 4. **Session Hydration**: Returns safe user metadata to React state and `localStorage` to preserve login across page refreshes.
 
 ---
@@ -493,9 +508,23 @@ flowchart TD
 │       ├── user.routes.ts            # /api/user/* endpoints
 │       └── index.ts                  # Central router bundling all sub-routes & /api/health
 │
-├── data/
-│   ├── db.json                       # Local JSON database storage
-│   └── user.json                     # Synchronized user registry JSON
+├── data/                             # Modular Decoupled JSON Data Storage
+│   ├── user.json                     # Registered user accounts & auth credentials
+│   ├── ATS_scanner.json              # Analyzed CV records, ATS scores & scan results
+│   ├── admin_log.json                # Admin audit logs & intrusion security event traces
+│   ├── cover_letter.json             # AI-synthesized cover letters & candidate letters
+│   ├── linkedin.json                 # LinkedIn optimization packages & headline strategies
+│   ├── cv_versions.json              # CV Builder version snapshots & candidate drafts
+│   ├── feedback.json                 # User feedback ratings & testimonials
+│   ├── sessions.json                 # Active user sessions & token tracking
+│   ├── notifications.json            # User notifications & system tips
+│   └── documents.json                # Saved user documents & bio outputs
+│
+├── user.json                         # Mirrored user credentials store
+├── ATS_scanner.json                  # Mirrored ATS scanner results store
+├── admin_log.json                    # Mirrored admin audit log store
+├── cover_letter.json                 # Mirrored cover letters store
+├── linkedin.json                     # Mirrored LinkedIn packages store
 │
 └── src/                              # Client-side architecture & shared core
     ├── main.tsx                      # React root entry point
@@ -508,9 +537,6 @@ flowchart TD
     │
     ├── config/
     │   └── aiDataPolicy.ts           # Privacy and data retention policies
-    │
-    ├── lib/
-    │   └── supabase.ts               # Ready-to-connect Supabase PostgreSQL client
     │
     ├── services/
     │   ├── aiPrivacyGuard.service.ts # Sensitive PII masking for AI prompts
@@ -563,9 +589,14 @@ flowchart TD
       ignored: [
         "**/data/**",
         "**/user.json",
+        "**/ATS_scanner.json",
+        "**/cv_analyzed.json",
+        "**/admin_log.json",
+        "**/cover_letter.json",
+        "**/linkedin.json",
         "**/privacy_audit.json",
         "**/*.json.tmp*",
-        "**/data/db.json"
+        "**/data/*.json"
       ]
     }
   }
@@ -586,8 +617,8 @@ flowchart TD
 ### 4.3 Controller Layer Breakdown (`server/controllers/`)
 
 #### 1. `auth.controller.ts`
-- **`signup(req, res)`**: Registers a new user, hashes credentials, creates default profile, logs registration event, triggers welcome notification, and writes to `user.json`.
-- **`login(req, res)`**: Authenticates credentials, verifies account status (`active` vs `disabled`), registers an active session, logs security events, and returns safe user data.
+- **`signup(req, res)`**: Registers a new user, hashes credentials, creates default profile, logs registration event, triggers welcome notification, and writes to `data/user.json` (and `user.json`).
+- **`login(req, res)`**: Authenticates credentials, verifies account status (`active` vs `disabled`), registers an active session, logs security events to `data/admin_log.json`, and returns safe user data.
 - **`updateProfile(req, res)`**: Modifies user name, phone, or location.
 - **`changePassword(req, res)`**: Validates current password and updates to new password.
 - **`toggleMfa(req, res)`**: Enables or disables Two-Factor Authentication flag.
@@ -597,10 +628,11 @@ flowchart TD
   - Handles incoming multipart Base64 files (`.pdf` via `pdf-parse`, `.docx` via `mammoth`) or raw text strings.
   - Calls `gemini_service.ts` or falls back to `heuristic_service.ts`.
   - Computes ATS scores (0-100), factor status, keyword gaps, and recommended courses.
-  - Saves the record in `data/db.json` and returns the structured evaluation.
-- **`generateCoverLetter(req, res)`**: Generates a tailored cover letter based on candidate skills, job title, and company name using Gemini or a high-quality fallback template.
-- **`getRecords(req, res)`**: Retrieves analyzed CV records (filterable by owner email).
-- **`deleteRecord(req, res)`**: Removes a CV record by ID and logs the deletion.
+  - Saves the scan result in `data/ATS_scanner.json` (and mirrors to `ATS_scanner.json`) and returns the structured evaluation.
+- **`generateCoverLetter(req, res)`**: Generates a tailored cover letter based on candidate skills, job title, and company name using Gemini or a high-quality fallback template, auto-persisting to `data/cover_letter.json`.
+- **`optimizeLinkedInProfile(req, res)`**: Generates executive headline and profile summary strategies, auto-persisting to `data/linkedin.json`.
+- **`getRecords(req, res)`**: Retrieves analyzed CV records (filterable by owner email) from `data/ATS_scanner.json`.
+- **`deleteRecord(req, res)`**: Removes a CV record by ID from `data/ATS_scanner.json` and logs the deletion to `data/admin_log.json`.
 
 #### 3. `user.controller.ts`
 - **`getUserCvs(req, res)`**: Fetches all CV records belonging to a logged-in user.
@@ -793,8 +825,12 @@ Calculates a 0–100 score across 10 distinct categories:
 | `server/controllers/feedback.controller.ts`| Controller | Handles user reviews and ratings. |
 | `server/controllers/privacy.controller.ts`| Controller | Manages privacy compliance and audit logs. |
 | `server/middleware/auth.middleware.ts` | Middleware | Validates admin permissions and logs unauthorized attempts. |
-| `src/db.ts` | Persistence | Cached JSON storage engine reading/writing `data/db.json` and updating `user.json`. |
+| `src/db.ts` | Persistence Engine | Modular decoupled storage manager writing individual files for each component, automatic legacy migration, and aggregate mirroring. |
 | `user.json` | Public Store | Mirrored public user registry. |
+| `ATS_scanner.json` | Data Store | Mirrored store of analyzed CVs, ATS scores, and metrics. |
+| `admin_log.json` | Data Store | Mirrored store of admin actions and security intrusion logs. |
+| `cover_letter.json` | Data Store | Mirrored store of AI-synthesized cover letters. |
+| `linkedin.json` | Data Store | Mirrored store of LinkedIn positioning plans. |
 | `src/gemini_service.ts` | AI Client | Multi-model Gemini SDK client with automated failover and retry logic. |
 | `src/heuristic_service.ts` | Heuristic AI | Offline tokenizer, degree extractor, 10-factor scoring matrix, and skill taxonomy. |
 | `src/types.ts` | Shared Types | Universal TypeScript contracts (User, ResumeData, Evaluation, AdminStats). |
@@ -835,7 +871,259 @@ If you are defending this project or reviewing it for academic evaluation, revie
 
 ### 4. File-Watcher Reload Loop Prevention
 - **Defense Point**: "How did you solve the infinite page reload problem during file writes in development mode?"
-- **Answer**: Vite's default dev server watches workspace files. When our server updated `data/db.json` or `user.json`, Vite treated it as code changes and refreshed the browser. We resolved this by explicitly adding `watch.ignored` rules in both `vite.config.ts` and `server.ts` for all runtime data directories.
+- **Answer**: Vite's default dev server watches workspace files. When our server updated runtime storage files (such as `data/user.json` or `data/ATS_scanner.json`), Vite treated it as code changes and refreshed the browser. We resolved this by explicitly adding `watch.ignored` rules in both `vite.config.ts` and `server.ts` for all runtime data directories.
+
+---
+
+## 10. Complete Business & Revenue Model
+
+### 10.1 Executive Overview & Market Opportunity
+**Mero Match** addresses two critical market inefficiencies:
+1. **The Candidate Rejection Trap**: Over 75% of resumes are discarded by automated Applicant Tracking Systems (ATS) before reaching human eyes due to formatting mismatches, missing keyword density, and poor metric quantification. Job seekers in emerging markets (such as Nepal, India, and South Asia) and global remote talent lack affordable, localized tools to pass international corporate filters.
+2. **The Recruiter Screening Bottleneck**: Hiring teams spend an average of 14 hours per hire manually sifting through hundreds of disorganized resumes, 80% of which do not meet baseline technical requirements.
+
+By uniting **automated ATS scoring**, **multi-tone cover letter synthesis**, **LinkedIn profile positioning**, and **candidate-job clustering**, Mero Match operates as a high-margin, scalable SaaS platform with dual-sided monetization (B2C job seekers and B2B employers/institutions).
+
+```
+   ┌───────────────────────────────────────────────────────────────┐
+   │                  MERO MATCH REVENUE FLYWHEEL                   │
+   └───────────────────────────────────────────────────────────────┘
+                                   │
+              ┌────────────────────┴────────────────────┐
+              ▼                                         ▼
+   ┌──────────────────────┐                  ┌──────────────────────┐
+   │   B2C CANDIDATES     │                  │  B2B INSTITUTIONS    │
+   │  & JOB SEEKERS       │                  │  & EMPLOYERS         │
+   └──────────────────────┘                  └──────────────────────┘
+              │                                         │
+       ┌──────┴──────┐                           ┌──────┴──────┐
+       ▼             ▼                           ▼             ▼
+  Freemium Pro   Micro-credit               Campus Site     Recruiter Batch
+  Subscriptions  Quick Packs                Licenses        Screening SaaS
+  ($8.99/mo)     ($1.99-$3.49)              ($800-$3,500/yr)($99-$299/mo)
+       │             │                           │             │
+       └──────┬──────┘                           └──────┬──────┘
+              │                                         │
+              └────────────────────┬────────────────────┘
+                                   │
+                                   ▼
+              ┌─────────────────────────────────────────┐
+              │      COMMISSION & AFFILIATE ENGINE      │
+              │  Course Referrals (Coursera/Udemy/edX)  │
+              │  Sponsored Job Openings & Certifications│
+              └─────────────────────────────────────────┘
+```
+
+---
+
+### 10.2 The Five Core Revenue Streams
+
+#### 1. B2C Freemium & Tiered Subscription Engine (SaaS)
+Candidates access core features under a tiered recurring monthly or annual plan.
+
+- **Explorer Tier (Free Forever)**:
+  - 3 ATS resume scans per month.
+  - Overall 0–100 ATS Score + top 3 missing skill tags.
+  - 1 AI Cover Letter generation.
+  - Standard classic CV Builder export (with Mero Match footer badge).
+  - *Strategic Goal*: User acquisition engine, word-of-mouth growth, and platform top-of-funnel conversion.
+
+- **Pro Career Accelerator ($8.99/month or NPR 699/month)**:
+  - **Unlimited ATS Evaluations**: Side-by-side comparison against target Job Descriptions with real-time keyword gap analysis.
+  - **Unlimited AI Cover Letter Studio**: Access to all 3 tones (Formal/Corporate, Confident/Modern, Startup/Creative).
+  - **Executive LinkedIn Optimizer**: Strategic headline formula, keyword-rich "About" section generator, and banner design recommendations.
+  - **Advanced CV Builder**: 8+ ATS-compliant templates (Single Column, Silicon Valley Tech, Finance Executive, Modern Minimalist) with high-res vector PDF export.
+  - **Bullet Point AI Rewriter**: One-click bullet optimizer converting passive duty descriptions into high-impact `Action Verb + Context + Quantifiable Metric` achievements.
+  - **Cold Outreach Email Studio**: Tailored recruiter reachouts, referral requests, and post-interview thank-you notes.
+
+- **Career Max / Executive Tier ($24.99/month or NPR 1,999/month)**:
+  - Everything in Pro.
+  - **AI Mock Interview Simulator**: Dynamic generation of 10 customized technical and behavioral interview questions based on the candidate's parsed resume and targeted job role.
+  - **Placement Priority Indexing**: Opt-in inclusion in Mero Match's verified talent pool visible to hiring partners.
+  - **Quarterly Human HR Review**: Asynchronous professional critique by certified recruiters or senior HR practitioners (1 review per quarter).
+
+#### 2. Pay-As-You-Go Microtransactions & Pass Packs
+Designed specifically for early-career candidates, students, and price-sensitive markets who avoid monthly subscription commitments:
+
+| Pack Name | Price (USD) | Price (NPR) | Entitlements | Target Audience |
+| :--- | :--- | :--- | :--- | :--- |
+| **Single Audit Pass** | $1.99 | NPR 149 | 1 Deep ATS Scan + Keyword Gap + Bullet Rephrase | Urgent single application |
+| **Interview Ready Bundle** | $3.99 | NPR 349 | 5 ATS Scans + 3 Cover Letters + 2 Cold Outreach Notes | Active weekly applicants |
+| **Complete Application Revamp** | $6.99 | NPR 599 | Master CV Optimization + LinkedIn Bio + 5 Tailored Letters | Career changers |
+| **Certified HR Expert Review** | $14.99 | NPR 1,299 | 48-Hour Asynchronous Line-by-Line Critique by Senior Recruiter | Final-round candidates |
+
+#### 3. B2B Talent Acquisition & Recruiter SaaS Portal
+Employers and recruitment agencies pay a monthly or annual seat license to streamline resume intake:
+
+- **Bulk Candidate Screening & Ranking**:
+  - Recruiters upload a batch of 50 to 500 incoming resume files (PDF/DOCX) for an open role.
+  - Mero Match's ingestion engine parses all resumes simultaneously, extracts education/degrees (`extractDegreeFromText`), benchmarks candidate skills against the role's Job Description, and generates an automated leaderboard ranking candidates from highest to lowest fit.
+- **Blind Recruitment Filter (DEI Compliance)**:
+  - Automatically redacts candidate name, gender, age, photograph, and contact details during initial resume triage to eliminate unconscious bias in hiring.
+- **Direct Candidate Sourcing from Verified Talent Pool**:
+  - Employers can search and filter high-scoring candidates (ATS score > 85%) who have opted in for hiring discovery.
+  - Monetization: Recruiter pay-per-contact ($15 - $35 per unlocked candidate lead) or monthly talent pool search subscription ($149/month).
+- **Seat Pricing**:
+  - Starter Team (1 Recruiter seat, 250 candidate scans/mo): **$99/month (NPR 12,000/mo)**.
+  - Growth Enterprise (5 Recruiter seats, 2,000 candidate scans/mo): **$299/month (NPR 35,000/mo)**.
+
+#### 4. B2B2C Educational & Institutional Campus Licensing
+Universities, colleges (offering CSIT, BCA, BBA, B.Tech, MBA programs), and vocational bootcamps partner with Mero Match to elevate student placement rates:
+
+- **Institutional Value Proposition**:
+  - Colleges struggle with student employability and lack dedicated career counseling staff to manually review hundreds of graduating student resumes.
+  - Mero Match provides an institutional white-labeled or co-branded portal where students receive instant resume feedback before college campus placement drives.
+- **Career Services Administrator Dashboard**:
+  - Placement officers track cohort-wide readiness scores, aggregate missing skill analytics (e.g. "64% of CSIT students lack Docker/CI-CD experience"), and generate accreditation employment reports.
+- **Licensing Fees**:
+  - Small College / Bootcamp (up to 300 students): **$800 - $1,200 / year (NPR 80,000 - 120,000/yr)**.
+  - Comprehensive University Campus (up to 2,000 students): **$2,500 - $4,500 / year (NPR 250,000 - 450,000/yr)**.
+
+#### 5. Skill Pathway Affiliate Marketplace & Contextual Monetization
+Within `SkillUpgradePathway.tsx`, when the analyzer detects high-priority missing skills for a candidate's target career (e.g. *AWS Solutions Architect*, *Docker*, *Financial Modeling*, *React Native*):
+
+- **Course Affiliate Partnerships**:
+  - Programmatic affiliate integration with educational providers (Coursera, Udemy, edX, Datacamp, LinkedIn Learning).
+  - Commission: **15% – 30%** of course purchase price ($5 to $35 revenue per converted student).
+- **Certification & Exam Prep Partnerships**:
+  - Referral commissions for professional credentials (e.g. AWS Certification, Scrum Master, PMP, IELTS/TOEFL test preparation centers).
+- **Contextual Sponsored Employer Slots**:
+  - Verified hiring partners sponsor banner placement on the candidate's analysis results page when a candidate scores 85%+ in their matching industry sector (e.g. "Top FinTech Companies Hiring React Engineers in Kathmandu & Remote").
+
+---
+
+### 10.3 Plan Comparison & Feature Entitlement Matrix
+
+| Feature / Capability | Free Explorer | Pro Accelerator ($8.99/mo) | Career Max ($24.99/mo) | University Campus License |
+| :--- | :---: | :---: | :---: | :---: |
+| **Monthly Resume Scans** | 3 / mo | Unlimited | Unlimited | Unlimited for all students |
+| **10-Factor ATS Scorecard** | Basic (0-100) | Detailed + Category Radar | Detailed + Radar + Export | Detailed + Radar |
+| **Target Job Description Matching**| ❌ | Included (Live Diff) | Included (Live Diff) | Included (Live Diff) |
+| **Education & Degree Extraction** | Included | Included | Included | Included |
+| **AI Cover Letter Generator** | 1 Letter (Standard) | Unlimited (3 Tones) | Unlimited (3 Tones) | Unlimited (3 Tones) |
+| **Executive LinkedIn Optimizer** | ❌ | Included | Included | Included |
+| **Cold Outreach & Follow-up Studio**| ❌ | Included | Included | Included |
+| **CV Builder Templates** | 1 Basic Template | 8+ Modern ATS Templates | 8+ Modern ATS Templates | Full Suite + College Co-branding |
+| **Vector PDF Export** | Standard PDF | Clean Vector PDF | Clean Vector PDF | Clean Vector PDF |
+| **AI Bullet Point Impact Rewriter**| ❌ | Included | Included | Included |
+| **AI Mock Interview Generator** | ❌ | ❌ | Included (10 Customized Qs) | Optional Add-on |
+| **Career Services Admin Analytics**| ❌ | ❌ | ❌ | Multi-Student Admin Console |
+| **Dedicated Human HR Review** | ❌ | Pay-per-review ($14.99) | 1 Included per Quarter | Available as bulk package |
+
+---
+
+### 10.4 Unit Economics & Cost Structure (90%+ Gross Margin)
+
+Mero Match's software architecture provides a major commercial advantage: **near-zero incremental cost per transaction**.
+
+#### 1. Cost of Goods Sold (COGS) Breakdown per Scan
+- **Gemini AI Tokens**:
+  - Average prompt payload (Resume text + JD): ~1,500 input tokens.
+  - Average structured response: ~800 output tokens.
+  - Model: `gemini-3.5-flash-lite` / `gemini-3.6-flash`.
+  - Cost per execution: **~$0.0008 to $0.0018 USD** (~0.1 to 0.25 NPR).
+- **Deterministic Heuristic Offline Fallback**:
+  - In situations of API outage or standard heuristic calculation: **$0.00 incremental cloud AI cost**.
+- **Hosting & Compute Infrastructure**:
+  - Containerized Express + Vite build deployed on Google Cloud Run: scales to zero during idle periods; average base operational cost of ~$15 to $35/month for early to mid-tier traffic.
+- **Gross Profit Margin**:
+  - On a Pro subscription ($8.99/mo) with an average of 25 scans and 10 generated documents per user (~$0.05 in total cloud compute/API consumption), the software yields a **Gross Margin exceeding 94%**.
+  - On a Single Audit Pass ($1.99) with COGS < $0.005, the gross margin is **98.5%**.
+
+#### 2. Key SaaS Metrics & Economics Targets
+- **Customer Acquisition Cost (CAC)**:
+  - Blended Target: $2.50 USD (driven down by campus partnerships and free-tier social shares).
+- **Average Revenue Per User (ARPU)**:
+  - Blended B2C: $7.20 / active paid user / month.
+- **Customer Lifetime Value (LTV)**:
+  - Average job search cycle: 3 to 4 months of subscription = $27 to $36 LTV.
+- **LTV-to-CAC Ratio**:
+  - Projected **> 9:1**, demonstrating high unit profitability.
+
+---
+
+### 10.5 Payment Infrastructure & Localization Strategy
+
+To ensure seamless payment adoption across both domestic South Asian markets and international users:
+
+```
+                  ┌────────────────────────────────────────┐
+                  │    MERO MATCH UNIFIED CHECKOUT ROUTER  │
+                  └────────────────────────────────────────┘
+                                      │
+            ┌─────────────────────────┴─────────────────────────┐
+            ▼                                                   ▼
+ ┌──────────────────────┐                            ┌──────────────────────┐
+ │   NEPAL & S. ASIA    │                            │    INTERNATIONAL     │
+ │  LOCAL GATEWAYS      │                            │    GLOBAL GATEWAYS   │
+ └──────────────────────┘                            └──────────────────────┘
+   • eSewa Wallet API                                  • Stripe Billing (Cards / Apple Pay)
+   • Khalti PG v2 (Instant Webhook)                    • PayPal Commerce
+   • Fonepay Dynamic Merchant QR                       • LemonSqueezy (Merchant of Record)
+   • ConnectIPS Direct Bank Transfer
+```
+
+1. **Nepal & South Asian Digital Wallets**:
+   - **eSewa & Khalti SDKs**: Instant one-tap checkout for students and local professionals without credit cards.
+   - **Fonepay Dynamic QR**: Scan-and-pay via all commercial bank mobile banking apps in Nepal.
+   - **ConnectIPS**: Direct real-time bank settlement for institutional college contract payments.
+2. **Global International Checkout**:
+   - **Stripe & LemonSqueezy**: Full support for international debit/credit cards, Apple Pay, Google Pay, and localized currency presentation (USD, EUR, GBP, AUD, INR) with automated VAT/tax compliance.
+
+---
+
+### 10.6 Growth Loops & Viral Acquisition Strategy
+
+```
+                                  ┌────────────────────────┐
+                                  │ Free Candidate Scan    │
+                                  └────────────────────────┘
+                                              │
+                                              ▼
+                                  ┌────────────────────────┐
+                                  │ Receives Score & Badges│
+                                  └────────────────────────┘
+                                              │
+                                              ▼
+                                  ┌────────────────────────┐
+                                  │ Shares Scorecard on    │
+                                  │ LinkedIn / WhatsApp    │
+                                  └────────────────────────┘
+                                              │
+                         ┌────────────────────┴────────────────────┐
+                         ▼                                         ▼
+             ┌──────────────────────┐                  ┌──────────────────────┐
+             │ Peer Job Seekers     │                  │ Recruiters & Campus  │
+             │ Join for Free Scans  │                  │ Placement Teams      │
+             └──────────────────────┘                  └──────────────────────┘
+```
+
+1. **LinkedIn Scorecard Badging**:
+   - When candidates achieve a 90+ ATS score, Mero Match provides an exportable, aesthetically branded "ATS Verified - Top 10% Candidate" graphic ready for one-click LinkedIn feed sharing, driving peer referrals.
+2. **Watermarked Free Resume Exports**:
+   - Resumes generated on the free tier feature a subtle modern footnote: *"Optimized with Mero Match AI - Candidate Verification ID #..."*. Every forwarded resume acts as organic B2B and B2C brand exposure.
+3. **University Placement Drive Partnerships**:
+   - By onboarding entire college cohorts at nominal institutional rates, every graduating class enters the workforce as loyal daily active users.
+4. **Campus Brand Ambassador Program**:
+   - Student ambassadors at major universities earn free Pro access and commissions for referring classmates.
+
+---
+
+### 10.7 Three-Year Financial Forecast & Milestone Roadmap
+
+The following table projects the financial scaling model across the first 3 years of commercial rollout:
+
+| Milestone / Metric | Year 1 (Traction & Launch) | Year 2 (Campus & B2B Expansion) | Year 3 (Regional Scale & Enterprise) |
+| :--- | :--- | :--- | :--- |
+| **Total Registered Users** | 25,000 | 120,000 | 450,000 |
+| **Active Paid B2C Subscribers** | 1,200 / month | 6,500 / month | 22,000 / month |
+| **Microtransaction Passes Sold** | 8,000 passes / year | 35,000 passes / year | 110,000 passes / year |
+| **University Campus Contracts** | 5 Colleges | 28 Colleges / Bootcamps | 75+ Institutions |
+| **Active B2B Recruiter Seats** | 15 Teams | 85 Teams | 280 Teams |
+| **Monthly Recurring Revenue (MRR)**| **$3,800 – $6,500** | **$28,000 – $42,000** | **$115,000 – $165,000** |
+| **Annual Recurring Revenue (ARR)**| **$45,000 – $78,000** | **$336,000 – $504,000**| **$1,380,000 – $1,980,000** |
+| **Blended Gross Margin** | **91%** | **93%** | **94.5%** |
+| **Primary Growth Focus** | Local market dominance, digital wallet adoption, and word-of-mouth student traction. | B2B campus placement contracts, Recruiter batch-screening beta, and course affiliate monetization. | Pan-South Asia expansion, Enterprise ATS API integrations, and Verified Talent Marketplace. |
 
 ---
 

@@ -6,9 +6,12 @@ import {
   insertUser,
   deleteUserRecord,
   insertAdminAuditLog,
-  insertSecurityEvent
+  insertSecurityEvent,
+  insertUserDocument,
+  insertCoverLetter,
+  getCoverLetters
 } from "../../src/db";
-import { callGeminiWithRetry, getGeminiClient } from "../../src/gemini_service";
+import { callGeminiWithRetry, getGeminiClient, RESILIENT_MODELS, generateTextWithRetry } from "../../src/gemini_service";
 import { localHeuristicAnalysis } from "../../src/heuristic_service";
 
 export async function analyzeResume(req: Request, res: Response) {
@@ -179,7 +182,8 @@ ${extractedText.slice(0, 15000)}`;
 
 export async function generateCoverLetter(req: Request, res: Response) {
   try {
-    const { jobTitle, companyName, hiringManager, keySkills, tone } = req.body || {};
+    const { jobTitle, companyName, hiringManager, keySkills, tone, owner_email } = req.body || {};
+    const candidateEmail = (owner_email || "candidate@example.com").toLowerCase().trim();
 
     const prompt = `Write an exceptional, highly compelling, tailored cover letter for:
 Position: ${jobTitle || 'Software Engineer'}
@@ -192,25 +196,33 @@ Provide ONLY the cover letter text ready to send.`;
 
     if (process.env.GEMINI_API_KEY) {
       try {
-        const client = getGeminiClient();
-        const candidateModels = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.7-flash"];
-        let response: any = null;
-        for (const m of candidateModels) {
+        const text = await generateTextWithRetry(prompt, RESILIENT_MODELS);
+        if (text) {
+          const finalLetter = text.trim();
+          let savedDoc: any = null;
           try {
-            response = await client.models.generateContent({
-              model: m,
-              contents: prompt
+            savedDoc = insertCoverLetter({
+              owner_email: candidateEmail,
+              title: `Cover Letter - ${jobTitle || 'Role Application'}`,
+              job_title: jobTitle || "",
+              company_name: companyName || "",
+              hiring_manager: hiringManager || "",
+              tone: tone || "professional",
+              key_skills: keySkills || "",
+              content: finalLetter
             });
-            if (response && response.text) break;
-          } catch (modelErr) {
-            console.warn(`Cover letter model ${m} failed:`, (modelErr as any)?.message || modelErr);
+          } catch (dbErr) {
+            console.error("[CoverLetter] Failed to persist generated letter to cover_letter.json:", dbErr);
           }
-        }
-        if (response && response.text) {
-          return res.json({ success: true, letter: response.text.trim() });
+          return res.json({
+            success: true,
+            letter: finalLetter,
+            document: savedDoc,
+            path: "cover_letter.json"
+          });
         }
       } catch (gemErr) {
-        console.warn("Cover letter Gemini generation fallback:", gemErr);
+        // Transparent fallback to heuristic cover letter template below
       }
     }
 
@@ -225,9 +237,40 @@ I welcome the opportunity to discuss how my experience aligns with your team's u
 Sincerely,
 Candidate`;
 
-    return res.json({ success: true, letter: fallbackLetter });
+    let savedDoc: any = null;
+    try {
+      savedDoc = insertCoverLetter({
+        owner_email: candidateEmail,
+        title: `Cover Letter - ${jobTitle || 'Role Application'}`,
+        job_title: jobTitle || "",
+        company_name: companyName || "",
+        hiring_manager: hiringManager || "",
+        tone: tone || "professional",
+        key_skills: keySkills || "",
+        content: fallbackLetter
+      });
+    } catch (dbErr) {
+      console.error("[CoverLetter] Failed to persist fallback cover letter to cover_letter.json:", dbErr);
+    }
+
+    return res.json({
+      success: true,
+      letter: fallbackLetter,
+      document: savedDoc,
+      path: "cover_letter.json"
+    });
   } catch (err: any) {
     return res.status(500).json({ error: err.message || "Error generating cover letter." });
+  }
+}
+
+export async function getCoverLettersHandler(req: Request, res: Response) {
+  try {
+    const email = req.query.email as string;
+    const letters = getCoverLetters(email);
+    return res.json({ success: true, cover_letters: letters });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message || "Error retrieving cover letters." });
   }
 }
 
@@ -423,29 +466,16 @@ Return valid JSON ONLY matching this exact structure:
   }
 }`;
 
-        const candidateModels = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.7-flash"];
-        let response: any = null;
-        for (const m of candidateModels) {
-          try {
-            response = await client.models.generateContent({
-              model: m,
-              contents: prompt
-            });
-            if (response && response.text) break;
-          } catch (modelErr) {
-            console.warn(`LinkedIn optimizer model ${m} failed:`, (modelErr as any)?.message || modelErr);
-          }
-        }
-
-        if (response && response.text) {
-          let cleanJson = response.text.trim();
+        const text = await generateTextWithRetry(prompt, RESILIENT_MODELS);
+        if (text) {
+          let cleanJson = text.trim();
           if (cleanJson.startsWith("```")) {
             cleanJson = cleanJson.replace(/^```(?:json)?/i, "").replace(/```$/, "").trim();
           }
           result = JSON.parse(cleanJson);
         }
       } catch (gemErr) {
-        console.warn("LinkedIn Gemini optimization fallback to heuristic template:", gemErr);
+        // Transparent fallback to heuristic template below
       }
     }
 
@@ -571,6 +601,18 @@ Over the course of my career in ${sector}, I have focused on modernizing technic
         }
       };
     }
+
+    try {
+      const userTargetEmail = (req.body?.owner_email || candidateName || 'candidate@example.com').toLowerCase().trim();
+      insertUserDocument({
+        owner_email: userTargetEmail,
+        title: `LinkedIn Strategy Pack - ${role}`,
+        type: "linkedin_pack",
+        target_job: role,
+        data: result,
+        content: result.about || (result.headlines && result.headlines[0]?.text) || "LinkedIn Profile Optimization Package"
+      });
+    } catch (_) {}
 
     return res.json({ success: true, data: result, extractedResumeText: extractedResumeText.slice(0, 300) });
   } catch (err: any) {

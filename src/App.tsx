@@ -19,7 +19,6 @@ import GeneratedDocsTab from './components/user/GeneratedDocsTab';
 import SecuritySettingsTab from './components/user/SecuritySettingsTab';
 import AdminDashboardOverview from './components/admin/AdminDashboardOverview';
 import { FeedbackDbRecord, UserDbRecord } from './types';
-import { supabase, isSupabaseConfigured } from './lib/supabase';
 
 export default function App() {
   // Navigation & session state
@@ -87,79 +86,25 @@ export default function App() {
   useEffect(() => {
     fetchFeedbackHistory();
     
-    const checkSession = async () => {
-      if (isSupabaseConfigured() && supabase) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          const userObj = {
-            id: session.user.id,
-            email: session.user.email,
-            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || "User",
-            phone: session.user.user_metadata?.phone || "",
-            created_at: session.user.created_at,
-            isSupabase: true
-          };
-          setLoggedInUser(userObj);
-          localStorage.setItem('resume_auth_user', JSON.stringify(userObj));
-          return;
-        }
+    // Check local storage for active session
+    const storedUser = localStorage.getItem('resume_auth_user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setLoggedInUser(parsed);
+        if (parsed?.email) localStorage.setItem('cv_user_email', parsed.email);
+      } catch (e) {
+        localStorage.removeItem('resume_auth_user');
       }
-
-      // Check local storage if no active Supabase session or fallback mode
-      const storedUser = localStorage.getItem('resume_auth_user');
-      if (storedUser) {
-        try {
-          setLoggedInUser(JSON.parse(storedUser));
-        } catch (e) {
-          localStorage.removeItem('resume_auth_user');
-        }
-      }
-    };
-
-    checkSession();
-
-    let authListener: any = null;
-    if (isSupabaseConfigured() && supabase) {
-      const { data } = supabase.auth.onAuthStateChange((event, session) => {
-        if (session?.user) {
-          const userObj = {
-            id: session.user.id,
-            email: session.user.email,
-            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || "User",
-            phone: session.user.user_metadata?.phone || "",
-            created_at: session.user.created_at,
-            isSupabase: true
-          };
-          setLoggedInUser(userObj);
-          localStorage.setItem('resume_auth_user', JSON.stringify(userObj));
-        } else if (event === 'SIGNED_OUT') {
-          setLoggedInUser(null);
-          localStorage.removeItem('resume_auth_user');
-        }
-      });
-      authListener = data.subscription;
     }
-
-    return () => {
-      if (authListener) authListener.unsubscribe();
-    };
   }, []);
 
   const fetchFeedbackHistory = async () => {
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { data, error } = await supabase
-          .from('feedback')
-          .select('*')
-          .order('id', { ascending: false });
-        if (error) throw error;
-        setAllFeedback(data || []);
-      } else {
-        const res = await fetch('/api/feedback');
-        if (res.ok) {
-          const data = await res.json();
-          setAllFeedback(data);
-        }
+      const res = await fetch('/api/feedback');
+      if (res.ok) {
+        const data = await res.json();
+        setAllFeedback(data);
       }
     } catch (err) {
       console.error("Error drawing feedback record logs: ", err);
@@ -169,19 +114,10 @@ export default function App() {
   const handleFetchAdminRecords = async () => {
     setLoadingAdminRecords(true);
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { data, error } = await supabase
-          .from('records')
-          .select('*')
-          .order('id', { ascending: false });
-        if (error) throw error;
-        setAdminRecords(data || []);
-      } else {
-        const res = await fetch('/api/admin/records');
-        if (res.ok) {
-          const data = await res.json();
-          setAdminRecords(data);
-        }
+      const res = await fetch('/api/admin/records');
+      if (res.ok) {
+        const data = await res.json();
+        setAdminRecords(data);
       }
     } catch (err) {
       console.error("Error retrieving admin details:", err);
@@ -192,33 +128,21 @@ export default function App() {
 
   const handleDeleteAdminRecord = async (id: number) => {
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { error } = await supabase
-          .from('records')
-          .delete()
-          .eq('id', id);
-        if (error) throw error;
+      const res = await fetch(`/api/records/${id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
         handleFetchAdminRecords();
       } else {
-        const res = await fetch(`/api/records/${id}`, {
-          method: 'DELETE'
-        });
-        if (res.ok) {
-          handleFetchAdminRecords();
-        } else {
-          const data = await res.json();
-          alert(data.error || "Unable to delete record from logging database");
-        }
+        const data = await res.json();
+        alert(data.error || "Unable to delete record from logging database");
       }
     } catch (err) {
       console.error("Error deleting record:", err);
     }
   };
 
-  const handleLogout = async () => {
-    if (isSupabaseConfigured() && supabase) {
-      await supabase.auth.signOut();
-    }
+  const handleLogout = () => {
     setLoggedInUser(null);
     localStorage.removeItem('resume_auth_user');
     localStorage.removeItem('cv_engine_started');
@@ -364,7 +288,7 @@ export default function App() {
           )}
 
           {activeTab === 'cover_letter' && (
-            <CoverLetterTab />
+            <CoverLetterTab loggedInUser={loggedInUser} />
           )}
 
           {activeTab === 'linkedin' && (

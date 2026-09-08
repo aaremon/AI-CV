@@ -193,11 +193,15 @@ graph TD
     end
   end
 
-  subgraph PersistenceTier ["PERSISTENCE & DATA SYNCHRONIZATION LAYER"]
-    DB_MGR["Database Engine (src/db.ts - Cached Schema Guard)"]
-    DB_JSON[("Active Database: data/db.json")]
-    USER_JSON[("Mirrored Public Store: user.json")]
-    AUDIT_LOG[("Security & Audit Events Store")]
+  subgraph PersistenceTier ["MODULAR DECOUPLED PERSISTENCE & AUDIT STORES"]
+    DB_MGR["Database Engine (src/db.ts - Modular Decoupled Dispatcher)"]
+    D_USER[("user.json: Auth Accounts & Profile Store")]
+    D_ATS[("ATS_scanner.json: ATS Evaluations & Scan History")]
+    D_LOG[("admin_log.json: Admin Audit Logs & Security Events")]
+    D_COVER[("cover_letter.json: AI Cover Letters Store")]
+    D_LINKEDIN[("linkedin.json: LinkedIn Strategy Packs Store")]
+    D_VERSIONS[("cv_versions.json: CV Builder Snapshots")]
+    D_FEED[("feedback.json: User Testimonials & Feedback")]
   end
 
   %% Client to Gateway
@@ -217,8 +221,11 @@ graph TD
   PII_GUARD -- "Direct Local Evaluation" --> HeuristicEngine
 
   %% Persistence flow
-  C_AUTH & C_RESUME & C_USER & C_ADMIN --> DB_MGR
-  DB_MGR --> DB_JSON & USER_JSON & AUDIT_LOG
+  C_AUTH --> DB_MGR --> D_USER
+  C_RESUME --> DB_MGR --> D_ATS & D_COVER & D_LINKEDIN
+  C_ADMIN --> DB_MGR --> D_LOG
+  C_USER --> DB_MGR --> D_VERSIONS & D_COVER & D_LINKEDIN
+  C_FEED --> DB_MGR --> D_FEED
 ```
 
 ---
@@ -279,11 +286,14 @@ flowchart TD
     Admin(["🛡️ Admin"])
     GeminiAPI(["🤖 Gemini AI Platform"])
 
-    subgraph DataStores ["Storage & Audit Stores"]
-      D1[("D1: User Accounts & Active Sessions")]
-      D2[("D2: Resume Analysis & ATS Score History")]
-      D3[("D3: Generated Documents & CV Versions")]
-      D4[("D4: Security Events & Audit Trail")]
+    subgraph DataStores ["Modular Decoupled Data Stores"]
+      D1[("D1: user.json (Accounts & Sessions)")]
+      D2[("D2: ATS_scanner.json (ATS Evaluations & Scans)")]
+      D3[("D3: cover_letter.json (AI Cover Letters)")]
+      D4[("D4: linkedin.json (LinkedIn Strategy Packs)")]
+      D5[("D5: cv_versions.json (Builder Snapshots)")]
+      D6[("D6: admin_log.json (Audit & Intrusion Logs)")]
+      D7[("D7: feedback.json (Testimonials)")]
     end
 
     %% Process 1: Ingestion
@@ -484,16 +494,24 @@ Transforms static resume bullet points into recruiter-optimized personal brandin
 
 ---
 
-### H. Persistence Layer & Live Watcher Isolation
-- **JSON Storage Engine (`src/db.ts`)**: Manages records in `data/db.json` and mirrored public records in `user.json`.
-- **Vite Watcher Isolation (`vite.config.ts` & `server.ts`)**: Configured `watch.ignored` patterns for `**/data/**`, `**/user.json`, and `**/privacy_audit.json`. This completely prevents server file writes from triggering client hot-reload loops.
-- **Cached Initialization**: Database bootstrap runs once, avoiding repetitive file rewrites on concurrent requests.
+### H. Modular Persistence Layer & Live Watcher Isolation
+- **Decoupled Modular JSON Stores (`src/db.ts`)**: Instead of storing all jumbled records in a single monolithic file, each component manages its own isolated, human-readable data store:
+  - `data/user.json` (mirrored to root `user.json`): User accounts, authentication credentials, and roles.
+  - `data/ATS_scanner.json` (mirrored to root `ATS_scanner.json`): Analyzed CV scans, ATS match scores, and parsed degree/skills metrics.
+  - `data/admin_log.json`: System administrator audit trails and security intrusion detection events.
+  - `data/cover_letter.json`: Generated cover letters and customized application drafts.
+  - `data/linkedin.json`: Executive LinkedIn profile optimization packages and outreach notes.
+  - `data/cv_versions.json`: CV Builder revision history, diff snapshots, and candidate drafts.
+  - `data/feedback.json`: User star ratings, comments, and testimonials.
+- **Vite Watcher Isolation (`vite.config.ts` & `server.ts`)**: Configured comprehensive `watch.ignored` patterns for `**/data/**`, `**/user.json`, `**/ATS_scanner.json`, `**/cv_analyzed.json`, `**/admin_log.json`, `**/cover_letter.json`, `**/linkedin.json`, `**/privacy_audit.json`, and `**/*.json.tmp*`. This prevents disk writes from triggering live frontend reload loops.
+- **Atomic Operations & Auto-Migration**: Database bootstrap automatically discovers and migrates legacy data into the respective modular files upon startup.
 
 ---
 
 ### I. Admin Dashboard & Telemetry
 Accessible via administrator accounts (`thapakaji@gmail.com` or `admin` / `password`):
-- Server uptime and memory consumption metrics.
+- Server uptime, memory consumption, and CPU load metrics.
+- Real-time **Modular JSON Data Stores Status** table tracking record counts and file byte sizes.
 - API response latency and health probes.
 - User management table (role assignment and account status toggles).
 - Live security event logs and administrative audit trail.
@@ -508,7 +526,7 @@ Accessible via administrator accounts (`thapakaji@gmail.com` or `admin` / `passw
 | **Q2** | **How do you address the hallucination problem in automated resume scoring?** | We implement rigid anti-hallucination prompt constraints paired with a JSON Schema response format. The model is strictly instructed to act as an *evaluator and formatting coach*, forbidden from fabricating unlisted companies, degrees, dates, or numerical achievements. |
 | **Q3** | **How does Mero Match solve false-positive degree matching?** | Rather than performing naive substring matches, `extractDegreeFromText` isolates the education section and executes targeted regular expressions with boundary markers. This accurately distinguishes between BBA, BCA, B.Sc. CSIT, B.Tech, MBA, M.S., and High School credentials. |
 | **Q4** | **How is file upload security and data privacy enforced?** | File uploads are processed in-memory as binary buffers using `pdf-parse` and `mammoth` without permanent temporary file writes. In addition, regex PII sanitizers strip credit cards and SSNs, and users can trigger one-click GDPR-compliant data erasure at any time. |
-| **Q5** | **How did you prevent file-watcher reload loops with local JSON persistence?** | In development mode, Vite's file watcher monitors workspace files. When the backend updated `data/db.json`, Vite treated it as source code and triggered a browser reload. We resolved this by explicitly configuring `watch.ignored` in `vite.config.ts` and `server.ts` to ignore all data and runtime storage files. |
+| **Q5** | **Why and how did you decouple the database into separate modular JSON files?** | Monolithic persistence files (e.g. jumbled `db.json`) cause merge conflicts, file contention during concurrent writes, and poor maintainability. We refactored `src/db.ts` into a modular storage engine with dedicated files for each component (`user.json`, `ATS_scanner.json`, `admin_log.json`, `cover_letter.json`, `linkedin.json`). We paired this with `watch.ignored` rules in `vite.config.ts` and `server.ts` to prevent file I/O from causing browser refresh loops. |
 
 ---
 

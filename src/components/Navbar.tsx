@@ -29,7 +29,6 @@ import {
   ChevronDown,
   Sparkles
 } from 'lucide-react';
-import { isSupabaseConfigured } from '../lib/supabase';
 import logo from '../assets/images/mero_match_exact_logo_1782115392578.jpg';
 
 export type NavTabType =
@@ -123,8 +122,6 @@ export default function Navbar({
     setActiveTab(tabId);
     setMobileMenuOpen(false);
   };
-
-  const supabaseActive = isSupabaseConfigured();
 
   // Find icon component for active item or category items
   const allNavItems = navGroups.flatMap(g => g.items);

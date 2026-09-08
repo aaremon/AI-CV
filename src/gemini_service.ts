@@ -165,6 +165,14 @@ export const RESUME_RESPONSE_SCHEMA = {
   ]
 };
 
+export const RESILIENT_MODELS = [
+  "gemini-3.5-flash-lite",
+  "gemini-3.7-flash",
+  "gemini-3.1-flash-lite",
+  "gemini-flash-latest",
+  "gemini-3.8-flash"
+];
+
 export async function callGeminiWithRetry(
   contents: any[],
   systemInstruction: string,
@@ -172,7 +180,7 @@ export async function callGeminiWithRetry(
   baseDelayMs = 800
 ): Promise<any> {
   const client = getGeminiClient();
-  const models = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.1-flash-lite", "gemini-3.7-flash"];
+  const models = RESILIENT_MODELS;
   let lastError: any = null;
 
   for (const model of models) {
@@ -210,16 +218,39 @@ export async function callGeminiWithRetry(
 
         if (isRetryable && attempt <= maxRetries) {
           const delay = baseDelayMs * Math.pow(2, attempt - 1) + Math.random() * 300;
-          console.log(`[Gemini API TS] Retrying model ${model} (attempt ${attempt}/${maxRetries}) in ${Math.round(delay)}ms...`);
           await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }
 
-        console.warn(`[Gemini API TS] Model ${model} failed (${errMsg.slice(0, 100)}). Switching to fallback model if available...`);
         break; // break to try next model in loop
       }
     }
   }
 
   throw lastError || new Error("All Gemini model attempts failed.");
+}
+
+export async function generateTextWithRetry(
+  prompt: string,
+  candidateModels: string[] = RESILIENT_MODELS
+): Promise<string> {
+  const client = getGeminiClient();
+  let lastError: any = null;
+
+  for (const model of candidateModels) {
+    try {
+      const response = await client.models.generateContent({
+        model: model,
+        contents: prompt
+      });
+      if (response && response.text) {
+        return response.text.trim();
+      }
+    } catch (e: any) {
+      lastError = e;
+      // Continue to next available resilient model
+    }
+  }
+
+  throw lastError || new Error("All candidate text models failed.");
 }

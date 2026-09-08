@@ -37,9 +37,17 @@ async function startServer() {
           ignored: [
             "**/data/**",
             "**/user.json",
+            "**/ATS_scanner.json",
+            "**/cv_analyzed.json",
+            "**/admin_log.json",
+            "**/cover_letter.json",
+            "**/linkedin.json",
+            "**/cv_versions.json",
+            "**/feedback.json",
+            "**/notifications.json",
+            "**/sessions.json",
             "**/privacy_audit.json",
-            "**/*.json.tmp*",
-            "**/data/db.json"
+            "**/*.json.tmp*"
           ]
         }
       },

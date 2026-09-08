@@ -588,6 +588,53 @@ export default function AdminDashboardOverview({
               <span className="text-xl font-extrabold text-emerald-600">{systemHealth?.system?.cpuLoad || '0.10'}</span>
             </div>
           </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-3">
+              <Database className="w-4 h-4 text-indigo-500" />
+              Modular JSON Data Stores Status (Decoupled Persistence)
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+              All data categories are isolated into dedicated, modular JSON files for high maintainability and atomic operations.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left">
+                <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-500 uppercase font-mono text-[10px]">
+                  <tr>
+                    <th className="p-3 rounded-l-xl">Data Store File</th>
+                    <th className="p-3">Path</th>
+                    <th className="p-3">Active Records</th>
+                    <th className="p-3">File Size</th>
+                    <th className="p-3 rounded-r-xl">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {systemHealth?.dataStores ? (
+                    systemHealth.dataStores.map((store: any) => (
+                      <tr key={store.name} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                        <td className="p-3 font-bold text-slate-900 dark:text-white font-mono flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                          {store.name}
+                        </td>
+                        <td className="p-3 font-mono text-slate-500">{store.path}</td>
+                        <td className="p-3 font-semibold text-indigo-600 dark:text-indigo-400">{store.count} records</td>
+                        <td className="p-3 font-mono text-slate-500">{store.sizeBytes > 1024 ? `${(store.sizeBytes / 1024).toFixed(1)} KB` : `${store.sizeBytes} B`}</td>
+                        <td className="p-3">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                            <CheckCircle2 className="w-3 h-3" /> Healthy
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={5} className="p-4 text-center text-slate-400">Loading data stores status...</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
     </div>

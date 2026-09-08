@@ -1,0 +1,55 @@
+{
+  "admin_audit_logs": [
+    {
+      "id": 1,
+      "timestamp": "2026-09-07T10:33:37.733Z",
+      "admin_email": "thapakaji@gmail.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: John_Doe_CV.txt (#1)",
+      "result": "SUCCESS"
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-09-07T10:36:01.870Z",
+      "admin_email": "aaryaman1@gmail.com",
+      "action": "RESUME_ANALYZED",
+      "target_resource": "CV: Aaryaman CV (1).pdf (#2)",
+      "result": "SUCCESS"
+    }
+  ],
+  "security_events": [
+    {
+      "id": 1,
+      "created_at": "2026-09-07T10:20:13.403Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "curl/7.88.1",
+      "event_type": "UNAUTHORIZED_ADMIN_ACCESS",
+      "severity": "HIGH",
+      "description": "Unauthorized access attempt to admin route: /api/admin/system-health",
+      "email": "anonymous"
+    },
+    {
+      "id": 2,
+      "created_at": "2026-09-07T10:34:57.968Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "LOGIN_FAILED",
+      "severity": "MEDIUM",
+      "description": "Failed login attempt for email: aaryaman1@gmail.com",
+      "email": "aaryaman1@gmail.com"
+    },
+    {
+      "id": 3,
+      "created_at": "2026-09-07T10:35:24.956Z",
+      "status": "RECORDED",
+      "ip_safe": "127.0.0.x (hashed)",
+      "user_agent_summary": "Browser/Client",
+      "event_type": "USER_REGISTERED",
+      "severity": "LOW",
+      "description": "New user registration for aaryaman1@gmail.com",
+      "email": "aaryaman1@gmail.com"
+    }
+  ]
+}

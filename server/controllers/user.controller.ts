@@ -86,7 +86,7 @@ export async function getDocuments(req: Request, res: Response) {
 
 export async function createDocument(req: Request, res: Response) {
   try {
-    const { owner_email, title, type, target_job, content } = req.body || {};
+    const { owner_email, title, type, target_job, job_title, company_name, hiring_manager, tone, key_skills, content } = req.body || {};
     if (!owner_email || !title || !content) {
       return res.status(400).json({ error: "Missing required document fields." });
     }
@@ -94,8 +94,14 @@ export async function createDocument(req: Request, res: Response) {
       owner_email: owner_email.toLowerCase().trim(),
       title,
       type: type || "document",
-      target_job: target_job || "",
-      content
+      target_job: target_job || job_title || "",
+      job_title: job_title || target_job || "",
+      company_name: company_name || "",
+      hiring_manager: hiring_manager || "",
+      tone: tone || "",
+      key_skills: key_skills || "",
+      content,
+      ...req.body
     });
     return res.json({ success: true, document: newDoc });
   } catch (e: any) {

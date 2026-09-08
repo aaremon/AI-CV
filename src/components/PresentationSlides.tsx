@@ -249,7 +249,7 @@ export default function PresentationSlides() {
               <div>
                 <h4 className="text-xs font-bold text-slate-900 dark:text-white">JSON Logging & Admin Terminals</h4>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">
-                  Implemented disk-persisted data logs (`db.json`) allowing administrators to audit historical evaluations and review analytics securely.
+                  Implemented disk-persisted modular data logs (`user.json`, `ATS_scanner.json`) allowing administrators to audit historical evaluations and review analytics securely.
                 </p>
               </div>
             </div>
@@ -417,7 +417,7 @@ export default function PresentationSlides() {
                 <td className="py-3 pr-4 font-bold">Persistence Layer</td>
                 <td className="py-3 px-4 text-slate-500">None (volatile state variable storage).</td>
                 <td className="py-3 pl-4 font-semibold text-slate-800 dark:text-slate-205">
-                  Permanent SQLite-like disk persistence in <code>db.json</code>, enabling guest session recovery.
+                  Permanent modular disk persistence across isolated stores (<code>user.json</code>, <code>ATS_scanner.json</code>), enabling session recovery.
                 </td>
               </tr>
               <tr>

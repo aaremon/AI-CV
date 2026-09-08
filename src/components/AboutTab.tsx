@@ -183,10 +183,10 @@ export default function AboutTab() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase font-display">Database Layer</h4>
-                    <p className="text-[10px] text-slate-410 mt-0.5">JSON Transaction Store • db.json • File I/O</p>
+                    <p className="text-[10px] text-slate-410 mt-0.5">Modular Stores • user.json • ATS_scanner.json</p>
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                    Structured query transaction manager recording candidate user authorization hashes, resume audit tallies, and logs.
+                    Structured transaction manager recording candidate user authorization, ATS scanner records, cover letters, and admin logs.
                   </p>
                 </div>
 
@@ -215,7 +215,7 @@ export default function AboutTab() {
                   The front-end client layer acts as a visual browser environment, capturing file submissions. To protect precious credentials (like Gemini API keys), the platform runs on a **Fullstack MVC Proxy pattern**. The client requests are securely forwarded to the Node.js/Express.js backend server.
                 </p>
                 <p>
-                  The Express server evaluates authorization details, runs parsing algorithms, formats precise prompting instructions, and triggers the modern **Google GenAI SDK** to acquire strict JSON templates. Finally, session activity and resume reports are securely indexed inside the server-persistent local database schema (`db.json`) before forwarding the parsed result to the browser.
+                  The Express server evaluates authorization details, runs parsing algorithms, formats precise prompting instructions, and triggers the modern **Google GenAI SDK** to acquire strict JSON templates. Finally, session activity and resume reports are securely indexed inside modular data files (`user.json`, `ATS_scanner.json`) before forwarding the parsed result to the browser.
                 </p>
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function AboutTab() {
                   <div className="flex-1 text-center sm:text-left">
                     <span className="text-[10px] font-extrabold text-amber-650 dark:text-amber-400 uppercase block font-mono">Transaction Persistence Core</span>
                     <h5 className="text-xs font-bold text-slate-800 dark:text-white mt-0.5">Commit JSON Logs & Render</h5>
-                    <p className="text-[11px] text-slate-500 mt-0.5">Indexes evaluation results to db.json and returns beautiful stats cards, pathway steps, and metrics back to the UI.</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">Indexes evaluation results to modular stores (e.g. ATS_scanner.json) and returns beautiful stats cards, pathway steps, and metrics back to the UI.</p>
                   </div>
                   <div className="p-1 px-3.5 rounded-xl bg-amber-50/55 dark:bg-amber-950/20 border border-amber-150 dark:border-amber-900/40 text-[10px] font-mono text-amber-605 dark:text-amber-450 select-none flex items-center gap-1">
                     <span>Data Store</span>
@@ -430,7 +430,7 @@ export default function AboutTab() {
                 </div>
                 <div className="p-4 bg-white dark:bg-[#141c2f] rounded-2xl border border-slate-200 dark:border-slate-800/80 space-y-1">
                   <span className="font-extrabold text-amber-600 dark:text-amber-450 block uppercase">📦 Database Configuration</span>
-                  <p>The system stores credentials and transaction tables using lightweight synchronised I/O inside file storage (<code>/data/db.json</code>). Transactions are completed efficiently using deep JSON key path structures.</p>
+                  <p>The system stores credentials and transaction records using dedicated modular JSON files (<code>/data/user.json</code>, <code>/data/ATS_scanner.json</code>, etc.). Atomic writes with backup temp files ensure zero corruption.</p>
                 </div>
               </div>
             </div>

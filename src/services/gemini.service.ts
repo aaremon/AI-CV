@@ -1,7 +1,7 @@
 import { PiiSanitizationService } from "./piiSanitization.service";
 import { AiPrivacyGuardService } from "./aiPrivacyGuard.service";
 import { PrivacyAuditService } from "./privacyAudit.service";
-import { callGeminiWithRetry, getGeminiClient } from "../gemini_service";
+import { callGeminiWithRetry, getGeminiClient, generateTextWithRetry, RESILIENT_MODELS } from "../gemini_service";
 
 export class CentralizedGeminiService {
   /**
@@ -57,20 +57,11 @@ export class CentralizedGeminiService {
         jsonResult = null;
       }
     } else {
-      const client = getGeminiClient();
-      let geminiRes: any;
       try {
-        geminiRes = await client.models.generateContent({
-          model: "gemini-3.5-flash-lite",
-          contents: cleanPrompt
-        });
+        resultText = await generateTextWithRetry(cleanPrompt, RESILIENT_MODELS);
       } catch {
-        geminiRes = await client.models.generateContent({
-          model: "gemini-3.6-flash",
-          contents: cleanPrompt
-        });
+        resultText = "";
       }
-      resultText = geminiRes.text ? geminiRes.text.trim() : "";
     }
 
     return {

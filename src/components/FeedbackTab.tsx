@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Send, Star, CheckCircle, Award } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface FeedbackRecord {
   id: number;
@@ -36,34 +35,21 @@ export default function FeedbackTab({ allFeedback, onFeedbackSumitted }: Feedbac
     setError(null);
 
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { error: dbError } = await supabase
-          .from('feedback')
-          .insert([{
-            feed_name: feedName,
-            feed_email: feedEmail,
-            feed_score: String(feedRating),
-            comments: feedComment,
-            timestamp: new Date().toISOString()
-          }]);
-        if (dbError) throw dbError;
-      } else {
-        const response = await fetch('/api/feedback', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: feedName,
-            email: feedEmail,
-            rating: feedRating,
-            comments: feedComment
-          })
-        });
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: feedName,
+          email: feedEmail,
+          rating: feedRating,
+          comments: feedComment
+        })
+      });
 
-        if (!response.ok) {
-          throw new Error("Unable to save feedback review.");
-        }
+      if (!response.ok) {
+        throw new Error("Unable to save feedback review.");
       }
 
       setFeedbackSuccess(true);

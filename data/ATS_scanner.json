@@ -1,0 +1,404 @@
+[
+  {
+    "id": 1,
+    "created_at": "2026-09-07T10:33:37.732Z",
+    "owner_email": "thapakaji@gmail.com",
+    "name": "John Doe",
+    "email": "Not Provided",
+    "resume_score": "75",
+    "timestamp": "2026-09-07T10:33:37.731Z",
+    "reco_field": "Web Development",
+    "cand_level": "Intermediate",
+    "skills": [
+      "React",
+      "Node.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "recommended_skills": [
+      "Kubernetes",
+      "GraphQL",
+      "AWS",
+      "CI/CD",
+      "Redis",
+      "System Design",
+      "Jest",
+      "Microservices",
+      "Git",
+      "Agile Methodologies"
+    ],
+    "courses": [
+      {
+        "title": "AWS Certified Solutions Architect",
+        "link": "https://www.coursera.org/professional-certificates/aws-certified-solutions-architect"
+      },
+      {
+        "title": "Node.js, Express, MongoDB & More: The Complete Bootcamp",
+        "link": "https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/"
+      }
+    ],
+    "pdf_name": "John_Doe_CV.txt",
+    "pdf_url": null,
+    "data_json": {
+      "scoring": {
+        "overallScore": 75,
+        "atsScore": 70
+      },
+      "name": "John Doe",
+      "email": "Not Provided",
+      "phone": "Not Provided",
+      "degree": "Bachelor of Computer Applications (BCA)",
+      "no_of_pages": 1,
+      "cand_level": "Intermediate",
+      "predicted_field": "Web Development",
+      "current_skills": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Docker"
+      ],
+      "recommended_skills": [
+        "Kubernetes",
+        "GraphQL",
+        "AWS",
+        "CI/CD",
+        "Redis",
+        "System Design",
+        "Jest",
+        "Microservices",
+        "Git",
+        "Agile Methodologies"
+      ],
+      "resume_score": 75,
+      "score_factors": {
+        "has_objective": true,
+        "has_education": true,
+        "has_experience": true,
+        "has_internship": false,
+        "has_skills": true,
+        "has_hobbies": false,
+        "has_interests": false,
+        "has_achievements": true,
+        "has_certifications": false,
+        "has_projects": false
+      },
+      "feedback": [
+        {
+          "factor": "Objective/Summary",
+          "status": "added",
+          "detail": "Clear summary provided, highlighting key software engineering skills."
+        },
+        {
+          "factor": "Experience",
+          "status": "added",
+          "detail": "Good inclusion of metrics such as 99.9% uptime and 35% latency improvement."
+        },
+        {
+          "factor": "Certifications",
+          "status": "missing",
+          "detail": "Add relevant cloud or framework certifications to validate expertise."
+        },
+        {
+          "factor": "Projects",
+          "status": "missing",
+          "detail": "Include a dedicated projects section with GitHub links to showcase practical application."
+        }
+      ],
+      "recommended_courses": [
+        {
+          "title": "AWS Certified Solutions Architect",
+          "link": "https://www.coursera.org/professional-certificates/aws-certified-solutions-architect"
+        },
+        {
+          "title": "Node.js, Express, MongoDB & More: The Complete Bootcamp",
+          "link": "https://www.udemy.com/course/nodejs-express-mongodb-bootcamp/"
+        }
+      ],
+      "ats_compatibility_score": 70,
+      "missing_skills": [
+        "Kubernetes",
+        "AWS",
+        "CI/CD",
+        "System Design",
+        "Git"
+      ],
+      "experience_relevance": "Highly relevant to software and backend development with tangible performance metrics.",
+      "education_relevance": "BCA provides a strong theoretical foundation in computer applications and software concepts.",
+      "strengths": [
+        "Strong backend and frontend technology stack",
+        "Quantifiable achievements in system uptime and latency",
+        "Experience with containerization (Docker)"
+      ],
+      "weaknesses": [
+        "Missing contact information (email/phone)",
+        "Lack of a dedicated projects and certifications section",
+        "Absence of cloud platform specifics (AWS/GCP/Azure)"
+      ],
+      "industry_specific_recommendations": [
+        "Quantify more achievements using the Google X-Y-Z formula",
+        "Highlight CI/CD pipeline implementation experience",
+        "Incorporate cloud-native development paradigms"
+      ],
+      "suggested_certifications": [
+        "AWS Certified Developer – Associate",
+        "Docker Certified Associate",
+        "Certified Kubernetes Application Developer (CKAD)"
+      ],
+      "suggested_projects": [
+        "Real-time chat application using WebSockets, Node.js, and Redis",
+        "E-commerce microservices platform deployed on AWS using Docker and Kubernetes"
+      ],
+      "suggested_keywords": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Docker",
+        "Microservices",
+        "CI/CD",
+        "AWS",
+        "System Design",
+        "REST APIs"
+      ],
+      "interview_readiness": "Moderate readiness. Technical background is solid, but the candidate must be prepared to discuss system architecture, trade-offs, and scaling strategies in depth.",
+      "career_growth_suggestions": [
+        "Transition towards Senior Software Engineer or Technical Lead roles by taking on architectural responsibilities",
+        "Contribute to open-source software projects to build industry recognition",
+        "Obtain advanced cloud certifications to move into cloud architecture tracks"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "created_at": "2026-09-07T10:36:01.868Z",
+    "owner_email": "aaryaman1@gmail.com",
+    "name": "Aaryaman Thapa",
+    "email": "aaryaman1@gmail.com",
+    "resume_score": "68",
+    "timestamp": "2026-09-07T10:36:01.868Z",
+    "reco_field": "UI/UX Design",
+    "cand_level": "Fresher",
+    "skills": [
+      "Digital Marketing Strategy",
+      "Social Media Content & Engagement",
+      "Content Planning & Copywriting",
+      "Campaign Creation & Optimization",
+      "Audience Segmentation",
+      "Consumer Behavior Analysis",
+      "Basic SEO & Web Content",
+      "Marketing Analytics & Reporting",
+      "Promotional Graphic Design",
+      "Website Design & Digital Content",
+      "Microsoft Excel & Data Analysis",
+      "Team Collaboration & Communication"
+    ],
+    "recommended_skills": [
+      "Figma",
+      "Adobe XD",
+      "Wireframing",
+      "Prototyping",
+      "User Research",
+      "Information Architecture",
+      "Interaction Design",
+      "Usability Testing",
+      "Design Systems",
+      "HTML/CSS"
+    ],
+    "courses": [
+      {
+        "title": "Google UX Design Professional Certificate",
+        "link": "https://www.coursera.org/professional-certificates/google-ux-design"
+      },
+      {
+        "title": "UI/UX Design Specialization by California Institute of the Arts",
+        "link": "https://www.coursera.org/specializations/ui-ux-design"
+      },
+      {
+        "title": "Figma and UI/UX Essentials",
+        "link": "https://www.udemy.com/"
+      }
+    ],
+    "pdf_name": "Aaryaman CV (1).pdf",
+    "pdf_url": null,
+    "data_json": {
+      "scoring": {
+        "overallScore": 68,
+        "atsScore": 65
+      },
+      "name": "Aaryaman Thapa",
+      "email": "aaryaman1@gmail.com",
+      "phone": "9848482343",
+      "degree": "Bachelor of Business Information System (BBIS)",
+      "no_of_pages": 1,
+      "cand_level": "Fresher",
+      "predicted_field": "UI-UX Development",
+      "current_skills": [
+        "Digital Marketing Strategy",
+        "Social Media Content & Engagement",
+        "Content Planning & Copywriting",
+        "Campaign Creation & Optimization",
+        "Audience Segmentation",
+        "Consumer Behavior Analysis",
+        "Basic SEO & Web Content",
+        "Marketing Analytics & Reporting",
+        "Promotional Graphic Design",
+        "Website Design & Digital Content",
+        "Microsoft Excel & Data Analysis",
+        "Team Collaboration & Communication"
+      ],
+      "recommended_skills": [
+        "Figma",
+        "Adobe XD",
+        "Wireframing",
+        "Prototyping",
+        "User Research",
+        "Information Architecture",
+        "Interaction Design",
+        "Usability Testing",
+        "Design Systems",
+        "HTML/CSS"
+      ],
+      "resume_score": 68,
+      "score_factors": {
+        "has_objective": true,
+        "has_education": true,
+        "has_experience": true,
+        "has_internship": false,
+        "has_skills": true,
+        "has_hobbies": false,
+        "has_interests": false,
+        "has_achievements": true,
+        "has_certifications": true,
+        "has_projects": true
+      },
+      "feedback": [
+        {
+          "factor": "has_objective",
+          "status": "added",
+          "detail": "Summary is present, but it leans heavily into digital marketing rather than UI/UX design. Tailor your objective to highlight design thinking and user-centric problem solving."
+        },
+        {
+          "factor": "has_education",
+          "status": "added",
+          "detail": "Education section is properly detailed with degree and institution name."
+        },
+        {
+          "factor": "has_experience",
+          "status": "added",
+          "detail": "Freelance website design and graphic design roles are listed. Ensure you emphasize design outcomes and methodologies used."
+        },
+        {
+          "factor": "has_internship",
+          "status": "missing",
+          "detail": "No formal UI/UX internships listed. Try to secure a design internship or contribute to open-source projects."
+        },
+        {
+          "factor": "has_skills",
+          "status": "added",
+          "detail": "Technical skills section is included, but it lacks core UI/UX tools like Figma, wireframing, and user testing methodologies."
+        },
+        {
+          "factor": "has_hobbies",
+          "status": "missing",
+          "detail": "Hobbies section is missing, though optional, it can add personality to your resume."
+        },
+        {
+          "factor": "has_interests",
+          "status": "missing",
+          "detail": "No specific professional interests are listed."
+        },
+        {
+          "factor": "has_achievements",
+          "status": "added",
+          "detail": "Good inclusion of sports achievements and academic tournament placements."
+        },
+        {
+          "factor": "has_certifications",
+          "status": "added",
+          "detail": "Certifications are included, though they lean more towards networking and web development. Add UI/UX specific certifications."
+        },
+        {
+          "factor": "has_projects",
+          "status": "added",
+          "detail": "Projects like 'Mero Match' are present. Ensure you describe your specific contribution to the UI/UX design process."
+        }
+      ],
+      "recommended_courses": [
+        {
+          "title": "Google UX Design Professional Certificate",
+          "link": "https://www.coursera.org/professional-certificates/google-ux-design"
+        },
+        {
+          "title": "UI/UX Design Specialization by California Institute of the Arts",
+          "link": "https://www.coursera.org/specializations/ui-ux-design"
+        },
+        {
+          "title": "Figma and UI/UX Essentials",
+          "link": "https://www.udemy.com/"
+        }
+      ],
+      "ats_compatibility_score": 65,
+      "missing_skills": [
+        "Figma",
+        "Adobe XD",
+        "Wireframing",
+        "Prototyping",
+        "User Research",
+        "Information Architecture",
+        "Interaction Design",
+        "Usability Testing",
+        "Design Systems"
+      ],
+      "experience_relevance": "Your experience leans heavily toward digital marketing and general website design/graphics. To target UI/UX design, you need to highlight user-centered design processes, wireframing, and interactive prototyping.",
+      "education_relevance": "Your Bachelor of Business Information Systems (BBIS) provides a great hybrid foundation of business logic and basic technical understanding, which is highly beneficial for understanding product strategy in UX.",
+      "strengths": [
+        "Strong educational background in Business Information Systems",
+        "Multidisciplinary exposure including marketing, graphic design, and basic web development",
+        "Extensive volunteering and extracurricular involvement showing leadership and teamwork",
+        "Clear project experience with 'Mero Match' web platform"
+      ],
+      "weaknesses": [
+        "Lack of explicit mention of core UI/UX tools (Figma, Sketch, Adobe XD)",
+        "Resume currently reads more like a digital marketing profile than a UI/UX design profile",
+        "Missing metrics and quantitative impact in project descriptions",
+        "Absence of user research and usability testing mentions"
+      ],
+      "industry_specific_recommendations": [
+        "Pivot your summary and project bullet points to focus on user experience, wireframes, and design systems rather than marketing campaigns.",
+        "Include a link to your interactive portfolio (Behance, Dribbble, or personal website).",
+        "Highlight your problem-solving process using the Double Diamond or Design Thinking methodology."
+      ],
+      "suggested_certifications": [
+        "Google UX Design Professional Certificate",
+        "Nielsen Norman Group (NN/g) UX Certification",
+        "Interaction Design Foundation (IxDF) Certifications"
+      ],
+      "suggested_projects": [
+        "Redesign an existing popular local e-commerce or utility app focusing on improving user flow and accessibility.",
+        "Develop a comprehensive Design System in Figma for a hypothetical SaaS product.",
+        "Conduct a full UX case study including user interviews, persona creation, wireframing, and high-fidelity prototyping."
+      ],
+      "suggested_keywords": [
+        "UI/UX Design",
+        "Figma",
+        "Wireframing",
+        "Prototyping",
+        "User Research",
+        "Information Architecture",
+        "Usability Testing",
+        "User Personas",
+        "Interaction Design",
+        "Design Thinking"
+      ],
+      "interview_readiness": "Moderate. While you have great foundational technical and business exposure, you will need to prepare a strong design portfolio and be ready to explain your design decisions using user-centric metrics during interviews.",
+      "career_growth_suggestions": [
+        "Build a robust portfolio showcasing at least 3 detailed UX case studies.",
+        "Network with senior product designers on LinkedIn and seek mentorship.",
+        "Participate in design hackathons to gain rapid problem-solving experience.",
+        "Transition from a generalist digital background into a dedicated Junior UI/UX Designer role."
+      ]
+    }
+  }
+]

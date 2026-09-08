@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "read": false,
+    "type": "info",
+    "created_at": "2026-09-07T10:35:24.957Z",
+    "owner_email": "aaryaman1@gmail.com",
+    "title": "Welcome to CV Optimizer! 👋",
+    "message": "Your account is created. Start by uploading or creating your first CV."
+  }
+]

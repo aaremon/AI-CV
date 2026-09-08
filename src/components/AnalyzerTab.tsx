@@ -62,7 +62,6 @@ import ChecklistAudit from './ChecklistAudit';
 import ClusteringMap from './ClusteringMap';
 import SkillUpgradePathway from './SkillUpgradePathway';
 import CareerHacks from './CareerHacks';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import logo from '../assets/images/mero_match_exact_logo_1782115392578.jpg';
 
 interface AnalyzerTabProps {
@@ -145,19 +144,10 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
   const fetchPersonalHistory = async (emailStr: string) => {
     setLoadingHistory(true);
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { data, error } = await supabase
-          .from('records')
-          .select('*')
-          .order('id', { ascending: false });
-        if (error) throw error;
-        setPersonalHistory(data || []);
-      } else {
-        const res = await fetch(`/api/records?email=${encodeURIComponent(emailStr)}`);
-        if (res.ok) {
-          const list = await res.json();
-          setPersonalHistory(list);
-        }
+      const res = await fetch(`/api/records?email=${encodeURIComponent(emailStr)}`);
+      if (res.ok) {
+        const list = await res.json();
+        setPersonalHistory(list);
       }
     } catch (err) {
       console.error("Error retrieving historical logs:", err);
@@ -216,35 +206,6 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
     setIsAnalyzing(true);
 
     try {
-      // Direct File Upload to Supabase Storage resumes bucket if active
-      let uploadedPdfUrl = '';
-      if (selectedFile && isSupabaseConfigured() && supabase) {
-        try {
-          const fileExt = selectedFile.name.split('.').pop();
-          const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 12)}.${fileExt}`;
-          const filePath = `${loggedInUser?.id || 'anonymous'}/${uniqueFileName}`;
-          
-          const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('resumes')
-            .upload(filePath, selectedFile, {
-              cacheControl: '3600',
-              upsert: false
-            });
-            
-          if (uploadError) {
-            console.warn("Could not upload resume to Supabase Storage resumes bucket:", uploadError.message);
-          } else if (uploadData) {
-            const { data: urlData } = supabase.storage
-              .from('resumes')
-              .getPublicUrl(filePath);
-            uploadedPdfUrl = urlData.publicUrl;
-            console.log("File successfully uploaded to Supabase Storage resumes bucket:", uploadedPdfUrl);
-          }
-        } catch (stErr) {
-          console.warn("Supabase storage upload failure, proceeding with standard analysis:", stErr);
-        }
-      }
-
       const payload = {
         act_name: applicantName.trim(),
         act_mail: applicantMail.trim(),
@@ -279,39 +240,6 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
       }
 
       if (result.success) {
-        // Direct insertion of parsed evaluation record to Supabase records table if configured
-        if (isSupabaseConfigured() && supabase) {
-          try {
-            const recordPayload = {
-              owner_id: loggedInUser?.id || null,
-              owner_email: loggedInUser?.email || null,
-              name: result.data.name || applicantName,
-              email: result.data.email || applicantMail,
-              resume_score: String(result.data.resume_score || 0),
-              timestamp: new Date().toISOString(),
-              reco_field: finalField,
-              cand_level: result.data.cand_level || "Fresher",
-              skills: result.data.current_skills || [],
-              recommended_skills: result.data.recommended_skills || [],
-              courses: result.data.recommended_courses || [],
-              pdf_name: selectedFile ? selectedFile.name : (inputMode === 'text' ? 'Pasted_Text_Resume.txt' : 'Text_Resume.txt'),
-              pdf_url: uploadedPdfUrl || null
-            };
-
-            const { data: insertedData, error: dbError } = await supabase
-              .from('records')
-              .insert([recordPayload])
-              .select();
-
-            if (dbError) throw dbError;
-            if (insertedData && insertedData[0]) {
-              result.record = insertedData[0];
-            }
-          } catch (dbErr: any) {
-            console.warn("Supabase records table insert failure, using standard server response:", dbErr);
-          }
-        }
-
         setAnalysisResult(result.data);
         setAnalysisRecord(result.record);
         if (loggedInUser) {
@@ -328,31 +256,16 @@ export default function AnalyzerTab({ loggedInUser, currentTime }: AnalyzerTabPr
   const handleDeleteRecord = async (id: number) => {
     if (!confirm("Are you sure you want to permanently delete this resume tracking log?")) return;
     try {
-      if (isSupabaseConfigured() && supabase) {
-        const { error } = await supabase
-          .from('records')
-          .delete()
-          .eq('id', id);
-        if (error) throw error;
+      const res = await fetch(`/api/records/${id}?email=${encodeURIComponent(loggedInUser?.email || '')}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
         if (loggedInUser) {
           fetchPersonalHistory(loggedInUser.email);
         }
         if (analysisRecord && analysisRecord.id === id) {
           setAnalysisResult(null);
           setAnalysisRecord(null);
-        }
-      } else {
-        const res = await fetch(`/api/records/${id}?email=${encodeURIComponent(loggedInUser?.email || '')}`, {
-          method: 'DELETE'
-        });
-        if (res.ok) {
-          if (loggedInUser) {
-            fetchPersonalHistory(loggedInUser.email);
-          }
-          if (analysisRecord && analysisRecord.id === id) {
-            setAnalysisResult(null);
-            setAnalysisRecord(null);
-          }
         }
       }
     } catch (err) {
